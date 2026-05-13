@@ -10,7 +10,7 @@
    <center>
       <Pane fx:id="paneId" BorderPane.alignment="CENTER">
          <children>
-            <TilePane fx:id="panneTerrain" prefColumns="16" prefRows="16" />
+            <TilePane fx:id="panneTerrain" prefColumns="32" prefRows="32" />
          </children>
       </Pane>
    </center>
