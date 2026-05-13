@@ -1,0 +1,42 @@
+package universite_paris8.iut.mfofana.sae_dev_app_test;
+
+public class Environnement {
+    /*
+    * 0 - herbe
+    * 1 - chemin
+    * 2 - tour
+    * */
+    private static final int HERBE = 0;
+    private static final int CHEMIN = 1;
+    private static final int TOUR = 2;
+    private  int[][] terrain;
+    public Environnement() {
+        this.terrain = new int[][]{
+                {1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 1, 1, 1, 1, 1, 1, 0, 0, 2, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 2, 0, 0, 1, 1, 1, 1, 1, 0, 0, 2, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+                {0, 2, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0},
+                {0, 0, 0, 0, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0},
+                {0, 2, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0},
+                {0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0, 2, 0, 1, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1},
+                {0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                {0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 1},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}
+        };
+    }
+
+    public int[][] getTerrain(){
+        return terrain;
+    }
+
+    public int getTileTerrain(int x, int y){
+        return terrain[x][y];
+    }
+
+}
