@@ -16,9 +16,6 @@ public class HelloController {
     @FXML
     public void initialize(){
         this.e = new Environnement();
-
-
-
         TerrainVue terrainVue = new TerrainVue(panneTerrain, e);
 
         terrainVue.dessiner();
