@@ -1,6 +1,6 @@
-package universite_paris8.iut.mfofana.sae_dev_app_test;
+package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
 
-public class Environnement {
+public class Terrain {
     /*
     * 0 - herbe
     * 1 - chemin
@@ -10,7 +10,7 @@ public class Environnement {
     private static final int CHEMIN = 1;
     private static final int TOUR = 2;
     private  int[][] terrain;
-    public Environnement() {
+    public Terrain() {
         this.terrain = new int[][]{
                 {1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -46,6 +46,8 @@ public class Environnement {
                 {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
         };
     }
+
+
 
     public int[][] getTerrain(){
         return terrain;

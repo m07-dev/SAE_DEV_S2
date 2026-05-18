@@ -1,23 +1,24 @@
-package universite_paris8.iut.mfofana.sae_dev_app_test;
+package universite_paris8.iut.mfofana.sae_dev_app_test.controleur;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
-import java.util.Map;
 import javafx.animation.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Personnage;
+import universite_paris8.iut.mfofana.sae_dev_app_test.vue.TerrainVue;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
 
-public class HelloController {
+public class Controleur {
     @FXML
     private Pane paneId;
     private Timeline gameLoop;
     private int temps;
     private Circle c1;
     private Personnage p1;
-    private Environnement e;
+    private Terrain e;
     @FXML
     private TilePane panneTerrain;
 
@@ -25,7 +26,7 @@ public class HelloController {
     public void initialize(){
         c1 = new Circle();
         paneId.getChildren().addAll(c1);
-        this.e = new Environnement();
+        this.e = new Terrain();
         p1 = new Personnage(0,0);
         TerrainVue terrainVue = new TerrainVue(panneTerrain, e);
         terrainVue.dessiner();
@@ -49,7 +50,7 @@ public class HelloController {
                 // on définit ce qui se passe à chaque frame
                 // c'est un eventHandler d'ou le lambda
                 (ev ->{
-                    if(e.enDehorsTerrain(p1.getX(), p1.getY())){
+                    if(p1.horsDesLimites()){
                         paneId.getChildren().remove(c1);
                         System.out.println("pas de deplacement out ");
                     }else {

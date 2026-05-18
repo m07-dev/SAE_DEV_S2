@@ -1,15 +1,16 @@
-package universite_paris8.iut.mfofana.sae_dev_app_test;
+package universite_paris8.iut.mfofana.sae_dev_app_test.vue;
 
 import javafx.scene.layout.TilePane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
 
 public class TerrainVue {
 
     private TilePane pane;
-    private Environnement e;
+    private Terrain e;
 
-    public TerrainVue(TilePane pane, Environnement e) {
+    public TerrainVue(TilePane pane, Terrain e) {
         this.pane = pane;
         this.e = e;
     }
