@@ -4,6 +4,9 @@ public abstract class Tour {
     private double x, y;
     private int cout, niveau;
     private int degat, portee, cadence;
+    private long finParalysie = 0;
+    private long dernierTir = 0;
+
 
     public Tour(double x, double y, int cout,
                 int degat, int portee, int cadence) {
@@ -44,15 +47,32 @@ public abstract class Tour {
         return portee;
     }
 
-    public abstract void tirer();{
-        System.out.println();
-    }
+    public abstract void tirer();
     public int vendre(){
         return cout / 2;
     }
-    public int ameliorer(){
-        return niveau++;
+    public void ameliorer(){
+        if (niveau < 3) {
+            niveau++;
+            degat += 5;
+            portee += 1;
+        }
+    }
+    public boolean estParalysee() {
+        return System.currentTimeMillis() < finParalysie;
     }
 
+    public void paralyser(int dureeMs) {
+        finParalysie = System.currentTimeMillis() + dureeMs;
+    }
+    public boolean peutTirer() {
+        if (estParalysee()) return false; // ← tour paralysée = ne tire plus
+        long maintenant = System.currentTimeMillis();
+        if (maintenant - dernierTir >= 1000 / cadence) {
+            dernierTir = maintenant;
+            return true;
+        }
+        return false;
+    }
 
 }
