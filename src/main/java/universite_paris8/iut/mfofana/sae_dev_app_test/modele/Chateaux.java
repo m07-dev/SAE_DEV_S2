@@ -17,6 +17,6 @@ public class Chateaux {
     }
 
     public boolean partieFinis() {
-        return compteurEnnemis <= limiteEnnemis;
+        return this.compteurEnnemis >= this.limiteEnnemis;
     }
 }

@@ -7,6 +7,7 @@ import javafx.animation.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Chateaux;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Personnage;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Soldat;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.TerrainVue;
@@ -20,6 +21,7 @@ public class Controleur {
     private Circle c1;
     private Personnage p1;
     private Terrain e;
+    private Chateaux châteaux;
     @FXML
     private TilePane panneTerrain;
 
