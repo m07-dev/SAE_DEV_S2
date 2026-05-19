@@ -1,5 +1,10 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 public class Terrain {
     /*
     * 0 - herbe
@@ -21,7 +26,7 @@ public class Terrain {
                 {0, 2, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
                 {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0},
                 {0, 0, 0, 0, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0},
-                {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0},
+                {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0},
                 {0, 2, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0},
                 {0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 1, 0, 2, 0, 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0},
@@ -47,6 +52,40 @@ public class Terrain {
         };
     }
 
+    private static final int[][] DIRS = {{-1,0},{1,0},{0,-1},{0,1}};
+
+    /**
+     * Retourne toutes les cases de chemin atteignables depuis (startL, startC)
+     */
+    public List<int[]> extraireChemin(int startL, int startC) {
+        List<int[]> chemin = new ArrayList<>();
+        boolean[][] visite = new boolean[terrain.length][terrain[0].length];
+
+        int l = startL, c = startC;
+        while (true) {
+            chemin.add(new int[]{l, c});
+            visite[l][c] = true;
+
+            boolean avance = false;
+            for (int[] d : DIRS) {
+                int nl = l + d[0];
+                int nc = c + d[1];
+                if (nl >= 0 && nl < terrain.length && nc >= 0 && nc < terrain[0].length && terrain[nl][nc] == CHEMIN && !visite[nl][nc]) {
+                    l = nl;
+                    c = nc;
+                    avance = true;
+                    break;
+                }
+            }
+            if (!avance) break;
+        }
+        return chemin;
+    }
+
+
+
+
+
 
 
     public int[][] getTerrain(){
@@ -55,10 +94,6 @@ public class Terrain {
 
     public int getTileTerrain(int x, int y){
         return terrain[x][y];
-    }
-
-    public boolean enDehorsTerrain(int x , int y){
-        return x < 0 || x >=  32*30 || y < 0 || y >= 30*32 ;
     }
 
 }
