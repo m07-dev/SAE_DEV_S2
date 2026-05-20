@@ -1,20 +1,20 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
 
 public abstract class Personnage {
-    private int x,y;
+    private double x,y;
     private Terrain e;
     private int pv;
     private int vitesse;
 
 
 
-    public Personnage(int x, int y){
+    public Personnage(double x, double y){
         this.x = x;
         this.y = y;
         this.e = new Terrain();
     }
 
-   public Personnage(int x, int y, Terrain e, int pv, int v) {
+   public Personnage(double x, double y, Terrain e, int pv, int v) {
         this.x = x;
         this.y = y;
         this.e = new Terrain();
@@ -23,17 +23,17 @@ public abstract class Personnage {
     }
 
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
-    public void setY(int y){
+    public void setY(double y){
         this.y = y;
     }
     public int getPv() {
@@ -42,6 +42,15 @@ public abstract class Personnage {
     public void setPv(int nvPv) {
         this.pv = Math.max(0,pv);
     }
+
+    public void setVitesse(int v) {
+        this.vitesse = v;
+    }
+
+    public int getVitesse() {
+        return this.vitesse;
+    }
+
 
 
     public boolean horsDesLimites(){

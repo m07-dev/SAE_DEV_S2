@@ -35,6 +35,10 @@ public abstract class Tour {
         return degat;
     }
 
+    public void setDegat(int degat) {
+        this.degat = degat;
+    }
+
     public int getCout() {
         return cout;
     }
