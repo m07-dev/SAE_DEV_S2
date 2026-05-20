@@ -30,13 +30,8 @@ public abstract class Tour {
     public double getY() {
         return y;
     }
-
     public int getDegat() {
         return degat;
-    }
-
-    public void setDegat(int degat) {
-        this.degat = degat;
     }
 
     public int getCout() {
