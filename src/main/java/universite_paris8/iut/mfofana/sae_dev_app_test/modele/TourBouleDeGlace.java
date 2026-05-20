@@ -1,8 +1,8 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
-public class tourBouleDeGlace extends Tour{
+public class TourBouleDeGlace extends Tour{
     private double vitesseBalle;
     private int ralentissement;
-    public tourBouleDeGlace(double x, double y, int ralentissement, double vitesseBalle){
+    public TourBouleDeGlace(double x, double y, int ralentissement, double vitesseBalle){
         super(x,y,10,25,4,4);
         this.vitesseBalle = vitesseBalle;
         this.ralentissement = ralentissement;

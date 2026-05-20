@@ -1,7 +1,7 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
-public class tourObstacle extends Tour{
+public class TourObstacle extends Tour{
     private String tyObstacle;
-    public tourObstacle(double x, double y, String tyObstacle){
+    public TourObstacle(double x, double y, String tyObstacle){
         super(x,y,10,0,2,1);
         this.tyObstacle = tyObstacle;
     }
