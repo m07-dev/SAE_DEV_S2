@@ -11,6 +11,8 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Personnage;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.TerrainVue;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
 
+import java.util.ArrayList;
+
 public class Controleur {
     @FXML
     private Pane paneId;
@@ -30,6 +32,13 @@ public class Controleur {
         p1 = new Personnage(0,0);
         TerrainVue terrainVue = new TerrainVue(panneTerrain, e);
         terrainVue.dessiner();
+
+
+        ennemi = new Circle(10, Color.BLACK);
+        placerSurCase(0);
+        paneId.getChildren().add(ennemi);
+
+        // --- 5. LANCER LA GAME LOOP ---
         initAnimation();
         gameLoop.play();
 
