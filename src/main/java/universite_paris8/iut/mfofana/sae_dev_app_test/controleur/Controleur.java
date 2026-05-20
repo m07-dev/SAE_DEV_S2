@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Personnage;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Soldat;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.TerrainVue;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
 
@@ -27,7 +28,7 @@ public class Controleur {
         c1 = new Circle();
         paneId.getChildren().addAll(c1);
         this.e = new Terrain();
-        p1 = new Personnage(0,0);
+        p1 = new Soldat(0,0,e);
         TerrainVue terrainVue = new TerrainVue(panneTerrain, e);
         terrainVue.dessiner();
         initAnimation();
