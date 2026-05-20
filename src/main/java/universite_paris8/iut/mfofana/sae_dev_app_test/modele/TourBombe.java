@@ -15,13 +15,7 @@ public class TourBombe extends Tour{
     }
     public double getVitesseBalle() { return vitesseBalle; }
 
-
-    public void tirer() {
-        if (!this.estParalysee() && this.peutTirer()) {
-            //System.out.println("La tour de bombe tire ! dégâts : " + this.getDegat());
-        }
-    }
-
+    @Override
     public void tirer(ObservableList<Personnage> ennemis) { // reçoit la liste en paramètre
         if (!this.estParalysee() && this.peutTirer() && !ennemis.isEmpty()) {
             Personnage cible = choisirCible(ennemis);
