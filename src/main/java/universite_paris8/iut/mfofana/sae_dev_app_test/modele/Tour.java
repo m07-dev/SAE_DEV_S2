@@ -50,7 +50,7 @@ public abstract class Tour {
     }
 
 
-    public Personnage choisirCible(List<Personnage> ennemis) {
+    public Personnage choisirCible(ObservableList<Personnage> ennemis) {
         for (Personnage e : ennemis) {
             double distance = Math.sqrt(
                     Math.pow(e.getX() - this.x, 2) +
