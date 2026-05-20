@@ -43,7 +43,7 @@ public class Controleur {
         terrainVue.dessiner();
 
 
-        ennemi = new Circle(10, Color.RED);
+        ennemi = new Circle(10, Color.BLACK);
         placerSurCase(0);  // on le place sur la première case du chemin
         paneId.getChildren().add(ennemi);
 

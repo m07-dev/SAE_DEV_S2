@@ -10,8 +10,8 @@ public class TourBombe extends Tour{
 
     @Override
     public void tirer() {
-        if(!this.estParalysee() && this.peutTirer() &&){
-        //System.out.println("La tour de bombe tire ! dégâts : " + this.getDegat());
+        if (!this.estParalysee() && this.peutTirer()) {
+            //System.out.println("La tour de bombe tire ! dégâts : " + this.getDegat());
+        }
     }
-
 }
