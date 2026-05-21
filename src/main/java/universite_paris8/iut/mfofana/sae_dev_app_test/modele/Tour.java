@@ -8,10 +8,11 @@ public abstract class Tour {
     private double x, y;
     private int cout, niveau;
     private int degat, portee, cadence;
+    private int resistance;
     private long finParalysie = 0;
     private long dernierTir = 0;
 
-    public Tour(double x, double y, int cout, int degat, int portee, int cadence) {
+    public Tour(double x, double y, int cout, int degat, int portee, int cadence, int resistance) {
         this.x = x;
         this.y = y;
         this.cout = cout;
@@ -19,6 +20,7 @@ public abstract class Tour {
         this.degat = degat;
         this.portee = portee;
         this.cadence = cadence;
+        this.resistance = resistance;
     }
 
 
@@ -29,6 +31,9 @@ public abstract class Tour {
     public int getDegat() { return degat; }
     public int getPortee() { return portee; }
     public int getCadence() { return cadence; }
+    public int getResistance(){ return resistance;}
+    public void subirDegat(int degat) { this.resistance = Math.max(0, this.resistance - degat); }
+    public boolean estDetruite() { return this.resistance == 0; }
 
 
     public boolean estParalysee() {
@@ -81,8 +86,8 @@ public abstract class Tour {
         if (!estParalysee() && peutTirer() && !ennemis.isEmpty()) {
             Personnage cible = choisirCible(ennemis);
             if (cible != null) {
-                cible.subirDegat(this.degat);    // dégâts de base
-                appliquerEffet(cible, ennemis);  // effet spécial
+                cible.subirDegat(this.degat);
+                appliquerEffet(cible, ennemis);
             }
         }
     }
