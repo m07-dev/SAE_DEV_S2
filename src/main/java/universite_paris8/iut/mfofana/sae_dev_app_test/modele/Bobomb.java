@@ -6,28 +6,28 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 
 public class Bobomb extends Personnage {
-        private int degat;
-        private ObservableList<Tour> tours;
+    private int degat;
+    private ObservableList<Tour> tours;
 
-        public Bobomb(double x, double y, Terrain e) {
-            super(x, y, e,100,8);
-            this.degat = 25;
+    public Bobomb(double x, double y, Terrain e) {
+        super(x, y, e,100,8);
+        this.degat = 25;
+    }
+
+    public int vitesseAugmente() {
+        if (this.getPv() <= 50) {
+            return (int) (this.getVitesse()*1.2);
         }
 
-        public int vitesseAugmente() {
-            if (this.getPv() <= 50) {
-                return (int) (this.getVitesse()*1.2);
-            }
-
-            return getVitesse();
-        }
+        return getVitesse();
+    }
 
 
-        public void exploser(ObservableList<Tour> tours) {
-            //Distance entre le Bobomb et la tour
-            int distance;
+    public void exploser(ObservableList<Tour> tours) {
+        //Distance entre le Bobomb et la tour
+        int distance;
 
-            boolean aParalyserTour = false;
+        boolean aParalyserTour = false;
 
             // Coordonnée de Bobomb = B
             double xB = this.getX();

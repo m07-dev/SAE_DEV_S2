@@ -11,77 +11,67 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Personnage;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.TerrainVue;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Controleur {
-
-    @FXML private Pane paneId;
-    @FXML private TilePane panneTerrain;
-
-    private Terrain terrain;
-    private List<int[]> chemin;    // le chemin ordonné
-    private int indexChemin = 0;   // position actuelle de l'ennemi dans le chemin
-
-    private Circle ennemi;
+    @FXML
+    private Pane paneId;
     private Timeline gameLoop;
-
-    // Taille d'une tile en pixels (adapte à ta TerrainVue)
-    private static final int TILE = 30;
+    private int temps;
+    private Circle c1;
+    private Personnage p1;
+    private Terrain e;
+    @FXML
+    private TilePane panneTerrain;
 
     @FXML
-    public void initialize() {
-
-        terrain = new Terrain();
-
-        // ---  On trouve le chemin le plus court ---
-        chemin = terrain.extraireChemin(0, 0);
-        System.out.println("Chemin trouvé : " + chemin.size() + " cases");
-
-
-        TerrainVue terrainVue = new TerrainVue(panneTerrain, terrain);
+    public void initialize(){
+        c1 = new Circle();
+        paneId.getChildren().addAll(c1);
+        this.e = new Terrain();
+        p1 = new Personnage(0,0);
+        TerrainVue terrainVue = new TerrainVue(panneTerrain, e);
         terrainVue.dessiner();
-
-
-        ennemi = new Circle(10, Color.BLACK);
-        placerSurCase(0);  // on le place sur la première case du chemin
-        paneId.getChildren().add(ennemi);
-
-
         initAnimation();
         gameLoop.play();
-    }
 
-    /**
-     * Place l'ennemi (cercle) au centre de la case n° index dans le chemin.
-     */
-    private void placerSurCase(int index) {
-        int ligne   = chemin.get(index)[0]; // ligne   = axe Y
-        int colonne = chemin.get(index)[1]; // colonne = axe X
-
-        ennemi.setCenterX(colonne * TILE + TILE / 2.0);
-        ennemi.setCenterY(ligne   * TILE + TILE / 2.0);
     }
 
     private void initAnimation() {
+        c1.setFill(Color.BLACK);
+        c1.setCenterX(10.0);
+        c1.setCenterY(10.0);
+        c1.setRadius(10.0);
         gameLoop = new Timeline();
+        temps=0;
         gameLoop.setCycleCount(Timeline.INDEFINITE);
 
         KeyFrame kf = new KeyFrame(
-                Duration.seconds(0.08),  // toutes les 80ms → ~12 cases/sec
-                ev -> {
-                    // S'il reste des cases à parcourir
-                    if (indexChemin < chemin.size() - 1) {
-                        indexChemin++;
-                        placerSurCase(indexChemin);
-                    } else {
-                        // L'ennemi a atteint la fin du chemin
-                        System.out.println("Ennemi arrivé !");
-                        paneId.getChildren().remove(ennemi);
-                        gameLoop.stop();
+                // on définit le FPS (nbre de frame par seconde)
+                Duration.seconds(0.017),
+                // on définit ce qui se passe à chaque frame
+                // c'est un eventHandler d'ou le lambda
+                (ev ->{
+                    if(p1.horsDesLimites()){
+                        paneId.getChildren().remove(c1);
+                        System.out.println("pas de deplacement out ");
+                    }else {
+                        if (temps == 2500) {
+                            System.out.println("fini");
+                            gameLoop.stop();
+                        } else if (temps % 5 == 0) {
+                            System.out.println("un tour");
+                            p1.setX(p1.getX() + 5);
+                            p1.setY(p1.getY() + 5);
+                            c1.setTranslateX(p1.getX());
+                            c1.setTranslateY(p1.getY());
+                            System.out.println(p1.getX());
+                            System.out.println(p1.getY());
+
+                        }
                     }
-                }
+                    temps++;
+                })
         );
         gameLoop.getKeyFrames().add(kf);
     }
 }
+
