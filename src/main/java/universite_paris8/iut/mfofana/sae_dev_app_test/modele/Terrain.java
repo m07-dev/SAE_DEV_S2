@@ -1,5 +1,8 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Terrain {
     /*
     * 0 - herbe
@@ -45,6 +48,38 @@ public class Terrain {
                 {0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
                 {0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
         };
+    }
+
+    private static final int[][] DIRS = {{-1,0},{1,0},{0,-1},{0,1}};
+
+    /**
+     * Extrait le chemin ordonné en partant de (startL, startC).
+     * Marche uniquement si le chemin n'a pas de branchement.
+     */
+    public List<int[]> extraireChemin(int startL, int startC) {
+        List<int[]> chemin = new ArrayList<>();
+        boolean[][] visite = new boolean[terrain.length][terrain[0].length];
+
+        int l = startL, c = startC;
+        while (true) {
+            chemin.add(new int[]{l, c});
+            visite[l][c] = true;
+
+            boolean avance = false;
+            for (int[] d : DIRS) {
+                int nl = l + d[0];
+                int nc = c + d[1];
+                if (nl >= 0 && nl < terrain.length && nc >= 0 && nc < terrain[0].length
+                        && terrain[nl][nc] == CHEMIN && !visite[nl][nc]) {
+                    l = nl;
+                    c = nc;
+                    avance = true;
+                    break;
+                }
+            }
+            if (!avance) break; // fin du chemin
+        }
+        return chemin;
     }
 
 
