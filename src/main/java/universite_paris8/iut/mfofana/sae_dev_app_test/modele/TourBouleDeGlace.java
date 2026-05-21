@@ -15,6 +15,6 @@ public class TourBouleDeGlace extends Tour {
     @Override
     public void appliquerEffet(Personnage cible, ObservableList<Personnage> ennemis) {
         // Réduit temporairement la vitesse de l'ennemi
-        cible.ralentir(ralentissement);
+        //cible.ralentir(ralentissement);
     }
 }
