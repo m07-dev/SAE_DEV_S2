@@ -42,10 +42,19 @@ public abstract class Personnage {
     public void setPv(int nvPv) {
         this.pv = Math.max(0,pv);
     }
+    public void setVitesse(int v) {
+        this.vitesse = v;
+    }
 
+    public int getVitesse() {
+        return this.vitesse;
+    }
 
     public boolean horsDesLimites(){
         return this.getX() < 0 ||this.getX() >=  32*30 || this.getY() < 0 || this.getY() >= 30*32 ;
+    }
+    public void subirDegat(int degat) {
+        this.setPv(this.pv - degat);
     }
 
     public boolean estMort() {
