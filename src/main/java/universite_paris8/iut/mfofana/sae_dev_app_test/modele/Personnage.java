@@ -40,7 +40,7 @@ public abstract class Personnage {
         return pv;
     }
     public void setPv(int nvPv) {
-        this.pv = Math.max(0,pv);
+        this.pv = Math.max(0,nvPv);
     }
     public void setVitesse(int v) {
         this.vitesse = v;

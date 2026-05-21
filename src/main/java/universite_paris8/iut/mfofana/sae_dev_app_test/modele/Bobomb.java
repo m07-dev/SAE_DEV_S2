@@ -14,17 +14,16 @@ public class Bobomb extends Personnage {
         this.degat = 25;
     }
 
-    public int vitesseAugmente() {
+    public void vitesseAugmente() {
         if (this.getPv() <= 50) {
-            return (int) (this.getVitesse()*1.2);
+            int nouvelleVitesse = (int) (this.getVitesse() * 1.2);
+            this.setVitesse(nouvelleVitesse);
         }
-
-        return getVitesse();
     }
 
 
     public void exploser(ObservableList<Tour> tours) {
-        //Distance entre le Bobomb et la tour
+
         int distance;
 
         boolean aParalyserTour = false;
@@ -40,7 +39,7 @@ public class Bobomb extends Personnage {
                 double yT= tourActuelle.getY();
 
                 distance = (int) (Math.abs(xB - xT) + Math.abs(yB - yT));
-                if ( distance == 1) {
+                if (distance <= 45) { // On utilise un rayon d'explosion
                     tourActuelle.paralyser(3000);
                     tourActuelle.setDegat(tourActuelle.getDegat() - this.degat);
                     aParalyserTour = true;
