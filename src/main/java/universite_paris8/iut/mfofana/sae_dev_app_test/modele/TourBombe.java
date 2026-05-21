@@ -1,34 +1,19 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
-
-import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class TourBombe extends Tour{
+public class TourBombe extends Tour {
     private double vitesseBalle;
-    private ObservableList<Personnage> personnage;
+
     public TourBombe(double x, double y, double vitesseBalle){
-        super(x,y,50,25,2,2);
+        // Coût: 50, Dégâts: 25, Portée: 2, Cadence: 1, Résistance: 100
+        super(x, y, 50, 25, 2, 1, 100);
         this.vitesseBalle = vitesseBalle;
     }
+
     public double getVitesseBalle() { return vitesseBalle; }
 
     @Override
-    public void tirer(ObservableList<Personnage> ennemis) { // reçoit la liste en paramètre
-        if (!this.estParalysee() && this.peutTirer() && !ennemis.isEmpty()) {
-            Personnage cible = choisirCible(ennemis);
-            if (cible != null) {
-                cible.subirDegat(this.getDegat());
-            }
-        }
-    }
-
-    @Override
     public void appliquerEffet(Personnage cible, ObservableList<Personnage> ennemis) {
-
+        // La bombe pourrait faire des dégâts de zone ici plus tard
     }
-
-
 }

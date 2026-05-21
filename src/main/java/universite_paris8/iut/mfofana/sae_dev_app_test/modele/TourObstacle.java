@@ -1,19 +1,17 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
-
 import javafx.collections.ObservableList;
 
-import java.util.List;
-
-public class TourObstacle extends Tour{
+public class TourObstacle extends Tour {
     private String tyObstacle;
+
     public TourObstacle(double x, double y, String tyObstacle){
-        super(x,y,10,0,2,1);
+        // Coût: 50, Dégâts: 0, Portée: 6, Cadence: 1, Résistance: 100
+        super(x, y, 50, 0, 6, 1, 100);
         this.tyObstacle = tyObstacle;
     }
 
-
     @Override
     public void appliquerEffet(Personnage cible, ObservableList<Personnage> ennemis) {
-
+        // Logique spécifique à l'obstacle (ex: repousser l'ennemi, l'étourdir)
     }
 }
