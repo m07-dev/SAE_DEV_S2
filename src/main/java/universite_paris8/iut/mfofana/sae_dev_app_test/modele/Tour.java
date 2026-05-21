@@ -37,6 +37,12 @@ public abstract class Tour {
 
     public void paralyser(int dureeMs) {
         finParalysie = System.currentTimeMillis() + dureeMs;
+    public void setDegat(int degat){
+        this.degat = degat;
+    }
+
+    public int getCout() {
+        return cout;
     }
 
     public boolean peutTirer() {
