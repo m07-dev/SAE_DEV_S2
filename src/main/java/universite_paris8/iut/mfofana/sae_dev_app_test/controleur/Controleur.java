@@ -1,6 +1,9 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.controleur;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.animation.*;
@@ -9,6 +12,7 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Personnage;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Soldat;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Tour;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.TerrainVue;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
 
@@ -17,9 +21,12 @@ import java.util.List;
 
 public class Controleur {
 
+    public Label Solde;
     @FXML private Pane paneId;
     @FXML private TilePane panneTerrain;
-
+    private int pieces = 100;
+    private String tourSelectionnee = null;
+    private ObservableList<Tour> toursPlacees = FXCollections.observableArrayList();
     private Terrain terrain;
     private List<int[]> chemin;    // le chemin ordonné
     private int indexChemin = 0;   // position actuelle de l'ennemi dans le chemin
@@ -29,6 +36,39 @@ public class Controleur {
 
     // Taille d'une tile en pixels (adapte à ta TerrainVue)
     private static final int TILE = 30;
+
+    public void clicBoutonTourFeu(){
+        if (pieces >= 15) {
+            tourSelectionnee = "FEU";
+            System.out.println("Tour de Feu sélectionnée ! Cliquez sur l'herbe pour la placer.");
+        } else {
+            System.out.println("Fonds insuffisants pour la Tour de Feu !");
+        }
+    }
+    public void clicBoutonTourBombe(){
+        if (pieces >= 50) {
+            tourSelectionnee = "BOMBE";
+            System.out.println("Tour de BOMBE sélectionnée ! Cliquez sur l'herbe pour la placer.");
+        } else {
+            System.out.println("Fonds insuffisants pour la Tour de BOMBE !");
+        }
+    }
+    public void clicBoutonTourGlace(){
+        if (pieces >= 15) {
+            tourSelectionnee = "GLACE";
+            System.out.println("Tour de GLACE sélectionnée ! Cliquez sur l'herbe pour la placer.");
+        } else {
+            System.out.println("Fonds insuffisants pour la Tour de GLACE !");
+        }
+    }
+    public void clicBoutonTourObstacle(){
+        if (pieces >= 15) {
+            tourSelectionnee = "OBSTACLE";
+            System.out.println("Tour de OBSTACLE sélectionnée ! Cliquez sur l'herbe pour la placer.");
+        } else {
+            System.out.println("Fonds insuffisants pour la Tour de OBSTACLE !");
+        }
+    }
 
     @FXML
   public void initialize() {
@@ -50,7 +90,7 @@ public class Controleur {
 
 
         initAnimation();
-        gameLoop.play();
+        gameLoop.play();git 
     }
 
     /**

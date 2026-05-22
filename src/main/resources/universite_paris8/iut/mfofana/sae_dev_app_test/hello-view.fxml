@@ -1,17 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.mfofana.sae_dev_app_test.controleur.Controleur">
-  <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-  </padding>
-   <center>
-      <Pane fx:id="paneId" BorderPane.alignment="CENTER">
-         <children>
-            <TilePane fx:id="panneTerrain" prefColumns="32" prefRows="32" />
-         </children>
-      </Pane>
-   </center>
+<BorderPane maxHeight="600.0" maxWidth="700.0" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.mfofana.sae_dev_app_test.controleur.Controleur">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <center>
+        <Pane fx:id="paneId" BorderPane.alignment="CENTER">
+            <children>
+                <TilePane fx:id="panneTerrain" prefColumns="32" prefRows="32" />
+            </children>
+        </Pane>
+    </center>
+    <right>
+        <VBox prefHeight="200.0" prefWidth="150.0" spacing="15" style="-fx-background-color: #000000;" BorderPane.alignment="CENTER">
+
+            <Label fx:id="Solde" text="Solde : 100$" textFill="RED">
+            <font>
+               <Font name="System Bold" size="13.0" />
+            </font></Label>
+
+            <Button onAction="#clicBoutonTourFeu" text="Tour Feu (15$)" />
+
+            <Button onAction="#clicBoutonTourBombe" text="Tour Bombe (50$)" />
+
+            <Button onAction="#clicBoutonTourGlace" text="Tour Glace (15$)" />
+
+            <Button onAction="#clicBoutonTourObstacle" text="Tour Obstacle (15$)" />
+
+        </VBox> </right>
 </BorderPane>
