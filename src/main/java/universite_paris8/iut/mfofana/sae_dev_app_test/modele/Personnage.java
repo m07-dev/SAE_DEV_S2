@@ -61,9 +61,7 @@ public abstract class Personnage {
         return this.pv == 0;
     }
 
-    public void subirDegat(int degat) {
-        this.setPv(this.pv - degat);
-    }
+
 
 
 
