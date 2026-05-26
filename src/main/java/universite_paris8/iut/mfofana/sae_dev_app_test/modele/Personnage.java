@@ -1,5 +1,7 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
 
+import javafx.scene.paint.Color;
+
 public abstract class Personnage {
     private double x,y;
     private Terrain e;
@@ -17,7 +19,7 @@ public abstract class Personnage {
    public Personnage(double x, double y, Terrain e, int pv, int v) {
         this.x = x;
         this.y = y;
-        this.e = new Terrain();
+        this.e = e;
         this.pv = pv;
         this.vitesse = v;
     }
@@ -61,6 +63,9 @@ public abstract class Personnage {
         return this.pv == 0;
     }
 
+    public javafx.scene.paint.Color getCouleur() {
+        return Color.BLACK;
+    }
 
 
 

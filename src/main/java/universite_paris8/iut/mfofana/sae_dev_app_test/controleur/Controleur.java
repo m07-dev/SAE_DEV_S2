@@ -28,8 +28,17 @@ public class Controleur {
     private List<int[]> chemin;    // le chemin ordonné
     private int indexChemin = 0;   // position actuelle de l'ennemi dans le chemin
 
-    private Circle ennemi;
+    private List<Personnage> ennemis = new ArrayList<>();
+    private List<Circle> ennemisVue = new ArrayList<>();
+    private List<Integer> indexChemins = new ArrayList<>();
+    private List<List<int[]>> chemins = new ArrayList<>();
+
     private Timeline gameLoop;
+
+    private static final int[] HAUT_GAUCHE = {0,0};
+    private static final int[] HAUT_DROIT = {6,20};
+    private static final int[] BAS_GAUCHE = {31,8};
+    private static final int[] BAS_DROIT = {31,31};
 
     // Taille d'une tile en pixels (adapte à ta TerrainVue)
     private static final int TILE = 30;
@@ -75,12 +84,45 @@ public class Controleur {
         }
     }
 
+    private void spawnEnnemis(String typeE, int[] coin) {
+
+        List<int[]> cheminEnnemi = terrain.extraireChemin(coin[0], coin[1]);// Retourne liste de chemins
+
+        if (cheminEnnemi == null || cheminEnnemi.isEmpty()) {
+            System.out.println("Pas de chemin trouvé depuis ce coin !");
+            return;
+        }
+
+
+        Personnage modele = switch (typeE) {
+            case "BOBOMB" -> new Bobomb(coin[1], coin[0], terrain);
+            case "SOLDAT" -> new Soldat(coin[1], coin[0], terrain);
+            default       -> new Soldat(coin[1], coin[0], terrain);
+        };
+
+
+        Circle cercleEnnemis = new Circle(TILE / 2.0, modele.getCouleur());
+
+        cercleEnnemis.setCenterX(coin[1] * TILE + TILE / 2.0);
+        cercleEnnemis.setCenterY(coin[0] * TILE + TILE / 2.0);
+
+
+        paneId.getChildren().add(cercleEnnemis);
+
+
+
+        ennemis.add(modele);
+        ennemisVue.add(cercleEnnemis);
+        chemins.add(cheminEnnemi);
+        indexChemins.add(0);
+    }
+
     @FXML
   public void initialize() {
 
         terrain = new Terrain();
 
-        // ---  On trouve le chemin le plus court ---
+
         chemin = terrain.extraireChemin(0, 0);
         System.out.println("Chemin trouvé : " + chemin.size() + " cases");
 
@@ -88,26 +130,14 @@ public class Controleur {
         TerrainVue terrainVue = new TerrainVue(panneTerrain, terrain);
         terrainVue.dessiner();
 
+        spawnEnnemis("BOBOMB", HAUT_GAUCHE);
+        spawnEnnemis("SOLDAT", HAUT_DROIT);
 
-        ennemi = new Circle(10, Color.BLACK);
-        placerSurCase(0);  // on le place sur la première case du chemin
-        paneId.getChildren().add(ennemi);
 
 
         initAnimation();
         placerTourTerrain();
         gameLoop.play();
-    }
-
-    /**
-     * Place l'ennemi (cercle) au centre de la case n° index dans le chemin.
-     */
-    private void placerSurCase(int index) {
-        int ligne   = chemin.get(index)[0]; // ligne   = axe Y
-        int colonne = chemin.get(index)[1]; // colonne = axe X
-
-        ennemi.setCenterX(colonne * TILE + TILE / 2.0);
-        ennemi.setCenterY(ligne   * TILE + TILE / 2.0);
     }
 
     private void initAnimation() {
@@ -117,15 +147,37 @@ public class Controleur {
         KeyFrame kf = new KeyFrame(
                 Duration.seconds(0.08),  // toutes les 80ms → ~12 cases/sec
                 ev -> {
-                    // S'il reste des cases à parcourir
-                    if (indexChemin < chemin.size() - 1) {
-                        indexChemin++;
-                        placerSurCase(indexChemin);
-                    } else {
-                        // L'ennemi a atteint la fin du chemin
-                        System.out.println("Ennemi arrivé !");
-                        paneId.getChildren().remove(ennemi);
-                        gameLoop.stop();
+                    for (int i = 0; i < ennemis.size(); i++) {
+
+                        int index = indexChemins.get(i);
+                        List<int[]> ch = chemins.get(i);
+
+                        if (index < ch.size() - 1) {
+
+
+                            int nouvelIndex = index + 1;
+                            indexChemins.set(i, nouvelIndex);
+
+                            int ligne   = ch.get(nouvelIndex)[0];
+                            int colonne = ch.get(nouvelIndex)[1];
+
+
+                            ennemis.get(i).setX(colonne);
+                            ennemis.get(i).setY(ligne);
+
+
+                            ennemisVue.get(i).setCenterX(colonne * TILE + TILE / 2.0);
+                            ennemisVue.get(i).setCenterY(ligne   * TILE + TILE / 2.0);
+
+                        } else {
+                            System.out.println("Ennemi " + i + " arrivé !");
+                            paneId.getChildren().remove(ennemisVue.get(i));
+
+                            ennemis.remove(i);
+                            ennemisVue.remove(i);
+                            chemins.remove(i);
+                            indexChemins.remove(i);
+                        }
                     }
                 }
         );

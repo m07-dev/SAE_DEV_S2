@@ -2,6 +2,7 @@ package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
 
 import javafx.beans.Observable;
 import javafx.collections.ObservableList;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
@@ -49,10 +50,16 @@ public class Bobomb extends Personnage {
             if (aParalyserTour) {
                 this.setPv(0);
             }
-
-
-
         }
+
+        public javafx.scene.paint.Color getCouleur() {
+            return Color.PINK;
+        }
+
+        public String type() {
+            return "Bobomb";
+        }
+
 
 
 
