@@ -10,11 +10,8 @@ import javafx.animation.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Personnage;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Soldat;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Tour;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.TerrainVue;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +38,8 @@ public class Controleur {
         if (pieces >= 15) {
             tourSelectionnee = "FEU";
             System.out.println("Tour de Feu sélectionnée ! Cliquez sur l'herbe pour la placer.");
+            pieces -= 15;
+            Solde.setText("Solde : " + pieces+"$");
         } else {
             System.out.println("Fonds insuffisants pour la Tour de Feu !");
         }
@@ -49,6 +48,8 @@ public class Controleur {
         if (pieces >= 50) {
             tourSelectionnee = "BOMBE";
             System.out.println("Tour de BOMBE sélectionnée ! Cliquez sur l'herbe pour la placer.");
+            pieces -= 50;
+            Solde.setText("Solde : " + pieces+"$");
         } else {
             System.out.println("Fonds insuffisants pour la Tour de BOMBE !");
         }
@@ -57,6 +58,8 @@ public class Controleur {
         if (pieces >= 15) {
             tourSelectionnee = "GLACE";
             System.out.println("Tour de GLACE sélectionnée ! Cliquez sur l'herbe pour la placer.");
+            pieces -= 15;
+            Solde.setText("Solde : " + pieces+"$");
         } else {
             System.out.println("Fonds insuffisants pour la Tour de GLACE !");
         }
@@ -65,6 +68,8 @@ public class Controleur {
         if (pieces >= 15) {
             tourSelectionnee = "OBSTACLE";
             System.out.println("Tour de OBSTACLE sélectionnée ! Cliquez sur l'herbe pour la placer.");
+            pieces -= 15;
+            Solde.setText("Solde : " + pieces+"$");
         } else {
             System.out.println("Fonds insuffisants pour la Tour de OBSTACLE !");
         }
@@ -90,7 +95,8 @@ public class Controleur {
 
 
         initAnimation();
-        gameLoop.play();git 
+        placerTourTerrain();
+        gameLoop.play();
     }
 
     /**
@@ -125,4 +131,49 @@ public class Controleur {
         );
         gameLoop.getKeyFrames().add(kf);
     }
+    public void placerTourTerrain() {
+        panneTerrain.setOnMouseClicked(e -> {
+            if (tourSelectionnee != null) {
+                int col   = (int)(e.getX() / TILE);
+                int ligne = (int)(e.getY() / TILE);
+
+                if (terrain.getTileTerrain(col, ligne) == 0) {
+                    Tour nouvelleTour = null;
+                    int cout = 0;
+
+                    switch (tourSelectionnee) {
+                        case "FEU"      -> { nouvelleTour = new TourBouleDeFeu(col, ligne, 4, 3);    cout = 25; }
+                        case "BOMBE"    -> { nouvelleTour = new TourBombe(col, ligne, 2);            cout = 50; }
+                        case "GLACE"    -> { nouvelleTour = new TourBouleDeGlace(col, ligne, 2, 4); cout = 10; }
+                        case "OBSTACLE" -> { nouvelleTour = new TourObstacle(col, ligne, "OBSTACLE"); cout = 10; }
+                    }
+
+                    if (nouvelleTour != null && pieces >= cout) {
+                        pieces -= cout;
+                        Solde.setText("Solde : " + pieces + "$");
+                        toursPlacees.add(nouvelleTour);
+                        afficherTour(nouvelleTour);
+                        tourSelectionnee = null;
+                    } else {
+                        System.out.println("Fonds insuffisants !");
+                    }
+                }
+            }
+        });
+    }
+
+    public void afficherTour(Tour t) {  // prend la tour en paramètre
+        Circle cercle = new Circle(TILE / 2.0);
+        cercle.setCenterX(t.getX() * TILE + TILE / 2.0);
+        cercle.setCenterY(t.getY() * TILE + TILE / 2.0);
+
+        // Couleur selon le type
+        if (t instanceof TourBouleDeFeu)   cercle.setFill(Color.ORANGE);
+        else if (t instanceof TourBombe)   cercle.setFill(Color.GRAY);
+        else if (t instanceof TourBouleDeGlace) cercle.setFill(Color.CYAN);
+        else if (t instanceof TourObstacle)     cercle.setFill(Color.BROWN);
+
+        paneId.getChildren().add(cercle);
+    }
+
 }
