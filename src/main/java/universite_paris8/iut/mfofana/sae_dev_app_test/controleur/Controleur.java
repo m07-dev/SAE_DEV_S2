@@ -14,6 +14,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.*;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Bobomb;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Soldat;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.TerrainVue;
 
 import java.util.ArrayList;
@@ -52,7 +55,7 @@ public class Controleur {
 
     // Taille d'une tile en pixels (adapte à ta TerrainVue)
     private static final int TILE = 30;
-
+    @FXML
     public void clicBoutonTourFeu(){
         if (pieces.get() >= 15) {
             tourSelectionnee = "FEU";
@@ -62,6 +65,7 @@ public class Controleur {
             System.out.println("Fonds insuffisants pour la Tour de Feu !");
         }
     }
+    @FXML
     public void clicBoutonTourBombe(){
         if (pieces.get() >= 50) {
             tourSelectionnee = "BOMBE";
@@ -71,6 +75,7 @@ public class Controleur {
             System.out.println("Fonds insuffisants pour la Tour de BOMBE !");
         }
     }
+    @FXML
     public void clicBoutonTourGlace(){
         if (pieces.get() >= 15) {
             tourSelectionnee = "GLACE";
@@ -80,6 +85,7 @@ public class Controleur {
             System.out.println("Fonds insuffisants pour la Tour de GLACE !");
         }
     }
+    @FXML
     public void clicBoutonTourObstacle(){
         if (pieces.get() >= 15) {
             tourSelectionnee = "OBSTACLE";

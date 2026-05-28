@@ -1,10 +1,10 @@
-package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
+package universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis;
 
-import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
-
-import java.util.ArrayList;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Personnage;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
 
 public class Bobomb extends Personnage {
     private int degat;
