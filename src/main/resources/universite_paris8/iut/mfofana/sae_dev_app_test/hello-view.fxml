@@ -38,7 +38,7 @@
 
             <!-- Numéro de vague -->
             <Label fx:id="labelVague" text="Vague : 0" textFill="YELLOW">
-                <font><Font name="System Bold" size="13.0" /></font>
+                <font><Font name="System Bold" siz  e="13.0" /></font>
             </Label>
 
             <!-- Compte à rebours entre vagues -->
