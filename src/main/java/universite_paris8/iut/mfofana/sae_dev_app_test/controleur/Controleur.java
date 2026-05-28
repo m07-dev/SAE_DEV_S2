@@ -1,5 +1,7 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.controleur;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,13 +23,13 @@ public class Controleur {
     @FXML private Label labelVague;
     @FXML private Label labelCountdown;
 
-    private int numeroVague = 0;
+    private IntegerProperty numeroVague = new SimpleIntegerProperty(0);
     private boolean entreVagues = false; // true = on est dans le compte à rebours
 
     @FXML private Label Solde;
     @FXML private Pane paneId;
     @FXML private TilePane panneTerrain;
-    private int pieces = 100;
+    private IntegerProperty pieces = new SimpleIntegerProperty(100);
     private String tourSelectionnee = null;
     private ObservableList<Tour> toursPlacees = FXCollections.observableArrayList();
     private Terrain terrain;
@@ -50,37 +52,37 @@ public class Controleur {
     private static final int TILE = 30;
 
     public void clicBoutonTourFeu(){
-        if (pieces >= 15) {
+        if (pieces.get() >= 15) {
             tourSelectionnee = "FEU";
             System.out.println("Tour de Feu sélectionnée ! Cliquez sur l'herbe pour la placer.");
-            Solde.setText("Solde : " + pieces+"$");
+
         } else {
             System.out.println("Fonds insuffisants pour la Tour de Feu !");
         }
     }
     public void clicBoutonTourBombe(){
-        if (pieces >= 50) {
+        if (pieces.get() >= 50) {
             tourSelectionnee = "BOMBE";
             System.out.println("Tour de BOMBE sélectionnée ! Cliquez sur l'herbe pour la placer.");
-            Solde.setText("Solde : " + pieces+"$");
+
         } else {
             System.out.println("Fonds insuffisants pour la Tour de BOMBE !");
         }
     }
     public void clicBoutonTourGlace(){
-        if (pieces >= 15) {
+        if (pieces.get() >= 15) {
             tourSelectionnee = "GLACE";
             System.out.println("Tour de GLACE sélectionnée ! Cliquez sur l'herbe pour la placer.");
-            Solde.setText("Solde : " + pieces+"$");
+
         } else {
             System.out.println("Fonds insuffisants pour la Tour de GLACE !");
         }
     }
     public void clicBoutonTourObstacle(){
-        if (pieces >= 15) {
+        if (pieces.get() >= 15) {
             tourSelectionnee = "OBSTACLE";
             System.out.println("Tour de OBSTACLE sélectionnée ! Cliquez sur l'herbe pour la placer.");
-            Solde.setText("Solde : " + pieces+"$");
+
         } else {
             System.out.println("Fonds insuffisants pour la Tour de OBSTACLE !");
         }
@@ -124,7 +126,9 @@ public class Controleur {
 
         terrain = new Terrain();
         chateau = new Chateau();
-
+        Solde.textProperty().bind(pieces.asString("Solde : %d$"));
+        labelPvChateau.textProperty().bind(chateau.pvProperty().asString("Château : %d PV"));
+        labelVague.textProperty().bind(numeroVague.asString("Vague : %d"));
         chemin = terrain.extraireChemin(0, 0);
         System.out.println("Chemin trouvé : " + chemin.size() + " cases");
 
@@ -151,7 +155,6 @@ public class Controleur {
                 Duration.seconds(0.1), // 100ms par tick → vitesse jouable
                 ev -> {
                     // Dans le KeyFrame, tout au début
-                    labelPvChateau.setText("Château : " + chateau.getPv() + " PV");
                     tickCount++;
 
                     // 1. Mise à jour des effets (brûlure, ralentissement)
@@ -163,8 +166,7 @@ public class Controleur {
                     for (int i = ennemis.size() - 1; i >= 0; i--) {
                         if (ennemis.get(i).estMort()) {
                             System.out.println("Ennemi tué ! Récompense : " + ennemis.get(i).getRecompense());
-                            pieces += ennemis.get(i).getRecompense();
-                            Solde.setText("Solde : " + pieces + "$");
+                            pieces.set(pieces.get() + ennemis.get(i).getRecompense());
                             paneId.getChildren().remove(ennemisVue.get(i));
                             ennemis.remove(i);
                             ennemisVue.remove(i);
@@ -239,9 +241,8 @@ public class Controleur {
                         case "OBSTACLE" -> { nouvelleTour = new TourObstacle(col, ligne, "OBSTACLE"); cout = 10; }
                     }
 
-                    if (nouvelleTour != null && pieces >= cout) {
-                        pieces -= cout;
-                        Solde.setText("Solde : " + pieces + "$");
+                    if (nouvelleTour != null && pieces.get() >= cout) {
+                        pieces.set(pieces.get() - cout);
                         toursPlacees.add(nouvelleTour);
                         afficherTour(nouvelleTour);
                         tourSelectionnee = null;
@@ -293,12 +294,11 @@ public class Controleur {
     }
 
     private void lancerVague() {
-        numeroVague++;
-        labelVague.setText("Vague : " + numeroVague);
+        numeroVague.set(numeroVague.get() + 1);
 
         // Nombre d'ennemis augmente avec les vagues
-        int nbSoldats = 2 + numeroVague;        // vague 1 = 3, vague 2 = 4...
-        int nbBobombs = numeroVague >= 3 ? 1 : 0; // Bobomb à partir de la vague 3
+        int nbSoldats = 2 + numeroVague.get();        // vague 1 = 3, vague 2 = 4...
+        int nbBobombs = numeroVague.get() >= 3 ? 1 : 0; // Bobomb à partir de la vague 3
 
         // Spawn des soldats avec délai entre chaque
         for (int i = 0; i < nbSoldats; i++) {
