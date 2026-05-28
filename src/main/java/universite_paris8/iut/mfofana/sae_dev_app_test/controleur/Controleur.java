@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.animation.*;
@@ -37,8 +38,9 @@ public class Controleur {
 
     private static final int[] HAUT_GAUCHE = {0,0};
     private static final int[] HAUT_DROIT = {6,20};
-    private static final int[] BAS_GAUCHE = {31,8};
+    private static final int[] BAS_GAUCHE = {29,9};
     private static final int[] BAS_DROIT = {31,31};
+    private ImageView img;
 
     // Taille d'une tile en pixels (adapte à ta TerrainVue)
     private static final int TILE = 30;
@@ -97,6 +99,7 @@ public class Controleur {
         Personnage modele = switch (typeE) {
             case "BOBOMB" -> new Bobomb(coin[1], coin[0], terrain);
             case "SOLDAT" -> new Soldat(coin[1], coin[0], terrain);
+            case "BOSS"   -> new Boss(coin[1],coin[0], terrain);
             default       -> new Soldat(coin[1], coin[0], terrain);
         };
 
@@ -108,8 +111,6 @@ public class Controleur {
 
 
         paneId.getChildren().add(cercleEnnemis);
-
-
 
         ennemis.add(modele);
         ennemisVue.add(cercleEnnemis);
@@ -132,6 +133,7 @@ public class Controleur {
 
         spawnEnnemis("BOBOMB", HAUT_GAUCHE);
         spawnEnnemis("SOLDAT", HAUT_DROIT);
+        spawnEnnemis("BOSS", BAS_GAUCHE);
 
 
 
