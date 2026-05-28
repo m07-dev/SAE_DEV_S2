@@ -17,11 +17,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Controleur {
+    @FXML private Label labelPvChateau;
+    @FXML private Label labelVague;
+    @FXML private Label labelCountdown;
 
-    @FXML public Label Solde;
+    private int numeroVague = 0;
+    private boolean entreVagues = false; // true = on est dans le compte à rebours
+
+    @FXML private Label Solde;
     @FXML private Pane paneId;
     @FXML private TilePane panneTerrain;
-    private int pieces = 5000;
+    private int pieces = 100;
     private String tourSelectionnee = null;
     private ObservableList<Tour> toursPlacees = FXCollections.observableArrayList();
     private Terrain terrain;
@@ -126,8 +132,7 @@ public class Controleur {
         TerrainVue terrainVue = new TerrainVue(panneTerrain, terrain);
         terrainVue.dessiner();
 
-        spawnEnnemis("SOLDAT", HAUT_GAUCHE);
-        spawnEnnemis("SOLDAT", HAUT_DROIT);
+        demarrerProchainerVague();
 
 
 
@@ -145,6 +150,8 @@ public class Controleur {
         KeyFrame kf = new KeyFrame(
                 Duration.seconds(0.1), // 100ms par tick → vitesse jouable
                 ev -> {
+                    // Dans le KeyFrame, tout au début
+                    labelPvChateau.setText("Château : " + chateau.getPv() + " PV");
                     tickCount++;
 
                     // 1. Mise à jour des effets (brûlure, ralentissement)
@@ -260,4 +267,72 @@ public class Controleur {
         paneId.getChildren().add(cercle);
     }
 
+    private void demarrerProchainerVague() {
+        entreVagues = true;
+        int delai = 5; // secondes avant la vague
+
+        // Compte à rebours affiché
+        Timeline countdown = new Timeline();
+        countdown.setCycleCount(delai);
+        final int[] secondesRestantes = {delai};
+
+        KeyFrame kfCountdown = new KeyFrame(Duration.seconds(1), ev -> {
+            secondesRestantes[0]--;
+            if (secondesRestantes[0] > 0) {
+                labelCountdown.setText("Vague dans : " + secondesRestantes[0] + "s");
+            } else {
+                labelCountdown.setText("Vague en cours !");
+                lancerVague();
+                entreVagues = false;
+            }
+        });
+
+        countdown.getKeyFrames().add(kfCountdown);
+        labelCountdown.setText("Vague dans : " + delai + "s");
+        countdown.play();
+    }
+
+    private void lancerVague() {
+        numeroVague++;
+        labelVague.setText("Vague : " + numeroVague);
+
+        // Nombre d'ennemis augmente avec les vagues
+        int nbSoldats = 2 + numeroVague;        // vague 1 = 3, vague 2 = 4...
+        int nbBobombs = numeroVague >= 3 ? 1 : 0; // Bobomb à partir de la vague 3
+
+        // Spawn des soldats avec délai entre chaque
+        for (int i = 0; i < nbSoldats; i++) {
+            final int index = i;
+            Timeline delaiSpawn = new Timeline(
+                    new KeyFrame(Duration.seconds(index * 1.5), ev -> {
+                        // Spawn depuis un coin aléatoire
+                        int[] coin = (index % 2 == 0) ? HAUT_GAUCHE : HAUT_DROIT;
+                        spawnEnnemis("SOLDAT", coin);
+                    })
+            );
+            delaiSpawn.play();
+        }
+
+        // Spawn des Bobombs
+        for (int i = 0; i < nbBobombs; i++) {
+            final int index = i;
+            Timeline delaiSpawn = new Timeline(
+                    new KeyFrame(Duration.seconds(nbSoldats * 1.5 + index * 2.0), ev -> {
+                        spawnEnnemis("BOBOMB", BAS_GAUCHE);
+                    })
+            );
+            delaiSpawn.play();
+        }
+
+        // Déclencher la prochaine vague après que celle-ci soit terminée
+        double dureeTotaleVague = (nbSoldats + nbBobombs) * 2.0 + 10.0;
+        Timeline finVague = new Timeline(
+                new KeyFrame(Duration.seconds(dureeTotaleVague), ev -> {
+                    if (!chateau.estDetruit()) {
+                        demarrerProchainerVague();
+                    }
+                })
+        );
+        finVague.play();
+    }
 }
