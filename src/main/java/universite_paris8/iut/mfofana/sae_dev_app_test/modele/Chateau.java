@@ -1,22 +1,23 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
 
 public class Chateau {
-    private int limiteEnnemis;
-    private int compteurEnnemis;
-
+    private int pv;
+    private int pvMax;
 
     public Chateau() {
-        this.limiteEnnemis = 10;
-        this.compteurEnnemis = 0;
+        this.pvMax = 100;
+        this.pv = 100;
     }
 
-    public void ennemiEstEntre() {
-        this.compteurEnnemis++;
-        System.out.println("Attention ! Un nouvel ennemi dans le château " + compteurEnnemis +  " / " + limiteEnnemis);
-
+    public void subirDegat(int degat) {
+        this.pv = Math.max(0, this.pv - degat);
+        System.out.println("Château touché ! PV restants : " + pv + "/" + pvMax);
     }
 
-    public boolean partieFinis() {
-        return this.compteurEnnemis >= this.limiteEnnemis;
+    public boolean estDetruit() {
+        return this.pv == 0;
     }
+
+    public int getPv() { return pv; }
+    public int getPvMax() { return pvMax; }
 }

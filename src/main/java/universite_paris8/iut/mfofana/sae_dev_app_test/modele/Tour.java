@@ -88,17 +88,14 @@ public abstract class Tour {
     public Personnage choisirCible(ObservableList<Personnage> ennemis) {
         Personnage ciblePlusProche = null;
         double distanceMin = Double.MAX_VALUE;
-
         int TAILLE_TUILE = 30;
 
         for (Personnage e : ennemis) {
-
             double distance = Math.sqrt(
                     Math.pow(e.getX() - this.x, 2) +
                             Math.pow(e.getY() - this.y, 2)
             );
-
-            if (distance <= (this.portee * TAILLE_TUILE)) {
+            if (distance <= (this.getPortee())) {
                 if (distance < distanceMin) {
                     distanceMin = distance;
                     ciblePlusProche = e;

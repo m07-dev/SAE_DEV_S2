@@ -9,7 +9,8 @@ public class Soldat extends Personnage {
     public Soldat(int x, int y , Terrain terrain) {
         super(x,y,terrain, 50, 4);
     }
-
+    @Override
+    public int getRecompense() { return 5; }
     public javafx.scene.paint.Color getCouleur() {
         return Color.YELLOW;
     }

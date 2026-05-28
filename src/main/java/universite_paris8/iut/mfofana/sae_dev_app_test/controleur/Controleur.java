@@ -19,16 +19,16 @@ import java.util.List;
 
 public class Controleur {
 
-    public Label Solde;
+    @FXML public Label Solde;
     @FXML private Pane paneId;
     @FXML private TilePane panneTerrain;
-    private int pieces = 100;
+    private int pieces = 5000;
     private String tourSelectionnee = null;
     private ObservableList<Tour> toursPlacees = FXCollections.observableArrayList();
     private Terrain terrain;
     private List<int[]> chemin;    // le chemin ordonné
     private int indexChemin = 0;   // position actuelle de l'ennemi dans le chemin
-
+    private Chateau chateau;
     private List<Personnage> ennemis = new ArrayList<>();
     private List<Circle> ennemisVue = new ArrayList<>();
     private List<Integer> indexChemins = new ArrayList<>();
@@ -49,7 +49,6 @@ public class Controleur {
         if (pieces >= 15) {
             tourSelectionnee = "FEU";
             System.out.println("Tour de Feu sélectionnée ! Cliquez sur l'herbe pour la placer.");
-            pieces -= 15;
             Solde.setText("Solde : " + pieces+"$");
         } else {
             System.out.println("Fonds insuffisants pour la Tour de Feu !");
@@ -59,7 +58,6 @@ public class Controleur {
         if (pieces >= 50) {
             tourSelectionnee = "BOMBE";
             System.out.println("Tour de BOMBE sélectionnée ! Cliquez sur l'herbe pour la placer.");
-            pieces -= 50;
             Solde.setText("Solde : " + pieces+"$");
         } else {
             System.out.println("Fonds insuffisants pour la Tour de BOMBE !");
@@ -69,7 +67,6 @@ public class Controleur {
         if (pieces >= 15) {
             tourSelectionnee = "GLACE";
             System.out.println("Tour de GLACE sélectionnée ! Cliquez sur l'herbe pour la placer.");
-            pieces -= 15;
             Solde.setText("Solde : " + pieces+"$");
         } else {
             System.out.println("Fonds insuffisants pour la Tour de GLACE !");
@@ -79,7 +76,6 @@ public class Controleur {
         if (pieces >= 15) {
             tourSelectionnee = "OBSTACLE";
             System.out.println("Tour de OBSTACLE sélectionnée ! Cliquez sur l'herbe pour la placer.");
-            pieces -= 15;
             Solde.setText("Solde : " + pieces+"$");
         } else {
             System.out.println("Fonds insuffisants pour la Tour de OBSTACLE !");
@@ -122,7 +118,7 @@ public class Controleur {
   public void initialize() {
 
         terrain = new Terrain();
-
+        chateau = new Chateau();
 
         chemin = terrain.extraireChemin(0, 0);
         System.out.println("Chemin trouvé : " + chemin.size() + " cases");
@@ -131,7 +127,7 @@ public class Controleur {
         TerrainVue terrainVue = new TerrainVue(panneTerrain, terrain);
         terrainVue.dessiner();
 
-        spawnEnnemis("BOBOMB", HAUT_GAUCHE);
+        spawnEnnemis("SOLDAT", HAUT_GAUCHE);
         spawnEnnemis("SOLDAT", HAUT_DROIT);
         spawnEnnemis("BOSS", BAS_GAUCHE);
 
@@ -142,47 +138,83 @@ public class Controleur {
         gameLoop.play();
     }
 
+    private int tickCount = 0; // ← ajoute ce champ en haut de la classe
+
     private void initAnimation() {
         gameLoop = new Timeline();
         gameLoop.setCycleCount(Timeline.INDEFINITE);
 
         KeyFrame kf = new KeyFrame(
-                Duration.seconds(0.08),  // toutes les 80ms → ~12 cases/sec
+                Duration.seconds(0.1), // 100ms par tick → vitesse jouable
                 ev -> {
-                    for (int i = 0; i < ennemis.size(); i++) {
+                    tickCount++;
 
-                        int index = indexChemins.get(i);
-                        List<int[]> ch = chemins.get(i);
+                    // 1. Mise à jour des effets (brûlure, ralentissement)
+                    for (Personnage p : ennemis) {
+                        p.mettreAJourEffets();
+                    }
 
-                        if (index < ch.size() - 1) {
-
-
-                            int nouvelIndex = index + 1;
-                            indexChemins.set(i, nouvelIndex);
-
-                            int ligne   = ch.get(nouvelIndex)[0];
-                            int colonne = ch.get(nouvelIndex)[1];
-
-
-                            ennemis.get(i).setX(colonne);
-                            ennemis.get(i).setY(ligne);
-
-
-                            ennemisVue.get(i).setCenterX(colonne * TILE + TILE / 2.0);
-                            ennemisVue.get(i).setCenterY(ligne   * TILE + TILE / 2.0);
-
-                        } else {
-                            System.out.println("Ennemi " + i + " arrivé !");
+                    // 2. Vérification des morts
+                    for (int i = ennemis.size() - 1; i >= 0; i--) {
+                        if (ennemis.get(i).estMort()) {
+                            System.out.println("Ennemi tué ! Récompense : " + ennemis.get(i).getRecompense());
+                            pieces += ennemis.get(i).getRecompense();
+                            Solde.setText("Solde : " + pieces + "$");
                             paneId.getChildren().remove(ennemisVue.get(i));
-
                             ennemis.remove(i);
                             ennemisVue.remove(i);
                             chemins.remove(i);
                             indexChemins.remove(i);
                         }
                     }
+
+                    // 3. Déplacement des ennemis
+                    for (int i = 0; i < ennemis.size(); i++) {
+                        int index = indexChemins.get(i);
+                        List<int[]> ch = chemins.get(i);
+                        Personnage ennemi = ennemis.get(i);
+
+                        if (index < ch.size() - 1) {
+                            // Vitesse 4 → avance tous les 1 tick
+                            // Vitesse 2 → avance tous les 2 ticks
+                            // Vitesse 1 → avance tous les 4 ticks
+                            int intervalle = Math.max(1, 4 / Math.max(1, ennemi.getVitesse()));
+                            if (tickCount % intervalle == 0) {
+                                int nouvelIndex = index + 1;
+                                indexChemins.set(i, nouvelIndex);
+
+                                int ligne   = ch.get(nouvelIndex)[0];
+                                int colonne = ch.get(nouvelIndex)[1];
+
+                                ennemi.setX(colonne);
+                                ennemi.setY(ligne);
+
+                                ennemisVue.get(i).setCenterX(colonne * TILE + TILE / 2.0);
+                                ennemisVue.get(i).setCenterY(ligne   * TILE + TILE / 2.0);
+                            }
+                        } else {
+                            chateau.subirDegat(10);
+                            System.out.println("Ennemi arrivé ! PV château : " + chateau.getPv());
+                            if (chateau.estDetruit()) {
+                                gameLoop.stop();
+                                System.out.println("GAME OVER !");
+                            }
+                            paneId.getChildren().remove(ennemisVue.get(i));
+                            ennemis.remove(i);
+                            ennemisVue.remove(i);
+                            chemins.remove(i);
+                            indexChemins.remove(i);
+                        }
+                    }
+
+                    // 4. Tir des tours
+                    ObservableList<Personnage> ennemisObs = FXCollections.observableArrayList(ennemis);
+                    for (Tour t : toursPlacees) {
+                        t.tirer(ennemisObs);
+                    }
                 }
         );
+
         gameLoop.getKeyFrames().add(kf);
     }
     public void placerTourTerrain() {
