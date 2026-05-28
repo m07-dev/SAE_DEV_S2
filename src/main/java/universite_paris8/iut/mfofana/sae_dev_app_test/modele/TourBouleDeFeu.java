@@ -14,7 +14,6 @@ public class TourBouleDeFeu extends Tour {
 
     @Override
     public void appliquerEffet(Personnage cible, ObservableList<Personnage> ennemis) {
-        // Applique l'effet de brûlure au personnage
-        //cible.setEtatBrulure(effetBrulure);
+        cible.setTicksBrulure(5);
     }
 }

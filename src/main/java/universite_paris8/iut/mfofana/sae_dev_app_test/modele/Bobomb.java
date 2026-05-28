@@ -21,6 +21,8 @@ public class Bobomb extends Personnage {
             this.setVitesse(nouvelleVitesse);
         }
     }
+    @Override
+    public int getRecompense() { return 10; }
 
 
     public void exploser(ObservableList<Tour> tours) {
