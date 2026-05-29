@@ -147,6 +147,19 @@
                 </graphic>
             </Button>
 
+            <Separator style="-fx-background-color: #2a2a2a;" />
+
+            <!-- Bouton Lancer Vague -->
+            <Button fx:id="boutonVague" onAction="#clicLancerVague"
+                    maxWidth="Infinity" prefHeight="72.0"
+                    style="-fx-background-color: transparent; -fx-padding: 0; -fx-border-color: transparent; -fx-cursor: hand;">
+                <graphic>
+                    <ImageView fitWidth="170.0" fitHeight="68.0" pickOnBounds="true" preserveRatio="true">
+                        <image><Image url="@universite_paris8/iut/mfofana/sae_dev_app_test/LancerVague.png" /></image>
+                    </ImageView>
+                </graphic>
+            </Button>
+
         </VBox>
     </right>
 

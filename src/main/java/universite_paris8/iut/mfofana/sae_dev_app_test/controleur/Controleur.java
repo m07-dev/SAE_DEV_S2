@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
@@ -21,7 +22,7 @@ public class Controleur {
     @FXML private Label labelPvChateau;
     @FXML private Label labelVague;
     @FXML private Label labelCountdown;
-
+    @FXML private Button boutonVague;
 
     @FXML private Pane paneId;
     @FXML private TilePane panneTerrain;
@@ -58,6 +59,13 @@ public class Controleur {
         gestionJeu.demarrer();
         gestionVagues.demarrerProchainerVague();
         placerTourTerrain();
+    }
+
+    @FXML
+    public void clicLancerVague() {
+        // Lance la vague immédiatement sans attendre le countdown
+        boutonVague.setDisable(true);
+        gestionVagues.demarrerProchainerVague();
     }
 
     @FXML
