@@ -92,8 +92,5 @@ public class Terrain {
         return terrain[x][y];
     }
 
-    public boolean enDehorsTerrain(int x , int y){
-        return x < 0 || x >=  32*30 || y < 0 || y >= 30*32 ;
-    }
 
 }
