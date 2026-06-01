@@ -74,6 +74,5 @@ public abstract class Personnage {
     public boolean horsDesLimites() {
         return this.x < 0 || this.x >= 32*30 || this.y < 0 || this.y >= 30*32;
     }
-
-    public javafx.scene.paint.Color getCouleur() { return javafx.scene.paint.Color.BLACK; }
+    public abstract String getImage();
 }

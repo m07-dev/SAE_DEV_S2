@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
@@ -11,6 +12,7 @@ import javafx.animation.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
+import universite_paris8.iut.mfofana.sae_dev_app_test.HelloApplication;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.TerrainVue;
 
@@ -36,7 +38,7 @@ public class Controleur {
     private int indexChemin = 0;   // position actuelle de l'ennemi dans le chemin
     private Chateau chateau;
     private List<Personnage> ennemis = new ArrayList<>();
-    private List<Circle> ennemisVue = new ArrayList<>();
+    private List<javafx.scene.Node> ennemisVue = new ArrayList<>();
     private List<Integer> indexChemins = new ArrayList<>();
     private List<List<int[]>> chemins = new ArrayList<>();
 
@@ -105,17 +107,21 @@ public class Controleur {
             default       -> new Soldat(coin[1], coin[0], terrain);
         };
 
-
-        Circle cercleEnnemis = new Circle(TILE / 2.0, modele.getCouleur());
-
-        cercleEnnemis.setCenterX(coin[1] * TILE + TILE / 2.0);
-        cercleEnnemis.setCenterY(coin[0] * TILE + TILE / 2.0);
+        String cheminImage = String.valueOf(HelloApplication.class.getResource("images/bobomb.png"));
 
 
-        paneId.getChildren().add(cercleEnnemis);
 
+        ImageView iv;
+            iv = new ImageView(new Image(cheminImage));
+            iv.setFitWidth(TILE);
+            iv.setFitHeight(TILE);
+            iv.setPreserveRatio(true);
+            iv.setX(32 * TILE);
+            iv.setY(32   * TILE);
+
+        paneId.getChildren().add(iv);
         ennemis.add(modele);
-        ennemisVue.add(cercleEnnemis);
+        ennemisVue.add(iv);
         chemins.add(cheminEnnemi);
         indexChemins.add(0);
     }
@@ -199,8 +205,8 @@ public class Controleur {
                                 ennemi.setX(colonne);
                                 ennemi.setY(ligne);
 
-                                ennemisVue.get(i).setCenterX(colonne * TILE + TILE / 2.0);
-                                ennemisVue.get(i).setCenterY(ligne   * TILE + TILE / 2.0);
+                                ((ImageView) ennemisVue.get(i)).setX(colonne * TILE);
+                                ((ImageView) ennemisVue.get(i)).setY(ligne   * TILE);
                             }
                         } else {
                             chateau.subirDegat(10);

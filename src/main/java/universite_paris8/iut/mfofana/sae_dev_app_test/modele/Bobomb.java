@@ -1,10 +1,7 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
 
-import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
-
-import java.util.ArrayList;
 
 public class Bobomb extends Personnage {
     private int degat;
@@ -58,9 +55,9 @@ public class Bobomb extends Personnage {
             return Color.PINK;
         }
 
-        public String type() {
-            return "Bobomb";
-        }
+    public String getImage() {
+        return "universite_paris8/iut/mfofana/sae_dev_app_test/images/bobomb.png";
+    }
 
 
 
