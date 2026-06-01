@@ -12,4 +12,8 @@ module universite_paris8.iut.mfofana.sae_dev_app_test {
     opens universite_paris8.iut.mfofana.sae_dev_app_test.controleur to javafx.fxml;
     exports universite_paris8.iut.mfofana.sae_dev_app_test.vue;
     opens universite_paris8.iut.mfofana.sae_dev_app_test.vue to javafx.fxml;
+    exports universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis;
+    opens universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis to javafx.fxml;
+    exports universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour;
+    opens universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour to javafx.fxml;
 }

@@ -1,23 +1,25 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
 
-public class Chateau {
-    private int pv;
-    private int pvMax;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
-    public Chateau() {
-        this.pvMax = 100;
-        this.pv = 100;
-    }
+public class Chateau {
+    private IntegerProperty pv = new SimpleIntegerProperty(100);
+    private IntegerProperty pvMax = new SimpleIntegerProperty(100);
+
 
     public void subirDegat(int degat) {
-        this.pv = Math.max(0, this.pv - degat);
-        System.out.println("Château touché ! PV restants : " + pv + "/" + pvMax);
+        pv.set( Math.max(0, pv.get() - degat));
+        System.out.println("Château touché ! PV restants : " + pv.get() + "/" + pvMax.get());
     }
 
     public boolean estDetruit() {
-        return this.pv == 0;
+        return pv.get() == 0;
     }
 
-    public int getPv() { return pv; }
-    public int getPvMax() { return pvMax; }
+    public int getPv() { return pv.get(); }
+    public int getPvMax() { return pvMax.get(); }
+
+    public IntegerProperty pvProperty() { return pv; }
+    public IntegerProperty pvMaxProperty() { return pvMax; }
 }

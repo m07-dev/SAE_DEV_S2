@@ -71,8 +71,6 @@ public abstract class Personnage {
 
     public void subirDegat(int degat) { this.setPv(this.pv - degat); }
     public boolean estMort() { return this.pv == 0; }
-    public boolean horsDesLimites() {
-        return this.x < 0 || this.x >= 32*30 || this.y < 0 || this.y >= 30*32;
-    }
-    public abstract String getImage();
+
+    public javafx.scene.paint.Color getCouleur() { return javafx.scene.paint.Color.BLACK; }
 }

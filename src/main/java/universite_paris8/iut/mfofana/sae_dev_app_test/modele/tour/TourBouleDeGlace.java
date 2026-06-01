@@ -1,5 +1,6 @@
-package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
+package universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour;
 import javafx.collections.ObservableList;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Personnage;
 
 public class TourBouleDeGlace extends Tour {
     private double vitesseBalle;
