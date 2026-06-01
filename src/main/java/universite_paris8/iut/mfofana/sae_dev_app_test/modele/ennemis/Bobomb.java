@@ -2,17 +2,14 @@ package universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis;
 
 import javafx.beans.Observable;
 import javafx.collections.ObservableList;
-import javafx.scene.paint.Color;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Personnage;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
 
 public class Bobomb extends Personnage {
     private int degat;
-    private ObservableList<Tour> tours;
 
     public Bobomb(double x, double y, Terrain e) {
-        super(x, y, e,100,8);
+        super(x, y, e, 100, 8);
         this.degat = 25;
     }
 
@@ -22,49 +19,32 @@ public class Bobomb extends Personnage {
             this.setVitesse(nouvelleVitesse);
         }
     }
+
+    public void exploser(ObservableList<Tour> tours) {
+        double xB = this.getX();
+        double yB = this.getY();
+        boolean aParalyserTour = false;
+
+        for (int i = 0; i < tours.size(); i++) {
+            Tour tourActuelle = tours.get(i);
+            double xT = tourActuelle.getX();
+            double yT = tourActuelle.getY();
+
+            int distance = (int)(Math.abs(xB - xT) + Math.abs(yB - yT));
+            if (distance <= 45) {
+                tourActuelle.paralyser(3000);
+                tourActuelle.setDegat(tourActuelle.getDegat() - this.degat);
+                aParalyserTour = true;
+            }
+        }
+
+        if (aParalyserTour) {
+            this.setPv(0);
+        }
+    }
+
     @Override
     public int getRecompense() { return 10; }
 
-
-    public void exploser(ObservableList<Tour> tours) {
-
-        int distance;
-
-        boolean aParalyserTour = false;
-
-            // Coordonnée de Bobomb = B
-            double xB = this.getX();
-            double yB = this.getY();
-
-            for(int i = 0; i < tours.size(); i++) {
-                Tour tourActuelle = tours.get(i);
-                // Coordonnée de la Tour = T
-                double xT = tourActuelle.getX();
-                double yT= tourActuelle.getY();
-
-                distance = (int) (Math.abs(xB - xT) + Math.abs(yB - yT));
-                if (distance <= 45) { // On utilise un rayon d'explosion
-                    tourActuelle.paralyser(3000);
-                    tourActuelle.setDegat(tourActuelle.getDegat() - this.degat);
-                    aParalyserTour = true;
-                }
-            }
-
-            if (aParalyserTour) {
-                this.setPv(0);
-            }
-        }
-
-        public javafx.scene.paint.Color getCouleur() {
-            return Color.PINK;
-        }
-
-        public String type() {
-            return "Bobomb";
-        }
-
-
-
-
+    public String type() { return "Bobomb"; }
 }
-

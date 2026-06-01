@@ -1,76 +1,88 @@
-package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
+package universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis;
 
-import javafx.scene.paint.Color;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
 
 public abstract class Personnage {
-    private double x, y;
-    private Terrain e;
-    private int pv;
+
+    // DoubleProperty → la vue peut binder sa position dessus
+    private DoubleProperty x = new SimpleDoubleProperty();
+    private DoubleProperty y = new SimpleDoubleProperty();
+
+    // IntegerProperty → la vue peut binder la barre de vie dessus
+    private IntegerProperty pv = new SimpleIntegerProperty();
+
+    private Terrain terrain;
     private int vitesse;
 
     // -- Effets de statut --
-    private int ticksBrulure = 0;        // nombre de ticks de brûlure restants
-    private boolean ralenti = false;     // est-ce que l'ennemi est actuellement ralenti ?
-    private int vitesseOriginale = 0;    // vitesse avant le ralentissement (pour la restaurer)
-    private int ticksRalentissement = 0; // nombre de ticks de ralentissement restants
+    private int ticksBrulure = 0;
+    private boolean ralenti = false;
+    private int vitesseOriginale = 0;
+    private int ticksRalentissement = 0;
 
-    public Personnage(double x, double y, Terrain e, int pv, int v) {
-        this.x = x;
-        this.y = y;
-        this.e = e;
-        this.pv = pv;
-        this.vitesse = v;
+    public Personnage(double x, double y, Terrain terrain, int pv, int vitesse) {
+        this.x.set(x);      // on initialise via .set()
+        this.y.set(y);      // car c'est une Property, pas un double simple
+        this.pv.set(pv);
+        this.terrain = terrain;
+        this.vitesse = vitesse;
     }
 
-    // Applique un ralentissement pendant X ticks
+    // --- Effets de statut ---
+
     public void setRalenti(int duree) {
         if (!this.ralenti) {
-            // Première fois → on sauvegarde la vitesse et on la divise par 2
             this.vitesseOriginale = this.vitesse;
             this.vitesse = Math.max(1, this.vitesse / 2);
             this.ralenti = true;
         }
-        // Recharge le timer (même si déjà ralenti)
         this.ticksRalentissement = duree;
     }
 
-    // Applique une brûlure pendant X ticks
     public void setTicksBrulure(int ticks) {
         this.ticksBrulure = ticks;
     }
 
-    // Appelée à chaque tick → met à jour tous les effets actifs
     public void mettreAJourEffets() {
-
-        // Effet brûlure
         if (ticksBrulure > 0) {
-            this.subirDegat(2);   // perd 2 PV par tick
+            subirDegat(2);
             ticksBrulure--;
         }
-
-        // Effet ralentissement
         if (ralenti) {
             ticksRalentissement--;
             if (ticksRalentissement <= 0) {
-                // Le ralentissement est terminé → on restaure la vitesse
                 this.vitesse = this.vitesseOriginale;
+                this.ralenti = false;
             }
         }
     }
 
-    // --- Getters / Setters existants ---
-    public double getX() { return x; }
-    public double getY() { return y; }
-    public void setX(double x) { this.x = x; }
-    public void setY(double y) { this.y = y; }
-    public int getPv() { return pv; }
-    public void setPv(int nvPv) { this.pv = Math.max(0, nvPv); }
-    public void setVitesse(int v) { this.vitesse = v; }
-    public int getVitesse() { return this.vitesse; }
+    // --- Getters valeurs simples ---
+    public double getX() { return x.get(); }
+    public double getY() { return y.get(); }
+    public int getPv()   { return pv.get(); }
+    public int getVitesse() { return vitesse; }
     public int getRecompense() { return 10; }
 
-    public void subirDegat(int degat) { this.setPv(this.pv - degat); }
-    public boolean estMort() { return this.pv == 0; }
+    // --- Getters Property → pour les bindings dans la vue ---
+    public DoubleProperty xProperty()  { return x; }
+    public DoubleProperty yProperty()  { return y; }
+    public IntegerProperty pvProperty() { return pv; }
 
-    public javafx.scene.paint.Color getCouleur() { return javafx.scene.paint.Color.BLACK; }
+    // --- Setters ---
+    public void setX(double valeur) { x.set(valeur); }
+    public void setY(double valeur) { y.set(valeur); }
+    public void setPv(int valeur)   { pv.set(Math.max(0, valeur)); }
+    public void setVitesse(int v)   { this.vitesse = v; }
+
+    // --- Logique ---
+    public void subirDegat(int degat) { setPv(pv.get() - degat); }
+    public boolean estMort() { return pv.get() == 0; }
+    public boolean horsDesLimites() {
+        return getX() < 0 || getX() >= 32*30 || getY() < 0 || getY() >= 30*32;
+    }
 }

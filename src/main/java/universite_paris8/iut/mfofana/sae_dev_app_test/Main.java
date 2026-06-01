@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Bobomb;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Soldat;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.TourBouleDeFeu;
