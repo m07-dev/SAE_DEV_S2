@@ -25,14 +25,13 @@ public class Jeu {
     private Terrain terrain;
 
     // --- Properties → bindings dans le contrôleur ---
-    private IntegerProperty pieces = new SimpleIntegerProperty(5000);
+    private IntegerProperty pieces = new SimpleIntegerProperty(100);
     private IntegerProperty numeroVague = new SimpleIntegerProperty(0);
 
     // --- Gestion des vagues ---
     private int tickCount = 0;
     private int ticksAvantProchainVague = 0; // compte à rebours en ticks
     private boolean vagueEnCours = false;
-    private int ticksSpawnRestants = 0;      // ticks restants pour spawner les ennemis
     private int ennemisSpawnCeTick = 0;      // index de l'ennemi en cours de spawn
 
     // Constantes
@@ -41,9 +40,11 @@ public class Jeu {
     private static final int DELAI_ENTRE_SPAWNS = (int)(1.5 * TICKS_PAR_SECONDE); // 1.5s entre chaque spawn
 
     // Points d'entrée
-    public static final int[] HAUT_GAUCHE = {0, 0};
-    public static final int[] HAUT_DROIT  = {6, 20};
-    public static final int[] BAS_GAUCHE  = {31, 8};
+    private static final int[] HAUT_GAUCHE1 = {0, 4};
+    private static final int[] HAUT_GAUCHE2 = {5, 0};
+    private static final int[] HAUT_DROIT  = {0, 27};
+    private static final int[] BAS_GAUCHE  = {21, 2};
+    private static final int[] BAS_DROIT   = {21, 28};
 
     public Jeu() {
         this.chateau = new Chateau();
@@ -123,7 +124,7 @@ public class Jeu {
         } else {
             // Vague en cours → spawner les ennemis progressivement
             if (ennemisSpawnCeTick < nbEnnemisVague() && tickCount % DELAI_ENTRE_SPAWNS == 0) {
-                int[] coin = (ennemisSpawnCeTick % 2 == 0) ? HAUT_GAUCHE : HAUT_DROIT;
+                int[] coin = (ennemisSpawnCeTick % 2 == 0) ? HAUT_GAUCHE1 : HAUT_DROIT;
                 spawnEnnemi("SOLDAT", coin);
                 ennemisSpawnCeTick++;
             }
@@ -135,7 +136,7 @@ public class Jeu {
             }
 
             // La vague est terminée quand tous les ennemis sont morts
-            if (ennemis.isEmpty() && ennemisSpawnCeTick > nbEnnemisVague()) {
+            if (ennemis.isEmpty() && ennemisSpawnCeTick >= nbEnnemisVague()) {
                 vagueEnCours = false;
                 ticksAvantProchainVague = DELAI_ENTRE_VAGUES;
                 ennemisSpawnCeTick = 0;
@@ -147,6 +148,13 @@ public class Jeu {
         numeroVague.set(numeroVague.get() + 1);
         vagueEnCours = true;
         ennemisSpawnCeTick = 0;
+    }
+
+
+    public void forcerLancement() {
+        if (!vagueEnCours) {
+            lancerVague();
+        }
     }
 
     private int nbEnnemisVague() {

@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class EntiteVue {
 
     private Pane pane;
-    private static final int TILE = 30;
+    private static final int TILE = 32;
 
     // HashMap → associe chaque entité à son Node visuel
     // "Pour chaque Personnage, je connais son cercle"

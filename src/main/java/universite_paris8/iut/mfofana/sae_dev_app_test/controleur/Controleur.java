@@ -30,7 +30,7 @@ public class Controleur {
 
     // --- Placement de tours ---
     private String tourSelectionnee = null;
-    private static final int TILE = 30;
+    private static final int TILE = 32;
 
     @FXML
     public void initialize() {
@@ -47,7 +47,7 @@ public class Controleur {
                 jeu.numeroVagueProperty().asString("Vague : %d"));
 
         // 3. Créer la vue terrain
-        new TerrainVue(panneTerrain, jeu.getTerrain()).dessiner();
+        new TerrainVue(panneTerrain, paneId ,jeu.getTerrain()).dessiner();
 
         // 4. Créer la vue entités et brancher les listeners
         entiteVue = new EntiteVue(paneId);
@@ -71,6 +71,11 @@ public class Controleur {
 
         // 6. Placement de tours
         placerTourTerrain();
+    }
+
+    @FXML
+    public void clicLancerVague() {
+        jeu.forcerLancement();
     }
 
     // --- Boutons tours ---
