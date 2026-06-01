@@ -1,5 +1,6 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis;
 
+import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.scene.paint.Color;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Personnage;
