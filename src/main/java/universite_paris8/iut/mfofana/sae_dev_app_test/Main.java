@@ -25,7 +25,7 @@ public class Main {
         System.out.println(b1.getPv());
         System.out.println(s1.getPv());
 
-        t1.tirer(personnages);
+        /*t1.tirer(personnages);*/
 
         System.out.println(b1.getPv());
         System.out.println(s1.getPv());

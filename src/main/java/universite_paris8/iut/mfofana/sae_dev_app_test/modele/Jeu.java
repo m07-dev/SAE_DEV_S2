@@ -105,7 +105,7 @@ public class Jeu {
 
         // 5. Tirs des tours
         for (Tour t : tours) {
-            t.tirer(ennemis);
+            t.tirer(ennemis, tickCount);
         }
     }
 
@@ -144,7 +144,7 @@ public class Jeu {
         }
     }
 
-    private void lancerVague() {
+    public void lancerVague() {
         numeroVague.set(numeroVague.get() + 1);
         vagueEnCours = true;
         ennemisSpawnCeTick = 0;

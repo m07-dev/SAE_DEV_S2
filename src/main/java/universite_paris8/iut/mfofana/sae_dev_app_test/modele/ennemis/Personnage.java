@@ -44,7 +44,9 @@ public abstract class Personnage {
     }
 
     public void setTicksBrulure(int ticks) {
+        if(this.ticksBrulure <= 0){
         this.ticksBrulure = ticks;
+        }
     }
 
     public void mettreAJourEffets() {
@@ -60,6 +62,7 @@ public abstract class Personnage {
             }
         }
     }
+
 
     // --- Getters valeurs simples ---
     public double getX() { return x.get(); }

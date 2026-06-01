@@ -2,7 +2,9 @@ package universite_paris8.iut.mfofana.sae_dev_app_test.controleur;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
@@ -14,6 +16,7 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.vue.TerrainVue;
 
 public class Controleur {
 
+    public Button boutonVague;
     // --- Labels UI ---
     @FXML private Label Solde;
     @FXML private Label labelPvChateau;
@@ -27,7 +30,7 @@ public class Controleur {
     // --- Modèle et Vue ---
     private Jeu jeu;
     private EntiteVue entiteVue;
-
+    private Timeline gameLoop;
     // --- Placement de tours ---
     private String tourSelectionnee = null;
     private static final int TILE = 32;
@@ -55,13 +58,14 @@ public class Controleur {
         entiteVue.creerBindingsTours(jeu.getTours());
 
         // 5. Game loop → juste jeu.tick() !
-        Timeline gameLoop = new Timeline(
+         gameLoop = new Timeline(
                 new KeyFrame(Duration.seconds(0.1), ev -> {
                     jeu.tick();
                     // Afficher le countdown entre vagues
                     labelCountdown.setText(jeu.getCountdownText());
                     // Game Over
                     if (jeu.estTermine()) {
+                        gameLoop.stop();
                         System.out.println("GAME OVER !");
                     }
                 })
@@ -128,5 +132,8 @@ public class Controleur {
                 tourSelectionnee = null;
             }
         });
+    }
+
+    public void clicLancerVague(ActionEvent event) {
     }
 }

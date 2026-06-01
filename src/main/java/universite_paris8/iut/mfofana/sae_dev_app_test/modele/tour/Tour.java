@@ -70,11 +70,10 @@ public abstract class Tour {
         finParalysie = System.currentTimeMillis() + dureeMs;
     }
 
-    public boolean peutTirer() {
+    public boolean peutTirer(int tickCount) {
         if (estParalysee()) return false;
-        long maintenant = System.currentTimeMillis();
-        if (maintenant - dernierTir >= 1000 / cadence) {
-            dernierTir = maintenant;
+        int intervalleEnTicks = Math.max(1, 10 / cadence);
+        if(tickCount % intervalleEnTicks == 0){
             return true;
         }
         return false;
@@ -99,8 +98,8 @@ public abstract class Tour {
         return ciblePlusProche;
     }
 
-    public void tirer(ObservableList<Personnage> ennemis) {
-        if (!estParalysee() && peutTirer() && !ennemis.isEmpty()) {
+    public void tirer(ObservableList<Personnage> ennemis, int tickCount) {
+        if (!estParalysee() && peutTirer(tickCount) && !ennemis.isEmpty()) {
             Personnage cible = choisirCible(ennemis);
             if (cible != null) {
                 cible.subirDegat(this.degat);
