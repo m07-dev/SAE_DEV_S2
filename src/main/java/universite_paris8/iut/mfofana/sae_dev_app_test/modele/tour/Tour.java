@@ -72,7 +72,7 @@ public abstract class Tour {
 
     public boolean peutTirer(int tickCount) {
         if (estParalysee()) return false;
-        int intervalleEnTicks = Math.max(1, 10 / cadence);
+        int intervalleEnTicks = Math.max(1, 50 / cadence);
         if(tickCount % intervalleEnTicks == 0){
             return true;
         }
@@ -104,6 +104,7 @@ public abstract class Tour {
             if (cible != null) {
                 cible.subirDegat(this.degat);
                 appliquerEffet(cible, ennemis);
+                System.out.println(cible.getPv());
                 return cible;
             }
         }

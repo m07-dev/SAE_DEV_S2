@@ -9,7 +9,7 @@ public class Bobomb extends Personnage {
     private int degat;
 
     public Bobomb(double x, double y, Terrain e) {
-        super(x, y, e, 50, 4);
+        super(x, y, e, 100, 4);
         this.degat = 25;
     }
 

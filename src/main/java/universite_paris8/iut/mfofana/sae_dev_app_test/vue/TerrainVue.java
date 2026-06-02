@@ -30,7 +30,7 @@ public class TerrainVue {
         final int C = terrain.getNbColonnes();
 
         // Textures de sol (chargees une seule fois, partagees)
-        Image solVert      = charger("sol_vert.png");
+        Image solVert      = charger("tuile_herbe.png");
         Image solBleu      = charger("sol_bleu.png");
         Image solBeige     = charger("sol_beige.png");
         Image solBleuFonce = charger("sol_bleu_fonce.png");
