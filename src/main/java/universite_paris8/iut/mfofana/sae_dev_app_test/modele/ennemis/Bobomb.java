@@ -45,6 +45,4 @@ public class Bobomb extends Personnage {
 
     @Override
     public int getRecompense() { return 10; }
-
-    public String type() { return "Bobomb"; }
 }

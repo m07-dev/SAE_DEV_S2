@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Bobomb;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Soldat;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Tortue;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.*;
 
 import java.util.HashMap;
@@ -80,7 +80,7 @@ public class EntiteVue {
         // Couleur selon le type d'ennemi
         Color couleur;
         if (p instanceof Bobomb)     couleur = Color.PINK;
-        else if (p instanceof Soldat) couleur = Color.YELLOW;
+        else if (p instanceof Tortue) couleur = Color.YELLOW;
         else                          couleur = Color.BLACK;
 
         Circle cercle = new Circle(TILE / 2.0, couleur);
