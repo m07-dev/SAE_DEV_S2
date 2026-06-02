@@ -129,8 +129,9 @@ public class Jeu {
         } else {
             // Vague en cours → spawner les ennemis progressivement
             if (ennemisSpawnCeTick < nbEnnemisVague() && tickCount % DELAI_ENTRE_SPAWNS == 0) {
-                int[] coin = (ennemisSpawnCeTick % 2 == 0) ? HAUT_GAUCHE1 : HAUT_DROIT;
-                spawnEnnemi("SOLDAT", coin);
+                //int[] coin = (ennemisSpawnCeTick % 2 == 0) ? HAUT_GAUCHE1;
+                // A faire : Adapter les spawn des ennemis selon l'environnement
+                spawnEnnemi("BOO", BAS_DROIT);
                 ennemisSpawnCeTick++;
             }
 
@@ -174,8 +175,10 @@ public class Jeu {
         if (cheminEnnemi == null || cheminEnnemi.isEmpty()) return;
 
         Personnage modele = switch (typeE) {
-            case "BOBOMB" -> new Bobomb(coin[1], coin[0], terrain);
+            case "BOBOMB" -> new Bobomb(coin[0], coin[1], terrain);
+            case "TORTUE" -> new Tortue(coin[0], coin[1], terrain);
             case "SKELETON" -> new Skeleton(coin[1], coin[0], terrain);
+            case "BOO" -> new Boo(coin[0], coin[1], terrain);
             case "BOSS" -> new Boss(coin[1], coin[0], terrain);
             default       -> new Tortue(coin[1], coin[0], terrain);
         };
