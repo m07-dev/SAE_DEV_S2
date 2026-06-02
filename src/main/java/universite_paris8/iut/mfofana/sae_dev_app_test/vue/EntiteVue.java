@@ -3,12 +3,12 @@ package universite_paris8.iut.mfofana.sae_dev_app_test.vue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Bobomb;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Tortue;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.*;
 
 import java.util.HashMap;
@@ -17,10 +17,12 @@ public class EntiteVue {
 
     private Pane pane;
     private static final int TILE = 32;
+    private static final String BASE =
+            "/universite_paris8/iut/mfofana/sae_dev_app_test/Personnages/";
 
     // HashMap → associe chaque entité à son Node visuel
     // "Pour chaque Personnage, je connais son cercle"
-    private HashMap<Personnage, Node> affichageEnnemis = new HashMap<>();
+    private HashMap<Personnage, ImageView> affichageEnnemis = new HashMap<>();
     private HashMap<Tour, Node> affichageTours = new HashMap<>();
 
     public EntiteVue(Pane pane) {
@@ -78,19 +80,29 @@ public class EntiteVue {
 
     private void creerSpriteEnnemi(Personnage p) {
         // Couleur selon le type d'ennemi
-        Color couleur;
-        if (p instanceof Bobomb)     couleur = Color.PINK;
-        else if (p instanceof Tortue) couleur = Color.YELLOW;
-        else                          couleur = Color.BLACK;
+        Image img;
+        if (p instanceof Bobomb) {
+            img = charger("bobomb.png");
+        } else if (p instanceof Tortue) {
+            img= charger("tortue.png");
+        } else if (p instanceof Skeleton){
+            img = charger("skeleton.png");
+        } else if (p instanceof Boo) {
+            img = charger("boo.png");
+        } else {
+            img = charger("erreur.png");
+        }
 
-        Circle cercle = new Circle(TILE / 2.0, couleur);
+        ImageView imageEnnemis = new ImageView(img);
+        imageEnnemis.setFitWidth(TILE);
+        imageEnnemis.setFitHeight(TILE);
+        imageEnnemis.setPreserveRatio(true);
 
-        // BIND automatique sur la position → le cercle suit l'ennemi !
-        cercle.centerXProperty().bind(p.xProperty().multiply(TILE).add(TILE / 2.0));
-        cercle.centerYProperty().bind(p.yProperty().multiply(TILE).add(TILE / 2.0));
+        imageEnnemis.xProperty().bind(p.xProperty().multiply(TILE));
+        imageEnnemis.yProperty().bind(p.yProperty().multiply(TILE));
 
-        pane.getChildren().add(cercle);
-        affichageEnnemis.put(p, cercle);
+        pane.getChildren().add(imageEnnemis);
+        affichageEnnemis.put(p, imageEnnemis);
     }
 
     private void creerSpriteTour(Tour t) {
@@ -116,12 +128,16 @@ public class EntiteVue {
     // -----------------------------------------------------------
 
     private void supprimerSpriteEnnemi(Personnage p) {
-        Node sprite = affichageEnnemis.remove(p);
+        ImageView sprite = affichageEnnemis.remove(p);
         if (sprite != null) pane.getChildren().remove(sprite);
     }
 
     private void supprimerSpriteTour(Tour t) {
         Node sprite = affichageTours.remove(t);
         if (sprite != null) pane.getChildren().remove(sprite);
+    }
+
+    private Image charger(String nom) {
+        return new Image(getClass().getResourceAsStream(BASE + nom));
     }
 }
