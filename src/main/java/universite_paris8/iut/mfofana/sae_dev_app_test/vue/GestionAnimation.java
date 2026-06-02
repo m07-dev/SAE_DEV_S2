@@ -18,7 +18,7 @@ public class GestionAnimation {
     }
 
     public void animationTirBouleFeu(Tour tour, Personnage cible) {
-        String cheminImage = String.valueOf(HelloApplication.class.getResource("images/bouleFeu.png"));
+        String cheminImage = String.valueOf(HelloApplication.class.getResource("/universite_paris8/iut/mfofana/sae_dev_app_test/Personnages/bouleFeu.png"));
 
         ImageView bouleFeu = new ImageView(new Image(cheminImage));
         double tailleBF = 15;
@@ -38,6 +38,8 @@ public class GestionAnimation {
         double arriveeY = (cible.getY() * TILE + TILE / 2.0) - (tailleBF / 2.0);
 
         TranslateTransition transition = new TranslateTransition(Duration.seconds(0.2),bouleFeu);
+        transition.setToX(arriveeX - departX);
+        transition.setToY(arriveeY - departY);
 
         transition.setOnFinished(ev -> paneAnim.getChildren().remove(bouleFeu));
         transition.play();

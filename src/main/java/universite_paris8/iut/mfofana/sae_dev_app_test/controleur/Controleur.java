@@ -12,6 +12,7 @@ import javafx.util.Duration;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Jeu;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.EntiteVue;
+import universite_paris8.iut.mfofana.sae_dev_app_test.vue.GestionAnimation;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.TerrainVue;
 
 public class Controleur {
@@ -56,6 +57,8 @@ public class Controleur {
         entiteVue = new EntiteVue(paneId);
         entiteVue.creerBindingsEnnemis(jeu.getEnnemis());
         entiteVue.creerBindingsTours(jeu.getTours());
+        GestionAnimation gestionAnimation = new GestionAnimation(paneId);
+        jeu.setGestionAnimation(gestionAnimation);
 
         // 5. Game loop → juste jeu.tick() !
          gameLoop = new Timeline(
