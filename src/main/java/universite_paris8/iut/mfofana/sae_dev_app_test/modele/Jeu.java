@@ -4,9 +4,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Bobomb;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Soldat;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Chateau;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
 
@@ -170,7 +168,8 @@ public class Jeu {
 
         Personnage modele = switch (typeE) {
             case "BOBOMB" -> new Bobomb(coin[1], coin[0], terrain);
-            case "SOLDAT" -> new Soldat(coin[1], coin[0], terrain);
+            case "SKELETON" -> new Skeleton(coin[1], coin[0], terrain);
+            case "BOSS" -> new Boss(coin[1], coin[0], terrain);
             default       -> new Soldat(coin[1], coin[0], terrain);
         };
 
