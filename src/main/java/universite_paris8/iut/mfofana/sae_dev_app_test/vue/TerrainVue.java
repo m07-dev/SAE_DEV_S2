@@ -34,6 +34,7 @@ public class TerrainVue {
         Image solBleu      = charger("sol_bleu.png");
         Image solBeige     = charger("sol_beige.png");
         Image solBleuFonce = charger("sol_bleu_fonce.png");
+        Image tuyau = charger ("Obstacle.png");
 
         // Configuration de la grille
         pane.getChildren().clear();
@@ -64,6 +65,11 @@ public class TerrainVue {
                 if (terrain.getTileTerrain(l, c) == Terrain.CHEMIN) {
                     Rectangle noir = new Rectangle(T, T, Color.rgb(15, 15, 15));
                     cellule.getChildren().add(noir);
+                }else if (terrain.getTileTerrain(l,c) == Terrain.DECOR_VERT) {
+                    ImageView decor = new ImageView(tuyau);
+                    decor.setFitWidth(T);
+                    decor.setFitHeight(T);
+                    cellule.getChildren().add(decor);
                 }
 
                 pane.getChildren().add(cellule);

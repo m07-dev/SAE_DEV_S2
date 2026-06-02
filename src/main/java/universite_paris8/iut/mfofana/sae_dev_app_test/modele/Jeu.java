@@ -24,7 +24,7 @@ public class Jeu {
     private Terrain terrain;
 
     // --- Properties → bindings dans le contrôleur ---
-    private IntegerProperty pieces = new SimpleIntegerProperty(100);
+    private IntegerProperty pieces = new SimpleIntegerProperty(50);
     private IntegerProperty numeroVague = new SimpleIntegerProperty(0);
 
     // --- Gestion des vagues ---
