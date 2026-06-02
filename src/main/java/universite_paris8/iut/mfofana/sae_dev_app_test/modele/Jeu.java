@@ -177,7 +177,7 @@ public class Jeu {
             case "BOBOMB" -> new Bobomb(coin[1], coin[0], terrain);
             case "SKELETON" -> new Skeleton(coin[1], coin[0], terrain);
             case "BOSS" -> new Boss(coin[1], coin[0], terrain);
-            default       -> new Soldat(coin[1], coin[0], terrain);
+            default       -> new Tortue(coin[1], coin[0], terrain);
         };
 
         // On ajoute à la liste → le ListChangeListener crée le sprite automatiquement !

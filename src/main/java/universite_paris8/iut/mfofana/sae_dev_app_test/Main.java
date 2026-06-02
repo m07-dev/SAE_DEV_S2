@@ -5,7 +5,7 @@ import javafx.collections.ObservableList;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Bobomb;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Soldat;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Tortue;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.TourBouleDeFeu;
 
@@ -16,7 +16,7 @@ public class Main {
         Terrain terrain = new Terrain();
         TourBouleDeFeu t1 = new TourBouleDeFeu(100,100,2,2);
 
-        Soldat s1 = new Soldat(105,100,terrain);
+        Tortue s1 = new Tortue(105,100,terrain);
         Bobomb b1 = new Bobomb(500,500,terrain);
         Bobomb b2 = new Bobomb(95,100,terrain);
         personnages.addAll(s1,b1);
