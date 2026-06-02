@@ -98,14 +98,16 @@ public abstract class Tour {
         return ciblePlusProche;
     }
 
-    public void tirer(ObservableList<Personnage> ennemis, int tickCount) {
+    public Personnage tirer(ObservableList<Personnage> ennemis, int tickCount) {
         if (!estParalysee() && peutTirer(tickCount) && !ennemis.isEmpty()) {
             Personnage cible = choisirCible(ennemis);
             if (cible != null) {
                 cible.subirDegat(this.degat);
                 appliquerEffet(cible, ennemis);
+                return cible;
             }
         }
+        return null;
     }
 
     public abstract void appliquerEffet(Personnage cible, ObservableList<Personnage> ennemis);
