@@ -106,7 +106,6 @@ public class EntiteVue {
 
     private void creerSpriteTour(Tour t) {
         Image img;
-        Color couleur;
         if (t instanceof TourBouleDeFeu)       img = charger("Feu.png");
         else if (t instanceof TourBombe)       img = charger("Bombe.png");
         else if (t instanceof TourBouleDeGlace) img = charger("Glace.png");
