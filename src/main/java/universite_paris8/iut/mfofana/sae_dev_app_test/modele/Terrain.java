@@ -88,32 +88,34 @@ public class Terrain {
     // Les 4 directions pour se déplacer (Haut, Bas, Gauche, Droite)
     private static final int[][] DIRS = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
 
-    // LE GPS DES ENNEMIS (L'eau qui coule dans les tuyaux)
+    // LE GPS DES ENNEMIS
     public List<int[]> extraireChemin(int startL, int startC) {
-        int R = terrain.length, C = terrain[0].length;
+        int nbLignes = terrain.length;
+        int nbColonnes = terrain[0].length;
 
-        // 1. Contrôle de sécurité
-        if (startL < 0 || startL >= R || startC < 0 || startC >= C || terrain[startL][startC] != CHEMIN) {
+        if (startL < 0 || startL >= nbLignes || startC < 0 || startC >= nbColonnes || terrain[startL][startC] != CHEMIN) {
             return null;
         }
 
-        // 2. Préparation (Le tableau "vu" a disparu !)
-        int[][] prevL = new int[R][C];
-        int[][] prevC = new int[R][C];
-        for (int[] row : prevL) {
-            Arrays.fill(row, -2); // -2 veut dire "case jamais visitée"
+        // 1. LES DEUX CALQUES DE MÉMOIRE
+        int[][] provenanceLigne = new int[nbLignes][nbColonnes];
+        int[][] provenanceColonne = new int[nbLignes][nbColonnes];
+
+        for (int[] ligne : provenanceLigne) {
+            Arrays.fill(ligne, -2); // -2 = "L'eau n'est pas encore passée par ici"
         }
 
         Deque<int[]> file = new ArrayDeque<>();
         file.add(new int[]{startL, startC});
-        prevL[startL][startC] = -1; // Marque le départ ET signale que la case est "visitée" (!= -2)
+        provenanceLigne[startL][startC] = -1; // Le point de départ n'a pas de provenance
 
         int[] but = null;
 
-        // 3. L'inondation
+        // 2. L'INONDATION
         while (!file.isEmpty()) {
             int[] actuelle = file.poll();
-            int l = actuelle[0], c = actuelle[1];
+            int l = actuelle[0];
+            int c = actuelle[1];
 
             if (estAdjacentChateau(l, c)) {
                 but = actuelle;
@@ -121,15 +123,17 @@ public class Terrain {
             }
 
             for (int[] d : DIRS) {
-                int nl = l + d[0], nc = c + d[1];
+                int nl = l + d[0]; // Nouvelle Ligne
+                int nc = c + d[1]; // Nouvelle Colonne
 
-                // Si sur la carte + est un chemin + NON VISITÉE (prevL vaut toujours -2)
-                if (nl >= 0 && nl < R && nc >= 0 && nc < C
-                        && terrain[nl][nc] == CHEMIN && prevL[nl][nc] == -2) {
+                // Si c'est un chemin et que l'eau n'y est jamais allée (la provenance est toujours à -2)
+                if (nl >= 0 && nl < nbLignes && nc >= 0 && nc < nbColonnes
+                        && terrain[nl][nc] == CHEMIN && provenanceLigne[nl][nc] == -2) {
 
-                    // On dessine la flèche, ce qui valide automatiquement la case comme "visitée"
-                    prevL[nl][nc] = l;
-                    prevC[nl][nc] = c;
+                    // ON LAISSE NOTRE MESSAGE SUR LA NOUVELLE CASE :
+                    // "Pour arriver sur cette nouvelle case (nl, nc), je proviens de la case (l, c)"
+                    provenanceLigne[nl][nc] = l;
+                    provenanceColonne[nl][nc] = c;
 
                     file.add(new int[]{nl, nc});
                 }
@@ -138,19 +142,20 @@ public class Terrain {
 
         if (but == null) return null;
 
-
+        // 3. LE REMBOBINAGE
         List<int[]> chemin = new ArrayList<>();
-        int l = but[0], c = but[1];
+        int l = but[0];
+        int c = but[1];
 
         while (l != -1) {
             chemin.add(0, new int[]{l, c});
 
-            // On récupère les flèches avant d'écraser l et c
-            int lPrecedent = prevL[l][c];
-            int cPrecedent = prevC[l][c];
+            // On regarde d'où on provenait pour reculer
+            int ligneAvant = provenanceLigne[l][c];
+            int colonneAvant = provenanceColonne[l][c];
 
-            l = lPrecedent;
-            c = cPrecedent;
+            l = ligneAvant;
+            c = colonneAvant;
         }
 
         return chemin;
