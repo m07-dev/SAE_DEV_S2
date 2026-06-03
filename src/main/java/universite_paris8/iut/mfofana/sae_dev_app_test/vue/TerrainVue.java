@@ -11,11 +11,10 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
 
 public class TerrainVue {
 
-    private static final String BASE =
-            "/universite_paris8/iut/mfofana/sae_dev_app_test/Personnages/";
+    private static final String BASE = "/universite_paris8/iut/mfofana/sae_dev_app_test/Personnages/";
 
-    private final TilePane pane;     // la grille (tuiles)
-    private final Pane paneParent;   // le Pane qui contient la grille (pour poser le chateau)
+    private final TilePane pane;
+    private final Pane paneParent;
     private final Terrain terrain;
 
     public TerrainVue(TilePane pane, Pane paneParent, Terrain terrain) {
@@ -25,58 +24,56 @@ public class TerrainVue {
     }
 
     public void dessiner() {
-        final int T = Terrain.TAILLE_TUILE;
-        final int R = terrain.getNbLignes();
-        final int C = terrain.getNbColonnes();
+        final int Tuile = Terrain.TAILLE_TUILE;
+        final int Lignes = terrain.getNbLignes();
+        final int Colonnes = terrain.getNbColonnes();
 
-        // Textures de sol (chargees une seule fois, partagees)
+        // 1. Configuration pure de la grille
+        pane.getChildren().clear();
+        pane.setPrefColumns(Colonnes);
+        pane.setPrefRows(Lignes);
+        pane.setPrefTileWidth(Tuile);
+        pane.setPrefTileHeight(Tuile);
+
+        // 2. Chargement du matériel (une seule fois)
         Image solVert      = charger("tuile_herbe.png");
         Image solBleu      = charger("sol_bleu.png");
         Image solBeige     = charger("sol_beige.png");
         Image solBleuFonce = charger("sol_bleu_fonce.png");
-        Image tuyau = charger ("Obstacle.png");
+        Image imageTuyau   = charger("Obstacle.png");
 
-        // Configuration de la grille
-        pane.getChildren().clear();
-        pane.setPrefColumns(C);
-        pane.setPrefRows(R);
-        pane.setPrefTileWidth(T);
-        pane.setPrefTileHeight(T);
-        pane.setHgap(0);
-        pane.setVgap(0);
-        pane.setPrefSize(C * T, R * T);
-        pane.setMaxSize(C * T, R * T);
+        // 3. Construction de la carte, case par case
+        for (int l = 0; l < Lignes; l++) {
+            for (int c = 0; c < Colonnes; c++) {
 
-        for (int l = 0; l < R; l++) {
-            for (int c = 0; c < C; c++) {
-                Image sol = textureZone(l, c, R, C,
-                        solVert, solBleu, solBeige, solBleuFonce);
+                // -- ÉTAPE A : On pose le sol --
+                Image texture = textureZone(l, c, Lignes, Colonnes, solVert, solBleu, solBeige, solBleuFonce);
+                ImageView fond = new ImageView(texture);
+                fond.setFitWidth(Tuile);
+                fond.setFitHeight(Tuile);
 
-                ImageView fond = new ImageView(sol);
-                fond.setFitWidth(T);
-                fond.setFitHeight(T);
+                StackPane caseGrille = new StackPane(fond);
 
-                StackPane cellule = new StackPane(fond);
-                cellule.setPrefSize(T, T);
-                cellule.setMinSize(T, T);
-                cellule.setMaxSize(T, T);
+                // -- ÉTAPE B : On regarde s'il y a un objet par-dessus --
+                int typeCase = terrain.getTileTerrain(l, c); // On ne pose la question qu'une seule fois !
 
-                // Chemin = rectangle noir epais par-dessus le sol
-                if (terrain.getTileTerrain(l, c) == Terrain.CHEMIN) {
-                    Rectangle noir = new Rectangle(T, T, Color.rgb(15, 15, 15));
-                    cellule.getChildren().add(noir);
-                }else if (terrain.getTileTerrain(l,c) == Terrain.DECOR_VERT) {
-                    ImageView decor = new ImageView(tuyau);
-                    decor.setFitWidth(T);
-                    decor.setFitHeight(T);
-                    cellule.getChildren().add(decor);
+                if (typeCase == Terrain.CHEMIN) {
+                    caseGrille.getChildren().add(new Rectangle(Tuile, Tuile, Color.rgb(15, 15, 15)));
+                }
+                else if (typeCase == Terrain.DECOR_VERT) {
+                    ImageView tuyau = new ImageView(imageTuyau);
+                    tuyau.setFitWidth(Tuile);
+                    tuyau.setFitHeight(Tuile);
+                    caseGrille.getChildren().add(tuyau);
                 }
 
-                pane.getChildren().add(cellule);
+                // -- ÉTAPE Colonnes : On range la case terminée dans la grille --
+                pane.getChildren().add(caseGrille);
             }
         }
 
-        dessinerChateau(T);
+        // 4. On pose le château par-dessus tout le reste
+        dessinerChateau(Tuile);
     }
 
     private void dessinerChateau(int T) {
@@ -84,23 +81,30 @@ public class TerrainVue {
 
         ImageView chateau = new ImageView(charger("Chateau.png"));
         int taille = terrain.getChateauTaille();
+
         chateau.setFitWidth(taille * T);
         chateau.setFitHeight(taille * T);
         chateau.setLayoutX(terrain.getChateauColonne() * T);
         chateau.setLayoutY(terrain.getChateauLigne() * T);
-        chateau.setMouseTransparent(true); // ne bloque pas les clics de placement
+        chateau.setMouseTransparent(true);
+
         paneParent.getChildren().add(chateau);
     }
 
-    /** Choix de la texture selon le quadrant de la case. */
-    private Image textureZone(int l, int c, int R, int C,
-                              Image vert, Image bleu, Image beige, Image bleuFonce) {
-        boolean haut = l < R / 2;
-        boolean gauche = c < C / 2;
-        if (haut && gauche) return vert;        // zone verte (haut-gauche)
-        if (haut)           return bleu;        // zone cyan (haut-droite)
-        if (gauche)         return beige;       // zone jaune (bas-gauche)
-        return bleuFonce;                        // zone violette (bas-droite)
+    private Image textureZone(int l, int c, int nbLignes, int nbColonnes, Image vert, Image bleu, Image beige, Image bleuFonce) {
+        boolean enHaut = (l < nbLignes / 2);
+        boolean aGauche = (c < nbColonnes / 2);
+
+        if (enHaut) {
+            // On est dans la moitié HAUTE
+            if (aGauche) return vert;
+            else         return bleu;
+
+        } else {
+            // On est dans la moitié BASSE
+            if (aGauche) return beige;
+            else         return bleuFonce;
+        }
     }
 
     private Image charger(String nom) {
