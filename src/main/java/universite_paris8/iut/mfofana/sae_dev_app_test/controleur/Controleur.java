@@ -138,6 +138,5 @@ public class Controleur {
         });
     }
 
-    public void clicLancerVague(ActionEvent event) {
-    }
+
 }

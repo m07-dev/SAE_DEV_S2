@@ -27,7 +27,6 @@ public class Terrain {
 
     public Terrain() {
         this.terrain = new int[][]{
-                // ... (Ta grille de 0, 1 et 2) ...
                 {0,0,0,0,1,0,0,0,0,0,0,1,0,0,3,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0},
                 {0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0},
                 {0,0,0,0,1,0,0,0,3,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0},
@@ -57,19 +56,38 @@ public class Terrain {
     // LE RADAR À CHÂTEAU
     // On passe le doigt sur chaque case pour trouver où sont les "2"
     private void calculerChateau() {
-        int minL = Integer.MAX_VALUE, minC = Integer.MAX_VALUE, maxL = -1;
+        // 1. On prépare nos variables de repérage avec des valeurs extrêmes
+        int haut = 99999;
+        int gauche = 99999;
+        int bas = -1;
+        boolean chateauTrouve = false;
+
+        // 2. On fouille chaque case du terrain
         for (int l = 0; l < terrain.length; l++) {
             for (int c = 0; c < terrain[l].length; c++) {
+
+                // Si on tombe sur un bout du château
                 if (terrain[l][c] == CHATEAU) {
-                    minL = Math.min(minL, l); // On note le point le plus haut/gauche
-                    minC = Math.min(minC, c);
-                    maxL = Math.max(maxL, l); // On note le point le plus bas pour avoir la taille
+                    chateauTrouve = true;
+
+                    // On met à jour les bords si on trouve plus extrême
+                    if (l < haut) haut = l;
+                    if (c < gauche) gauche = c;
+                    if (l > bas) bas = l;
                 }
             }
         }
-        this.chateauLigne = (minL == Integer.MAX_VALUE) ? 0 : minL;
-        this.chateauColonne = (minC == Integer.MAX_VALUE) ? 0 : minC;
-        this.chateauTaille = (maxL < 0) ? 0 : (maxL - minL + 1);
+
+        // 3. On range les résultats finaux proprement
+        if (chateauTrouve) {
+            this.chateauLigne = haut;
+            this.chateauColonne = gauche;
+            this.chateauTaille = bas - haut + 1;
+        } else {
+            this.chateauLigne = 0;
+            this.chateauColonne = 0;
+            this.chateauTaille = 0;
+        }
     }
 
     // Les 4 directions pour se déplacer (Haut, Bas, Gauche, Droite)
@@ -79,72 +97,68 @@ public class Terrain {
     public List<int[]> extraireChemin(int startL, int startC) {
         int R = terrain.length, C = terrain[0].length;
 
-        // Si on essaie de spawner hors de la carte ou dans l'herbe, on annule
-        if (startL < 0 || startL >= R || startC < 0 || startC >= C
-                || terrain[startL][startC] != CHEMIN) {
+        // 1. Contrôle de sécurité
+        if (startL < 0 || startL >= R || startC < 0 || startC >= C || terrain[startL][startC] != CHEMIN) {
             return null;
         }
 
-        // Les cailloux qu'on pose pour dire "je suis déjà passé par là"
-        boolean[][] vu = new boolean[R][C];
-
-        // Les flèches dessinées par terre (pour retenir d'où on vient)
+        // 2. Préparation (Le tableau "vu" a disparu !)
         int[][] prevL = new int[R][C];
         int[][] prevC = new int[R][C];
-        for (int[] row : prevL) Arrays.fill(row, -2);
+        for (int[] row : prevL) {
+            Arrays.fill(row, -2); // -2 veut dire "case jamais visitée"
+        }
 
-        // Le seau d'eau qu'on vide au point de départ
         Deque<int[]> file = new ArrayDeque<>();
         file.add(new int[]{startL, startC});
-        vu[startL][startC] = true; // On pose le premier caillou
-        prevL[startL][startC] = -1; // Marque le point de départ exact
+        prevL[startL][startC] = -1; // Marque le départ ET signale que la case est "visitée" (!= -2)
 
         int[] but = null;
 
-        // L'eau s'étale case par case
+        // 3. L'inondation
         while (!file.isEmpty()) {
-            int[] cur = file.poll();
-            int l = cur[0], c = cur[1];
+            int[] actuelle = file.poll();
+            int l = actuelle[0], c = actuelle[1];
 
-            // Si l'eau touche les murs du château, on arrête tout !
             if (estAdjacentChateau(l, c)) {
-                but = cur;
+                but = actuelle;
                 break;
             }
 
-            // L'eau essaie d'aller dans les 4 directions
             for (int[] d : DIRS) {
                 int nl = l + d[0], nc = c + d[1];
 
-                // Si la case existe, qu'il n'y a pas de caillou, et que c'est un tuyau (chemin)
+                // Si sur la carte + est un chemin + NON VISITÉE (prevL vaut toujours -2)
                 if (nl >= 0 && nl < R && nc >= 0 && nc < C
-                        && !vu[nl][nc] && terrain[nl][nc] == CHEMIN) {
+                        && terrain[nl][nc] == CHEMIN && prevL[nl][nc] == -2) {
 
-                    vu[nl][nc] = true; // On pose un caillou
-
-                    // On dessine la flèche par terre pointant vers la case d'avant
+                    // On dessine la flèche, ce qui valide automatiquement la case comme "visitée"
                     prevL[nl][nc] = l;
                     prevC[nl][nc] = c;
 
-                    // L'eau continue d'avancer
                     file.add(new int[]{nl, nc});
                 }
             }
         }
 
-        if (but == null) return null; // L'eau n'a jamais trouvé le château
+        if (but == null) return null;
 
-        // LE REMBOBINAGE
-        // On part de la fin et on suit les flèches à l'envers jusqu'au départ
+
         List<int[]> chemin = new ArrayList<>();
         int l = but[0], c = but[1];
+
         while (l != -1) {
-            chemin.add(0, new int[]{l, c}); // On ajoute la case au début de la liste
-            int pl = prevL[l][c], pc = prevC[l][c]; // On regarde la flèche pour reculer
-            l = pl;
-            c = pc;
+            chemin.add(0, new int[]{l, c});
+
+            // On récupère les flèches avant d'écraser l et c
+            int lPrecedent = prevL[l][c];
+            int cPrecedent = prevC[l][c];
+
+            l = lPrecedent;
+            c = cPrecedent;
         }
-        return chemin; // Notre GPS a trouvé la route parfaite
+
+        return chemin;
     }
 
     // LE CAPTEUR DE PROXIMITÉ
