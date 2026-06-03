@@ -27,7 +27,6 @@ public class Terrain {
 
     public Terrain() {
         this.terrain = new int[][]{
-                // ... (Ta grille de 0, 1 et 2) ...
                 {0,0,0,0,1,0,0,0,0,0,0,1,0,0,3,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0},
                 {0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0},
                 {0,0,0,0,1,0,0,0,3,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0},
@@ -85,7 +84,6 @@ public class Terrain {
             this.chateauColonne = gauche;
             this.chateauTaille = bas - haut + 1;
         } else {
-            // Sécurité : si le château n'existe pas sur la carte
             this.chateauLigne = 0;
             this.chateauColonne = 0;
             this.chateauTaille = 0;
