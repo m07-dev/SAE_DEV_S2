@@ -32,7 +32,7 @@ public class Bobomb extends Personnage {
 
             int distance = (int)(Math.abs(xB - xT) + Math.abs(yB - yT));
             if (distance <= 45) {
-                tourActuelle.paralyser(3000);
+                tourActuelle.paralyser(30);
                 tourActuelle.setDegat(tourActuelle.getDegat() - this.degat);
                 aParalyserTour = true;
             }
