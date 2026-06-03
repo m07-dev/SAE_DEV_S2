@@ -9,6 +9,7 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Chateau;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.GestionAnimation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Jeu {
@@ -35,7 +36,7 @@ public class Jeu {
 
     // Constantes
     private static final int TICKS_PAR_SECONDE = 10; // 1 tick = 0.1s donc 10 ticks = 1s
-    private static final int DELAI_ENTRE_VAGUES = 10 * TICKS_PAR_SECONDE / 2; // 5 secondes
+    private static final int DELAI_ENTRE_VAGUES = 10 * TICKS_PAR_SECONDE; // 10 secondes
     private static final int DELAI_ENTRE_SPAWNS = (int)(1.5 * TICKS_PAR_SECONDE); // 1.5s entre chaque spawn
 
     // Points d'entrée
@@ -45,7 +46,6 @@ public class Jeu {
     private static final int[] BAS_GAUCHE  = {21, 2};
     private static final int[] BAS_DROIT   = {21, 28};
 
-    private GestionAnimation gestionAnimation;
 
     public Jeu() {
         this.chateau = new Chateau();
@@ -56,8 +56,9 @@ public class Jeu {
     // -----------------------------------------------------------
     // TICK → appelé à chaque frame par le contrôleur
     // -----------------------------------------------------------
-    public void tick() {
-        if (chateau.estDetruit()) return; // jeu terminé → on ne fait rien
+    public List<GestionJeu.AlerteTir> tick() {
+        List<GestionJeu.AlerteTir> evenements = new ArrayList<>();
+        if (chateau.estDetruit()) return evenements; // jeu terminé → on ne fait rien
 
         tickCount++;
 
@@ -106,12 +107,14 @@ public class Jeu {
 
         // 5. Tirs des tours
         for (Tour t : tours) {
+            t.mettreAJourStatut();
             Personnage cibleTouche = t.tirer(ennemis, tickCount);
 
-            if (cibleTouche != null && gestionAnimation != null) {
-                gestionAnimation.animationTirBouleFeu(t, cibleTouche);
+            if (cibleTouche != null ) {
+                evenements.add(new GestionJeu.AlerteTir(t, cibleTouche));
             }
         }
+        return evenements;
     }
 
     // -----------------------------------------------------------
@@ -223,10 +226,6 @@ public class Jeu {
         indexChemins.remove(i);
     }
 
-    public void setGestionAnimation(GestionAnimation bouleAnime) {
-        this.gestionAnimation = bouleAnime;
-    }
-
     // -----------------------------------------------------------
     // GETTERS
     // -----------------------------------------------------------
@@ -240,4 +239,17 @@ public class Jeu {
     public IntegerProperty numeroVagueProperty() { return numeroVague; }
     public int getPieces() { return pieces.get(); }
     public int getNumeroVague() { return numeroVague.get(); }
+
+    public class GestionJeu {
+
+        public static class AlerteTir {
+            public final Tour tour;
+            public final Personnage cible;
+
+            public AlerteTir(Tour tour, Personnage cible) {
+                this.tour = tour;
+                this.cible = cible;
+            }
+        }
+    }
 }

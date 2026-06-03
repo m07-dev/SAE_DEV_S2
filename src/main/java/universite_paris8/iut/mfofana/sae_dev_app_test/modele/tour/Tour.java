@@ -15,7 +15,7 @@ public abstract class Tour {
     private int degat, portee;
     private double  cadence;
     private int resistance;
-    private long finParalysie = 0;
+    private int ticksParalysie = 0;
     private int dernierTickTir = 0;
 
     public Tour(double x, double y, int cout,
@@ -64,11 +64,13 @@ public abstract class Tour {
     }
 
     public boolean estParalysee() {
-        return System.currentTimeMillis() < finParalysie;
+        return ticksParalysie > 0;
     }
 
-    public void paralyser(int dureeMs) {
-        finParalysie = System.currentTimeMillis() + dureeMs;
+    public void paralyser(int dureeEnTicks) {
+        if (dureeEnTicks > this.ticksParalysie) {
+            this.ticksParalysie = dureeEnTicks;
+        }
     }
 
     public boolean peutTirer(int tickCount) {
@@ -111,6 +113,12 @@ public abstract class Tour {
             }
         }
         return null;
+    }
+
+    public void mettreAJourStatut() {
+        if (ticksParalysie > 0) {
+            ticksParalysie--;
+        }
     }
 
     public abstract void appliquerEffet(Personnage cible, ObservableList<Personnage> ennemis);
