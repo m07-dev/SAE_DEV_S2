@@ -57,19 +57,39 @@ public class Terrain {
     // LE RADAR À CHÂTEAU
     // On passe le doigt sur chaque case pour trouver où sont les "2"
     private void calculerChateau() {
-        int minL = Integer.MAX_VALUE, minC = Integer.MAX_VALUE, maxL = -1;
+        // 1. On prépare nos variables de repérage avec des valeurs extrêmes
+        int haut = 99999;
+        int gauche = 99999;
+        int bas = -1;
+        boolean chateauTrouve = false;
+
+        // 2. On fouille chaque case du terrain
         for (int l = 0; l < terrain.length; l++) {
             for (int c = 0; c < terrain[l].length; c++) {
+
+                // Si on tombe sur un bout du château
                 if (terrain[l][c] == CHATEAU) {
-                    minL = Math.min(minL, l); // On note le point le plus haut/gauche
-                    minC = Math.min(minC, c);
-                    maxL = Math.max(maxL, l); // On note le point le plus bas pour avoir la taille
+                    chateauTrouve = true;
+
+                    // On met à jour les bords si on trouve plus extrême
+                    if (l < haut) haut = l;
+                    if (c < gauche) gauche = c;
+                    if (l > bas) bas = l;
                 }
             }
         }
-        this.chateauLigne = (minL == Integer.MAX_VALUE) ? 0 : minL;
-        this.chateauColonne = (minC == Integer.MAX_VALUE) ? 0 : minC;
-        this.chateauTaille = (maxL < 0) ? 0 : (maxL - minL + 1);
+
+        // 3. On range les résultats finaux proprement
+        if (chateauTrouve) {
+            this.chateauLigne = haut;
+            this.chateauColonne = gauche;
+            this.chateauTaille = bas - haut + 1;
+        } else {
+            // Sécurité : si le château n'existe pas sur la carte
+            this.chateauLigne = 0;
+            this.chateauColonne = 0;
+            this.chateauTaille = 0;
+        }
     }
 
     // Les 4 directions pour se déplacer (Haut, Bas, Gauche, Droite)
@@ -79,16 +99,15 @@ public class Terrain {
     public List<int[]> extraireChemin(int startL, int startC) {
         int R = terrain.length, C = terrain[0].length;
 
-        // Si on essaie de spawner hors de la carte ou dans l'herbe, on annule
+
         if (startL < 0 || startL >= R || startC < 0 || startC >= C
                 || terrain[startL][startC] != CHEMIN) {
             return null;
         }
 
-        // Les cailloux qu'on pose pour dire "je suis déjà passé par là"
+
         boolean[][] vu = new boolean[R][C];
 
-        // Les flèches dessinées par terre (pour retenir d'où on vient)
         int[][] prevL = new int[R][C];
         int[][] prevC = new int[R][C];
         for (int[] row : prevL) Arrays.fill(row, -2);
@@ -103,12 +122,12 @@ public class Terrain {
 
         // L'eau s'étale case par case
         while (!file.isEmpty()) {
-            int[] cur = file.poll();
-            int l = cur[0], c = cur[1];
+            int[] actuelle = file.poll();
+            int l = actuelle[0], c = actuelle[1];
 
             // Si l'eau touche les murs du château, on arrête tout !
             if (estAdjacentChateau(l, c)) {
-                but = cur;
+                but = actuelle;
                 break;
             }
 
