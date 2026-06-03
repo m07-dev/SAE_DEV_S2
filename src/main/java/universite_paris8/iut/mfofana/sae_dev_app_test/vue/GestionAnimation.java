@@ -11,7 +11,7 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
 
 public class GestionAnimation {
     private Pane paneAnim;
-    private static final double TILE = 30;
+    private static final double TILE = 32;
 
     public GestionAnimation(Pane paneA) {
         this.paneAnim = paneA;

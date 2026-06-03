@@ -35,7 +35,7 @@ public class Jeu {
 
     // Constantes
     private static final int TICKS_PAR_SECONDE = 10; // 1 tick = 0.1s donc 10 ticks = 1s
-    private static final int DELAI_ENTRE_VAGUES = 10 * TICKS_PAR_SECONDE; // 5 secondes
+    private static final int DELAI_ENTRE_VAGUES = 10 * TICKS_PAR_SECONDE / 2; // 5 secondes
     private static final int DELAI_ENTRE_SPAWNS = (int)(1.5 * TICKS_PAR_SECONDE); // 1.5s entre chaque spawn
 
     // Points d'entrée
@@ -177,9 +177,9 @@ public class Jeu {
         Personnage modele = switch (typeE) {
             case "BOBOMB" -> new Bobomb(coin[0], coin[1], terrain);
             case "TORTUE" -> new Tortue(coin[0], coin[1], terrain);
-            case "SKELETON" -> new Skeleton(coin[1], coin[0], terrain);
+            case "SKELETON" -> new Skeleton(coin[0], coin[1], terrain);
             case "BOO" -> new Boo(coin[0], coin[1], terrain);
-            case "BOSS" -> new Boss(coin[1], coin[0], terrain);
+            case "BOSS" -> new Boss(coin[0], coin[1], terrain);
             default       -> new Tortue(coin[1], coin[0], terrain);
         };
 

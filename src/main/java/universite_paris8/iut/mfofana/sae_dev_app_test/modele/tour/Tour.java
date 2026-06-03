@@ -12,13 +12,14 @@ public abstract class Tour {
     private DoubleProperty y = new SimpleDoubleProperty();
 
     private int cout, niveau;
-    private int degat, portee, cadence;
+    private int degat, portee;
+    private double  cadence;
     private int resistance;
     private long finParalysie = 0;
-    private long dernierTir = 0;
+    private int dernierTickTir = 0;
 
     public Tour(double x, double y, int cout,
-                int degat, int portee, int cadence, int resistance) {
+                int degat, int portee, double cadence, int resistance) {
         this.x.set(x);
         this.y.set(y);
         this.cout = cout;
@@ -36,7 +37,7 @@ public abstract class Tour {
     public int getNiveau() { return niveau; }
     public int getDegat() { return degat; }
     public int getPortee() { return portee; }
-    public int getCadence() { return cadence; }
+    public double getCadence() { return cadence; }
     public int getResistance() { return resistance; }
 
     // --- Getters Property → pour les bindings dans la vue ---
@@ -72,8 +73,9 @@ public abstract class Tour {
 
     public boolean peutTirer(int tickCount) {
         if (estParalysee()) return false;
-        int intervalleEnTicks = Math.max(1, 50 / cadence);
-        if(tickCount % intervalleEnTicks == 0){
+        double intervalleEnTicks = Math.max(1, 10 / cadence);
+        if(tickCount - dernierTickTir >= intervalleEnTicks){
+            dernierTickTir = tickCount;
             return true;
         }
         return false;

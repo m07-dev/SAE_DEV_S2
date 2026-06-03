@@ -62,7 +62,7 @@ public class Controleur {
 
         // 5. Game loop → juste jeu.tick() !
          gameLoop = new Timeline(
-                new KeyFrame(Duration.seconds(0.16), ev -> {
+                new KeyFrame(Duration.seconds(0.1), ev -> {
                     jeu.tick();
                     // Afficher le countdown entre vagues
                     labelCountdown.setText(jeu.getCountdownText());
@@ -111,14 +111,15 @@ public class Controleur {
     }
 
     // --- Placement de tours ---
-    private void placerTourTerrain() {
+    public void placerTourTerrain() {
         panneTerrain.setOnMouseClicked(e -> {
             if (tourSelectionnee == null) return;
 
             int col   = (int)(e.getX() / TILE);
             int ligne = (int)(e.getY() / TILE);
-            if(col <0 || col >=32 || ligne < 0 || ligne >= 32) return;
-            if (jeu.getTerrain().getTileTerrain(col, ligne) != 0) return;
+            if (col < 0 || col >= jeu.getTerrain().getNbColonnes()
+                    || ligne < 0 || ligne >= jeu.getTerrain().getNbLignes()) return;
+            if (jeu.getTerrain().getTileTerrain(ligne,col ) != 0) return;
 
             Tour nouvelleTour = null;
             int cout = 0;
