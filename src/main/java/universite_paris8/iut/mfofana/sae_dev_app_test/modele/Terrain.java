@@ -56,38 +56,33 @@ public class Terrain {
     // LE RADAR À CHÂTEAU
     // On passe le doigt sur chaque case pour trouver où sont les "2"
     private void calculerChateau() {
-        // 1. On prépare nos variables de repérage avec des valeurs extrêmes
-        int haut = 99999;
-        int gauche = 99999;
-        int bas = -1;
-        boolean chateauTrouve = false;
-
-        // 2. On fouille chaque case du terrain
+        // On lit la carte de haut en bas, gauche à droite
         for (int l = 0; l < terrain.length; l++) {
             for (int c = 0; c < terrain[l].length; c++) {
 
-                // Si on tombe sur un bout du château
+                // BINGO ! On a touché la toute première case du château.
+                // C'est forcément le point le plus en haut à gauche.
                 if (terrain[l][c] == CHATEAU) {
-                    chateauTrouve = true;
+                    this.chateauLigne = l;
+                    this.chateauColonne = c;
 
-                    // On met à jour les bords si on trouve plus extrême
-                    if (l < haut) haut = l;
-                    if (c < gauche) gauche = c;
-                    if (l > bas) bas = l;
+                    // On compte juste combien de cases de château il y a en dessous
+                    int taille = 0;
+                    while (l + taille < terrain.length && terrain[l + taille][c] == CHATEAU) {
+                        taille++;
+                    }
+
+                    this.chateauTaille = taille;
+
+                    return; // Mission accomplie, on coupe tout et on sort de la méthode !
                 }
             }
         }
 
-        // 3. On range les résultats finaux proprement
-        if (chateauTrouve) {
-            this.chateauLigne = haut;
-            this.chateauColonne = gauche;
-            this.chateauTaille = bas - haut + 1;
-        } else {
-            this.chateauLigne = 0;
-            this.chateauColonne = 0;
-            this.chateauTaille = 0;
-        }
+        // Si on arrive ici, c'est qu'on a scanné toute la carte sans rien trouver
+        this.chateauLigne = 0;
+        this.chateauColonne = 0;
+        this.chateauTaille = 0;
     }
 
     // Les 4 directions pour se déplacer (Haut, Bas, Gauche, Droite)

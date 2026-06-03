@@ -119,7 +119,7 @@ public class Controleur {
             int ligne = (int)(e.getY() / TILE);
             if (col < 0 || col >= jeu.getTerrain().getNbColonnes()
                     || ligne < 0 || ligne >= jeu.getTerrain().getNbLignes()) return;
-            if (jeu.getTerrain().getTileTerrain(ligne,col ) != 0) return;
+            if (jeu.getTerrain().getTileTerrain(ligne,col) != 0) return;
 
             Tour nouvelleTour = null;
             int cout = 0;
