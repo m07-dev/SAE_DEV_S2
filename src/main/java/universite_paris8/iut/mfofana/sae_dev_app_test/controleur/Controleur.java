@@ -117,7 +117,7 @@ public class Controleur {
 
             int col   = (int)(e.getX() / TILE);
             int ligne = (int)(e.getY() / TILE);
-
+            if(col <0 || col >=32 || ligne < 0 || ligne >= 32) return;
             if (jeu.getTerrain().getTileTerrain(col, ligne) != 0) return;
 
             Tour nouvelleTour = null;

@@ -84,7 +84,7 @@ public class EntiteVue {
         if (p instanceof Bobomb) {
             img = charger("bobomb.png");
         } else if (p instanceof Tortue) {
-            img= charger("tortue.png");
+            img= charger("tortue_1.png");
         } else if (p instanceof Skeleton){
             img = charger("skeleton.png");
         } else if (p instanceof Boo) {

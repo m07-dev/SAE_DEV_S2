@@ -164,7 +164,11 @@ public class Terrain {
     public int[][] getTerrain() { return terrain; }
     public int getNbLignes() { return terrain.length; }
     public int getNbColonnes() { return terrain[0].length; }
-    public int getTileTerrain(int ligne, int col) { return terrain[ligne][col]; }
+    public int getTileTerrain(int ligne, int col) {
+        if(ligne < 0 || ligne > terrain.length ||col < 0 || col >= terrain[ligne].length)
+        {return -1;}
+        return terrain[ligne][col]; }
+
     public int getChateauLigne() { return chateauLigne; }
     public int getChateauColonne() { return chateauColonne; }
     public int getChateauTaille() { return chateauTaille; }
