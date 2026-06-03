@@ -106,7 +106,7 @@
                            -fx-border-width: 1.5; -fx-cursor: hand;">
                 <graphic>
                     <ImageView fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
-                        <image><Image url="@Personnages/Feu.png" /></image>
+                        <image><Image url="@Personnages/Plante_feu.png" /></image>
                     </ImageView>
                 </graphic>
             </Button>
@@ -118,7 +118,7 @@
                            -fx-border-width: 1.5; -fx-cursor: hand;">
                 <graphic>
                     <ImageView fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
-                        <image><Image url="@Personnages/Bombe.png" /></image>
+                        <image><Image url="@Personnages/Plante_Bombe.png" /></image>
                     </ImageView>
                 </graphic>
             </Button>
@@ -130,7 +130,7 @@
                            -fx-border-width: 1.5; -fx-cursor: hand;">
                 <graphic>
                     <ImageView fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
-                        <image><Image url="@Personnages/Glace.png" /></image>
+                        <image><Image url="@Personnages/Plante_Glace.png" /></image>
                     </ImageView>
                 </graphic>
             </Button>

@@ -7,7 +7,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.*;
 
@@ -106,21 +105,26 @@ public class EntiteVue {
     }
 
     private void creerSpriteTour(Tour t) {
+        Image img;
         Color couleur;
-        if (t instanceof TourBouleDeFeu)        couleur = Color.ORANGE;
-        else if (t instanceof TourBombe)        couleur = Color.GRAY;
-        else if (t instanceof TourBouleDeGlace) couleur = Color.CYAN;
-        else if (t instanceof TourObstacle)     couleur = Color.BROWN;
-        else                                    couleur = Color.BLACK;
+        if (t instanceof TourBouleDeFeu)       img = charger("Feu.png");
+        else if (t instanceof TourBombe)       img = charger("Bombe.png");
+        else if (t instanceof TourBouleDeGlace) img = charger("Glace.png");
+        else if (t instanceof TourObstacle)     img = charger("Obstacle.png");
+        else                                    img = charger("Erreur.png");
 
-        Circle cercle = new Circle(TILE / 2.0, couleur);
 
-        // Les tours ne bougent pas → position fixe
-        cercle.setCenterX(t.getX() * TILE + TILE / 2.0);
-        cercle.setCenterY(t.getY() * TILE + TILE / 2.0);
 
-        pane.getChildren().add(cercle);
-        affichageTours.put(t, cercle);
+        ImageView imageTour = new ImageView(img);
+        imageTour.setFitWidth(TILE);
+        imageTour.setFitHeight(TILE);
+        imageTour.setPreserveRatio(true);
+
+        imageTour.xProperty().bind(t.xProperty().multiply(TILE));
+        imageTour.yProperty().bind(t.yProperty().multiply(TILE));
+
+        pane.getChildren().add(imageTour);
+        affichageTours.put(t, imageTour);
     }
 
     // -----------------------------------------------------------
