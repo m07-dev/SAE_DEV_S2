@@ -15,6 +15,8 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.vue.EntiteVue;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.GestionAnimation;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.TerrainVue;
 
+import java.util.List;
+
 public class Controleur {
 
     public Button boutonVague;
@@ -58,12 +60,16 @@ public class Controleur {
         entiteVue.creerBindingsEnnemis(jeu.getEnnemis());
         entiteVue.creerBindingsTours(jeu.getTours());
         GestionAnimation gestionAnimation = new GestionAnimation(paneId);
-        jeu.setGestionAnimation(gestionAnimation);
+
 
         // 5. Game loop → juste jeu.tick() !
          gameLoop = new Timeline(
                 new KeyFrame(Duration.seconds(0.1), ev -> {
-                    jeu.tick();
+                    List<Jeu.GestionJeu.AlerteTir> evenements = jeu.tick();
+
+                    for (Jeu.GestionJeu.AlerteTir e : evenements) {
+                        gestionAnimation.animationTirBouleFeu(e.tour, e.cible);
+                    }
                     // Afficher le countdown entre vagues
                     labelCountdown.setText(jeu.getCountdownText());
                     // Game Over

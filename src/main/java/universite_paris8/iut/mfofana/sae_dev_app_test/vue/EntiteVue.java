@@ -78,7 +78,7 @@ public class EntiteVue {
     // -----------------------------------------------------------
 
     private void creerSpriteEnnemi(Personnage p) {
-        // Couleur selon le type d'ennemi
+        // Image selon le type d'ennemi
         Image img;
         if (p instanceof Bobomb) {
             img = charger("bobomb.png");
