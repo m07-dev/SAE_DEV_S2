@@ -135,6 +135,10 @@ public class Jeu {
                 //int[] coin = (ennemisSpawnCeTick % 2 == 0) ? HAUT_GAUCHE1;
                 // A faire : Adapter les spawn des ennemis selon l'environnement
                 spawnEnnemi("BOO", BAS_DROIT);
+                spawnEnnemi("TORTUE", BAS_GAUCHE);
+                spawnEnnemi("SKELETON", HAUT_GAUCHE1);
+
+
                 ennemisSpawnCeTick++;
             }
 

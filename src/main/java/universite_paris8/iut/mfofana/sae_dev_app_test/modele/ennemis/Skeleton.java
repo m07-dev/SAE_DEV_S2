@@ -6,7 +6,7 @@ public class Skeleton extends Personnage{
     private int degat = 25;
 
     public Skeleton(double x, double y, Terrain e) {
-        super(x, y, e, 100, 4);
+        super(x, y, e, 100, 1);
         this.degat = 25;
     }
 
