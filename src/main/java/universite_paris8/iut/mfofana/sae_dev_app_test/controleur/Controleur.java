@@ -64,7 +64,7 @@ public class Controleur {
 
         // 5. Game loop → juste jeu.tick() !
          gameLoop = new Timeline(
-                new KeyFrame(Duration.seconds(0.1), ev -> {
+                new KeyFrame(Duration.seconds(0.017), ev -> {
                     List<Jeu.GestionJeu.AlerteTir> evenements = jeu.tick();
 
                     for (Jeu.GestionJeu.AlerteTir e : evenements) {

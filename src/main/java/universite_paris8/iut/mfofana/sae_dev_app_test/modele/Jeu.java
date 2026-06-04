@@ -35,7 +35,7 @@ public class Jeu {
     private int ennemisSpawnCeTick = 0;      // index de l'ennemi en cours de spawn
 
     // Constantes
-    private static final int TICKS_PAR_SECONDE = 10; // 1 tick = 0.1s donc 10 ticks = 1s
+    private static final int TICKS_PAR_SECONDE = 60; // 1 tick = 0.1s donc 10 ticks = 1s
     private static final int DELAI_ENTRE_VAGUES = 10 * TICKS_PAR_SECONDE; // 10 secondes
     private static final int DELAI_ENTRE_SPAWNS = (int)(1.5 * TICKS_PAR_SECONDE); // 1.5s entre chaque spawn
 
