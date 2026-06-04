@@ -3,12 +3,15 @@ package universite_paris8.iut.mfofana.sae_dev_app_test.vue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.*;
+
 
 import java.util.HashMap;
 
@@ -23,6 +26,9 @@ public class EntiteVue {
     // "Pour chaque Personnage, je connais son cercle"
     private HashMap<Personnage, ImageView> affichageEnnemis = new HashMap<>();
     private HashMap<Tour, Node> affichageTours = new HashMap<>();
+    private HashMap<Personnage, Rectangle> barresVie = new HashMap<>();
+    private HashMap<Personnage, Rectangle> fondBarre = new HashMap<>();
+
 
     public EntiteVue(Pane pane) {
         this.pane = pane;
@@ -41,6 +47,7 @@ public class EntiteVue {
                 if (changement.wasAdded()) {
                     for (Personnage p : changement.getAddedSubList()) {
                         creerSpriteEnnemi(p);
+
                     }
                 }
 
@@ -83,7 +90,7 @@ public class EntiteVue {
         if (p instanceof Bobomb) {
             img = charger("bobomb.png");
         } else if (p instanceof Tortue) {
-            img= charger("tortue_1.png");
+            img= charger("tortue.png");
         } else if (p instanceof Skeleton){
             img = charger("skeleton.png");
         } else if (p instanceof Boo) {
@@ -100,8 +107,27 @@ public class EntiteVue {
         imageEnnemis.xProperty().bind(p.xProperty().multiply(TILE));
         imageEnnemis.yProperty().bind(p.yProperty().multiply(TILE));
 
-        pane.getChildren().add(imageEnnemis);
+        int pvMax = p.getPvMax(); // snapshot au moment de l'apparition
+
+
+
+        Rectangle barre = new Rectangle(TILE, 4);
+        barre.setFill(Color.GREEN);
+        barre.layoutXProperty().bind(p.xProperty().multiply(TILE));
+        barre.layoutYProperty().bind(p.yProperty().multiply(TILE).subtract(6));
+
+        p.pvProperty().addListener((obs, ancien, nouveau) -> {
+            double ratio = nouveau.doubleValue() / pvMax;
+            barre.setWidth(TILE * ratio);
+            if (ratio > 0.5)       barre.setFill(Color.GREEN);
+            else if (ratio > 0.25) barre.setFill(Color.ORANGE);
+            else                   barre.setFill(Color.RED);
+        });
+
+        pane.getChildren().addAll(imageEnnemis, barre);
         affichageEnnemis.put(p, imageEnnemis);
+        barresVie.put(p, barre);
+
     }
 
     private void creerSpriteTour(Tour t) {
@@ -132,7 +158,11 @@ public class EntiteVue {
 
     private void supprimerSpriteEnnemi(Personnage p) {
         ImageView sprite = affichageEnnemis.remove(p);
+        Rectangle barre = barresVie.remove(p);
+
+
         if (sprite != null) pane.getChildren().remove(sprite);
+        if (barre != null)  pane.getChildren().remove(barre);
     }
 
     private void supprimerSpriteTour(Tour t) {

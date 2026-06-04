@@ -6,10 +6,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Jeu;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.EntiteVue;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.GestionAnimation;
@@ -26,6 +28,7 @@ public class Controleur {
     @FXML private Label labelVague;
     @FXML private Label labelCountdown;
 
+
     // --- Composants UI ---
     @FXML private Pane paneId;
     @FXML private TilePane panneTerrain;
@@ -34,6 +37,7 @@ public class Controleur {
     private Jeu jeu;
     private EntiteVue entiteVue;
     private Timeline gameLoop;
+    private Personnage personnage;
     // --- Placement de tours ---
     private String tourSelectionnee = null;
     private static final int TILE = 32;
@@ -51,6 +55,7 @@ public class Controleur {
                 jeu.getChateau().pvProperty().asString("Château : %d PV"));
         labelVague.textProperty().bind(
                 jeu.numeroVagueProperty().asString("Vague : %d"));
+
 
         // 3. Créer la vue terrain
         new TerrainVue(panneTerrain, paneId ,jeu.getTerrain()).dessiner();

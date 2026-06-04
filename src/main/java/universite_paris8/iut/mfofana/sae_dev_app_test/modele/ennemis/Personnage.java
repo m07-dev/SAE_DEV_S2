@@ -14,6 +14,7 @@ public abstract class Personnage {
 
     // IntegerProperty → la vue peut binder la barre de vie dessus
     private IntegerProperty pv = new SimpleIntegerProperty();
+    private final int pvMax;
 
     private Terrain terrain;
     private int vitesse;
@@ -30,6 +31,7 @@ public abstract class Personnage {
         this.pv.set(pv);
         this.terrain = terrain;
         this.vitesse = vitesse;
+        this.pvMax = pv;
     }
 
     // --- Effets de statut ---
@@ -70,6 +72,7 @@ public abstract class Personnage {
     public int getPv()   { return pv.get(); }
     public int getVitesse() { return vitesse; }
     public int getRecompense() { return 10; }
+    public int getPvMax() { return pvMax; }
 
     // --- Getters Property → pour les bindings dans la vue ---
     public DoubleProperty xProperty()  { return x; }
