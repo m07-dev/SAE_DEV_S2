@@ -87,16 +87,18 @@ public class EntiteVue {
     private void creerSpriteEnnemi(Personnage p) {
         // Image selon le type d'ennemi
         Image img;
-        if (p instanceof Bobomb) {
-            img = charger("bobomb.png");
+        if (p instanceof Goomba) {
+            img = charger("goomba.png");
         } else if (p instanceof Tortue) {
             img= charger("tortue.png");
         } else if (p instanceof Skeleton){
             img = charger("skeleton.png");
         } else if (p instanceof Boo) {
             img = charger("boo.png");
+        } else if (p instanceof Bobomb) {
+            img = charger("bobomb.png");
         } else {
-            img = charger("erreur.png");
+            img = charger("Feu.png");
         }
 
         ImageView imageEnnemis = new ImageView(img);

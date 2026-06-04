@@ -135,8 +135,9 @@ public class Jeu {
                 //int[] coin = (ennemisSpawnCeTick % 2 == 0) ? HAUT_GAUCHE1;
                 // A faire : Adapter les spawn des ennemis selon l'environnement
                 spawnEnnemi("BOO", BAS_DROIT);
-                spawnEnnemi("TORTUE", BAS_GAUCHE);
-                spawnEnnemi("SKELETON", HAUT_GAUCHE1);
+                spawnEnnemi("TORTUE", HAUT_GAUCHE1);
+                spawnEnnemi("SKELETON", HAUT_DROIT);
+                spawnEnnemi("GOOMBA", BAS_GAUCHE);
 
 
                 ennemisSpawnCeTick++;
@@ -182,10 +183,11 @@ public class Jeu {
         if (cheminEnnemi == null || cheminEnnemi.isEmpty()) return;
 
         Personnage modele = switch (typeE) {
-            case "BOBOMB" -> new Bobomb(coin[0], coin[1], terrain);
             case "TORTUE" -> new Tortue(coin[0], coin[1], terrain);
             case "SKELETON" -> new Skeleton(coin[0], coin[1], terrain);
             case "BOO" -> new Boo(coin[0], coin[1], terrain);
+            case "GOOMBA" -> new Goomba(coin[0], coin[1], terrain);
+            case "BOBOMB" -> new Bobomb(coin[0], coin[1], terrain);
             case "BOSS" -> new Boss(coin[0], coin[1], terrain);
             default       -> new Tortue(coin[1], coin[0], terrain);
         };
