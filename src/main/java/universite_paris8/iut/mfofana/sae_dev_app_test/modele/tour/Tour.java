@@ -8,8 +8,8 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
 public abstract class Tour {
 
     // DoubleProperty → la vue peut binder la position de la tour
-    private DoubleProperty x = new SimpleDoubleProperty();
-    private DoubleProperty y = new SimpleDoubleProperty();
+    private double x;
+    private double y ;
 
     private int cout, niveau;
     private int degat, portee;
@@ -20,8 +20,8 @@ public abstract class Tour {
 
     public Tour(double x, double y, int cout,
                 int degat, int portee, double cadence, int resistance) {
-        this.x.set(x);
-        this.y.set(y);
+        this.x = x;
+        this.y = y;
         this.cout = cout;
         this.niveau = 1;
         this.degat = degat;
@@ -31,8 +31,8 @@ public abstract class Tour {
     }
 
     // --- Getters valeurs simples ---
-    public double getX() { return x.get(); }
-    public double getY() { return y.get(); }
+    public double getX() { return x;}
+    public double getY() { return y;}
     public int getCout() { return cout; }
     public int getNiveau() { return niveau; }
     public int getDegat() { return degat; }
@@ -41,8 +41,8 @@ public abstract class Tour {
     public int getResistance() { return resistance; }
 
     // --- Getters Property → pour les bindings dans la vue ---
-    public DoubleProperty xProperty() { return x; }
-    public DoubleProperty yProperty() { return y; }
+    /*public DoubleProperty xProperty() { return x; }
+    public DoubleProperty yProperty() { return y; }*/
 
     // --- Setters ---
     public void setDegat(int degat) { this.degat = degat; }

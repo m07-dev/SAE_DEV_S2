@@ -7,16 +7,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Jeu;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.*;
-import universite_paris8.iut.mfofana.sae_dev_app_test.vue.EntiteVue;
-import universite_paris8.iut.mfofana.sae_dev_app_test.vue.GestionAnimation;
-import universite_paris8.iut.mfofana.sae_dev_app_test.vue.TerrainVue;
+import universite_paris8.iut.mfofana.sae_dev_app_test.vue.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class Controleur {
@@ -35,9 +35,9 @@ public class Controleur {
 
     // --- Modèle et Vue ---
     private Jeu jeu;
-    private EntiteVue entiteVue;
     private Timeline gameLoop;
-    private Personnage personnage;
+    private HashMap<Personnage, EnnemiVue> affichageEnnemis = new HashMap<>();
+    private HashMap<Tour, TourVue> affichageTour = new HashMap<>();
     // --- Placement de tours ---
     private String tourSelectionnee = null;
     private static final int TILE = 32;
@@ -47,8 +47,10 @@ public class Controleur {
 
         // 1. Créer le modèle
         jeu = new Jeu();
-
-        // 2. Bindings UI → modèle automatiques
+        ListenerListeEnnemis listeerennemi = new ListenerListeEnnemis(paneId, affichageEnnemis);
+        ListernerListeTour listeTour = new ListernerListeTour(paneId, affichageTour);
+        jeu.getEnnemis().addListener(listeerennemi);
+        jeu.getTours().addListener(listeTour);
         Solde.textProperty().bind(
                 jeu.piecesProperty().asString("Solde : %d$"));
         labelPvChateau.textProperty().bind(
@@ -56,16 +58,9 @@ public class Controleur {
         labelVague.textProperty().bind(
                 jeu.numeroVagueProperty().asString("Vague : %d"));
 
-
-        // 3. Créer la vue terrain
         new TerrainVue(panneTerrain, paneId ,jeu.getTerrain()).dessiner();
 
-        // 4. Créer la vue entités et brancher les listeners
-        entiteVue = new EntiteVue(paneId);
-        entiteVue.creerBindingsEnnemis(jeu.getEnnemis());
-        entiteVue.creerBindingsTours(jeu.getTours());
         GestionAnimation gestionAnimation = new GestionAnimation(paneId);
-
 
         // 5. Game loop → juste jeu.tick() !
          gameLoop = new Timeline(
