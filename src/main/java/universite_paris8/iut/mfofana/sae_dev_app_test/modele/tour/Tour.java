@@ -75,7 +75,7 @@ public abstract class Tour {
 
     public boolean peutTirer(int tickCount) {
         if (estParalysee()) return false;
-        double intervalleEnTicks = Math.max(1, 10 / cadence);
+        double intervalleEnTicks = Math.max(1, 60.0 / cadence);
         if(tickCount - dernierTickTir >= intervalleEnTicks){
             dernierTickTir = tickCount;
             return true;
