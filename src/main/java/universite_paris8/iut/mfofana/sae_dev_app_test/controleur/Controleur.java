@@ -75,7 +75,7 @@ public class Controleur {
                     // Game Over
                     if (jeu.estTermine()) {
                         gameLoop.stop();
-                        System.out.println("GAME OVER !");
+                        NavigationManager.allerVersGameOver();
                     }
                 })
         );
@@ -87,8 +87,19 @@ public class Controleur {
     }
 
     @FXML
+    public void clicContinuer(){
+        gameLoop.play();
+    }
+
+    @FXML
     public void clicLancerVague() {
         jeu.forcerLancement();
+    }
+
+    @FXML
+    public void clicPause() {
+        gameLoop.pause();
+        NavigationManager.allerVersPause();
     }
 
     // --- Boutons tours ---
@@ -115,6 +126,8 @@ public class Controleur {
         if (jeu.getPieces() >= 15) tourSelectionnee = "OBSTACLE";
         else System.out.println("Fonds insuffisants !");
     }
+
+
 
     // --- Placement de tours ---
     public void placerTourTerrain() {

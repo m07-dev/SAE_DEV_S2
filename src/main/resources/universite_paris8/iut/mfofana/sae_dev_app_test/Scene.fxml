@@ -159,6 +159,42 @@
                     </ImageView>
                 </graphic>
             </Button>
+            <HBox>
+                <Button fx:id="boutonPause" onAction="#clicPause"
+                    text="Pause"
+                    maxWidth="Infinity" prefHeight="72.0"
+                        prefWidth="90"
+                    style="-fx-background-color: #F2A21C;
+                    -fx-border-color: black;
+                    -fx-border-width: 4;
+                    -fx-background-radius: 0;
+                    -fx-border-radius: 0;
+                    -fx-text-fill: white;
+                    -fx-font-family: 'Arial Black';
+                    -fx-font-size: 11;
+                    -fx-font-weight: bold;
+                    -fx-effect: dropshadow(one-pass-box, black, 0, 1, 2, 2);
+                    -fx-cursor: hand;">
+                </Button>
+                <Button fx:id="boutonContinuer" onAction="#clicContinuer"
+                        text="Continuer"
+                        maxWidth="Infinity" prefHeight="72.0"
+                        prefWidth="90"
+                        style="-fx-background-color: #F2A21C;
+                    -fx-border-color: black;
+                    -fx-border-width: 4;
+                    -fx-background-radius: 0;
+                    -fx-border-radius: 0;
+                    -fx-text-fill: white;
+                    -fx-font-family: 'Arial Black';
+                    -fx-font-size: 11;
+                    -fx-font-weight: bold;
+                    -fx-effect: dropshadow(one-pass-box, black, 0, 1, 2, 2);
+                    -fx-cursor: hand;">
+                </Button>
+
+            </HBox>
+
 
         </VBox>
     </right>
