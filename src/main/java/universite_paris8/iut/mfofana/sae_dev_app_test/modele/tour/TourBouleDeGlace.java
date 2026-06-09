@@ -1,5 +1,6 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour;
 import javafx.collections.ObservableList;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.BouleGlace;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Projectile;
 
@@ -21,6 +22,6 @@ public class TourBouleDeGlace extends Tour {
 
     @Override
     public Projectile creerProjectile(double cibleX, double cibleY) {
-        return null;
+        return new BouleGlace(getX(), getY(), cibleX, cibleY, getDegat(), ralentissement);
     }
 }
