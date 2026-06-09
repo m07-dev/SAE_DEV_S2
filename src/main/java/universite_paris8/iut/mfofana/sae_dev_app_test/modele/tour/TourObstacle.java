@@ -1,6 +1,7 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour;
 import javafx.collections.ObservableList;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Projectile;
 
 public class TourObstacle extends Tour {
     private String tyObstacle;
@@ -14,5 +15,10 @@ public class TourObstacle extends Tour {
     @Override
     public void appliquerEffet(Personnage cible, ObservableList<Personnage> ennemis) {
         // Logique spécifique à l'obstacle (ex: repousser l'ennemi, l'étourdir)
+    }
+
+    @Override
+    public Projectile creerProjectile(double cibleX, double cibleY) {
+        return null;
     }
 }

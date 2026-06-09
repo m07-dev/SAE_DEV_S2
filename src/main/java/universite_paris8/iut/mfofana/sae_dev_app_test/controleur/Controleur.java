@@ -13,6 +13,7 @@ import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Jeu;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Projectile;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.*;
 
@@ -38,6 +39,7 @@ public class Controleur {
     private Timeline gameLoop;
     private HashMap<Personnage, EnnemiVue> affichageEnnemis = new HashMap<>();
     private HashMap<Tour, TourVue> affichageTour = new HashMap<>();
+    private HashMap<Projectile, ProjectileVue> affichageProjectile = new HashMap<>();
     // --- Placement de tours ---
     private String tourSelectionnee = null;
     private static final int TILE = 32;
@@ -49,8 +51,10 @@ public class Controleur {
         jeu = new Jeu();
         ListenerListeEnnemis listeerennemi = new ListenerListeEnnemis(paneId, affichageEnnemis);
         ListernerListeTour listeTour = new ListernerListeTour(paneId, affichageTour);
+        ListenerListeProjectile listeProjectile = new ListenerListeProjectile(paneId, affichageProjectile);
         jeu.getEnnemis().addListener(listeerennemi);
         jeu.getTours().addListener(listeTour);
+        jeu.getProjectiles().addListener(listeProjectile);
         Solde.textProperty().bind(
                 jeu.piecesProperty().asString("Solde : %d$"));
         labelPvChateau.textProperty().bind(
@@ -65,11 +69,11 @@ public class Controleur {
         // 5. Game loop → juste jeu.tick() !
          gameLoop = new Timeline(
                 new KeyFrame(Duration.seconds(0.017), ev -> {
-                    List<Jeu.GestionJeu.AlerteTir> evenements = jeu.tick();
+                    jeu.tick();
 
-                    for (Jeu.GestionJeu.AlerteTir e : evenements) {
-                        gestionAnimation.animationTirBouleFeu(e.tour, e.cible);
-                    }
+                    // Met à jour la position des projectiles
+                    listeProjectile.actualiserTous();
+
                     // Afficher le countdown entre vagues
                     labelCountdown.setText(jeu.getCountdownText());
                     // Game Over

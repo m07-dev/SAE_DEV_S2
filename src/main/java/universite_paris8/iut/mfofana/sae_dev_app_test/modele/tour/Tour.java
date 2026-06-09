@@ -4,6 +4,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ObservableList;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Projectile;
 
 public abstract class Tour {
 
@@ -102,14 +103,12 @@ public abstract class Tour {
         return ciblePlusProche;
     }
 
-    public Personnage tirer(ObservableList<Personnage> ennemis, int tickCount) {
+    public Projectile tirer(ObservableList<Personnage> ennemis, int tickCount) {
         if (!estParalysee() && peutTirer(tickCount) && !ennemis.isEmpty()) {
             Personnage cible = choisirCible(ennemis);
+
             if (cible != null) {
-                cible.subirDegat(this.degat);
-                appliquerEffet(cible, ennemis);
-                System.out.println(cible.getPv());
-                return cible;
+               return creerProjectile(cible.getX(), cible.getY());
             }
         }
         return null;
@@ -122,4 +121,6 @@ public abstract class Tour {
     }
 
     public abstract void appliquerEffet(Personnage cible, ObservableList<Personnage> ennemis);
+
+    public abstract Projectile creerProjectile(double cibleX, double cibleY);
 }

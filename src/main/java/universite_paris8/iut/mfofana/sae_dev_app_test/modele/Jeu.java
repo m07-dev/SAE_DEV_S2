@@ -19,6 +19,7 @@ public class Jeu {
     private ObservableList<Tour> tours = FXCollections.observableArrayList();
     private ObservableList<List<int[]>> chemins = FXCollections.observableArrayList();
     private ObservableList<Integer> indexChemins = FXCollections.observableArrayList();
+    private ObservableList<Projectile> projectiles = FXCollections.observableArrayList();
 
     // --- Modèle ---
     private Chateau chateau;
@@ -56,9 +57,8 @@ public class Jeu {
     // -----------------------------------------------------------
     // TICK → appelé à chaque frame par le contrôleur
     // -----------------------------------------------------------
-    public List<GestionJeu.AlerteTir> tick() {
-        List<GestionJeu.AlerteTir> evenements = new ArrayList<>();
-        if (chateau.estDetruit()) return evenements; // jeu terminé → on ne fait rien
+    public void tick() {
+        if (chateau.estDetruit()) // jeu terminé → on ne fait rien
 
         tickCount++;
 
@@ -85,7 +85,7 @@ public class Jeu {
             Personnage ennemi = ennemis.get(i);
 
             if (index < ch.size() - 1) {
-                int intervalle = Math.max(1, 4 / Math.max(1, ennemi.getVitesse()));
+                double intervalle = (int) Math.max(1, 4 / Math.max(1, ennemi.getVitesse()));
                 if (tickCount % intervalle == 0) {
                     int nouvelIndex = index + 1;
                     indexChemins.set(i, nouvelIndex);
@@ -108,13 +108,21 @@ public class Jeu {
         // 5. Tirs des tours
         for (Tour t : tours) {
             t.mettreAJourStatut();
-            Personnage cibleTouche = t.tirer(ennemis, tickCount);
+            Projectile p = t.tirer(ennemis, tickCount);
 
-            if (cibleTouche != null ) {
-                evenements.add(new GestionJeu.AlerteTir(t, cibleTouche));
+            if (p != null ) {
+                projectiles.add(p);
             }
         }
-        return evenements;
+
+        // 6. Déplacement des projectiles
+        for (int i = projectiles.size() - 1; i >= 0; i--) {
+            Projectile p = projectiles.get(i);
+            p.deplacer(ennemis);
+            if (!p.isActif()) {
+                projectiles.remove(i);
+            }
+        }
     }
 
     // -----------------------------------------------------------
@@ -240,13 +248,14 @@ public class Jeu {
     public Chateau getChateau() { return chateau; }
     public Terrain getTerrain() { return terrain; }
     public boolean estTermine() { return chateau.estDetruit(); }
+    public ObservableList<Projectile> getProjectiles() { return projectiles; }
 
     public IntegerProperty piecesProperty() { return pieces; }
     public IntegerProperty numeroVagueProperty() { return numeroVague; }
     public int getPieces() { return pieces.get(); }
     public int getNumeroVague() { return numeroVague.get(); }
 
-    public class GestionJeu {
+    /*public class GestionJeu {
 
         public static class AlerteTir {
             public final Tour tour;
@@ -258,4 +267,6 @@ public class Jeu {
             }
         }
     }
+
+     */
 }

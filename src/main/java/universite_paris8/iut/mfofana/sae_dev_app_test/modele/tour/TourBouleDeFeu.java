@@ -1,6 +1,8 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour;
 import javafx.collections.ObservableList;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.BouleFeu;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Projectile;
 
 public class TourBouleDeFeu extends Tour {
     private double vitesseBalle;
@@ -16,5 +18,11 @@ public class TourBouleDeFeu extends Tour {
     @Override
     public void appliquerEffet(Personnage cible, ObservableList<Personnage> ennemis) {
         cible.setTicksBrulure(5);
+    }
+
+    @Override
+    public Projectile creerProjectile(double cibleX, double cibleY) {
+        BouleFeu bouleF = new BouleFeu(getX(), getY(), cibleX, cibleY, getDegat(),effetBrulure);
+        return bouleF;
     }
 }
