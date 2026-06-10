@@ -5,7 +5,6 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Ennemis;
 
 public abstract class Tour {
 
-    // DoubleProperty → la vue peut binder la position de la tour
     private double x;
     private double y ;
 
@@ -38,7 +37,7 @@ public abstract class Tour {
     public double getCadence() { return cadence; }
     public int getResistance() { return resistance; }
 
-    // --- Getters Property → pour les bindings dans la vue ---
+    // --- Getters Property â†’ pour les bindings dans la vue ---
     /*public DoubleProperty xProperty() { return x; }
     public DoubleProperty yProperty() { return y; }*/
 

@@ -10,8 +10,8 @@ import java.util.List;
 public class Bobomb extends Ennemis {
     private int degat;
 
-    public Bobomb(double x, double y, Terrain e, List<Point2D> chemin) {
-        super(x, y, e, 100, 6, chemin);
+    public Bobomb(double x, double y, Terrain e, List<Point2D> chemin,Point2D cible) {
+        super(x, y, e, 100, 6, chemin, cible);
         this.degat = 25;
     }
 

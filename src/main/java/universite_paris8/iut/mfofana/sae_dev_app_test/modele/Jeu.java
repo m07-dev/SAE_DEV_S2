@@ -8,29 +8,30 @@ import javafx.geometry.Point2D;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Chateau;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.TourObstacle;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Jeu {
 
-    // --- Listes observables → la vue écoute ces listes ---
+    // --- Listes observables â†’ la vue Ã©coute ces listes ---
     private ObservableList<Ennemis> ennemis = FXCollections.observableArrayList();
     private ObservableList<Tour> tours = FXCollections.observableArrayList();
     private ObservableList<List<int[]>> chemins = FXCollections.observableArrayList();
     private ObservableList<Integer> indexChemins = FXCollections.observableArrayList();
 
-    // --- Modèle ---
+    // --- ModÃ¨le ---
     private Chateau chateau;
     private Terrain terrain;
 
-    // --- Properties → bindings dans le contrôleur ---
+    // --- Properties â†’ bindings dans le contrÃ´leur ---
     private IntegerProperty pieces = new SimpleIntegerProperty(50);
     private IntegerProperty numeroVague = new SimpleIntegerProperty(0);
 
     // --- Gestion des vagues ---
     private int tickCount = 0;
-    private int ticksAvantProchainVague = 0; // compte à rebours en ticks
+    private int ticksAvantProchainVague = 0; // compte Ã  rebours en ticks
     private boolean vagueEnCours = false;
     private int ennemisSpawnCeTick = 0;      // index de l'ennemi en cours de spawn
 
@@ -39,12 +40,15 @@ public class Jeu {
     private static final int DELAI_ENTRE_VAGUES = 10 * TICKS_PAR_SECONDE; // 10 secondes
     private static final int DELAI_ENTRE_SPAWNS = (int)(1.5 * TICKS_PAR_SECONDE); // 1.5s entre chaque spawn
 
-    // Points d'entrée
-    private static final int[] HAUT_GAUCHE1 = {0, 4};
-    private static final int[] HAUT_GAUCHE2 = {5, 0};
-    private static final int[] HAUT_DROIT  = {0, 27};
-    private static final int[] BAS_GAUCHE  = {21, 2};
-    private static final int[] BAS_DROIT   = {21, 28};
+    // Points d'entrÃ©e
+    private static final int[] HAUT_GAUCHE = {0, 12};
+    private static final int[] HAUT_DROITE = {0, 20};
+    private static final int[] BAS_GAUCHE  = {21, 6};
+    private static final int[] BAS_DROIT   = {21, 24};
+    private static final int[] GAUCHE_HAUT  = {4, 0};
+    private static final int[] GAUCHE_BAS  = {13, 0};
+    private static final int[] DROITE_HAUT  = {3, 29};
+    private static final int[] DROITE_BAS   = {16, 29};
 
 
     public Jeu() {
@@ -54,15 +58,15 @@ public class Jeu {
     }
 
     // -----------------------------------------------------------
-    // TICK → appelé à chaque frame par le contrôleur
+    // TICK â†’ appelÃ© Ã  chaque frame par le contrÃ´leur
     // -----------------------------------------------------------
     public List<GestionJeu.AlerteTir> tick() {
         List<GestionJeu.AlerteTir> evenements = new ArrayList<>();
-        if (chateau.estDetruit()) return evenements; // jeu terminé → on ne fait rien
+        if (chateau.estDetruit()) return evenements; // jeu terminÃ© â†’ on ne fait rien
 
         tickCount++;
 
-        // 1. Gérer les vagues
+        // 1. GÃ©rer les vagues
         gererVagues();
 
         // 2. Effets de statut sur les ennemis
@@ -71,15 +75,15 @@ public class Jeu {
             p.seDeplacer();
         }
 
-        // 3. Vérifier les morts
+        // 3. VÃ©rifier les morts
         for (int i = ennemis.size() - 1; i >= 0; i--) {
             if (ennemis.get(i).estMort()) {
                 pieces.set(pieces.get() + ennemis.get(i).getRecompense());
                 supprimerEnnemi(i);
             } else if (ennemis.get(i).aAtteintLeChateau()) {
-            chateau.subirDegat(10);
-            supprimerEnnemi(i);
-        }
+                chateau.subirDegat(10);
+                supprimerEnnemi(i);
+            }
         }
 
         /**/
@@ -101,7 +105,7 @@ public class Jeu {
     // -----------------------------------------------------------
     private void gererVagues() {
         if (!vagueEnCours) {
-            // On est entre deux vagues → décompte
+            // On est entre deux vagues â†’ dÃ©compte
             ticksAvantProchainVague--;
 
             if (ticksAvantProchainVague <= 0) {
@@ -109,26 +113,26 @@ public class Jeu {
                 lancerVague();
             }
         } else {
-            // Vague en cours → spawner les ennemis progressivement
+            // Vague en cours â†’ spawner les ennemis progressivement
             if (ennemisSpawnCeTick < nbEnnemisVague() && tickCount % DELAI_ENTRE_SPAWNS == 0) {
                 //int[] coin = (ennemisSpawnCeTick % 2 == 0) ? HAUT_GAUCHE1;
                 // A faire : Adapter les spawn des ennemis selon l'environnement
                 spawnEnnemi("BOO", BAS_DROIT);
-                spawnEnnemi("TORTUE", HAUT_GAUCHE1);
-                spawnEnnemi("SKELETON", HAUT_DROIT);
-                spawnEnnemi("GOOMBA", BAS_GAUCHE);
+                spawnEnnemi("TORTUE", GAUCHE_HAUT);
+                spawnEnnemi("SKELETON", HAUT_DROITE);
+                spawnEnnemi("GOOMBA", GAUCHE_BAS);
 
 
                 ennemisSpawnCeTick++;
             }
 
-            // Bobombs à partir de la vague 3
+            // Bobombs Ã  partir de la vague 3
             if (numeroVague.get() >= 3 && ennemisSpawnCeTick == nbEnnemisVague()) {
                 /*spawnEnnemi("BOBOMB", BAS_GAUCHE);*/
-                ennemisSpawnCeTick++; // évite de spawner en boucle
+                ennemisSpawnCeTick++; // Ã©vite de spawner en boucle
             }
 
-            // La vague est terminée quand tous les ennemis sont morts
+            // La vague est terminÃ©e quand tous les ennemis sont morts
             if (ennemis.isEmpty() && ennemisSpawnCeTick >= nbEnnemisVague()) {
                 vagueEnCours = false;
                 ticksAvantProchainVague = DELAI_ENTRE_VAGUES;
@@ -169,20 +173,14 @@ public class Jeu {
         List<Point2D> cheminEnnemi = terrain.algoBFS(source, cible);
 
         Ennemis modele = switch (typeE) {
-            case "TORTUE"   -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi);
-            case "SKELETON" -> new Skeleton(coin[1], coin[0], terrain, cheminEnnemi);
-            case "BOO" -> new Boo(coin[1], coin[0], terrain, cheminEnnemi);
-            case "GOOMBA" -> new Goomba(coin[1], coin[0], terrain, cheminEnnemi);
-            case "BOBOMB" -> new Bobomb(coin[1], coin[0], terrain, cheminEnnemi);
-            case "BOSS" -> new Boss(coin[1], coin[0], terrain, cheminEnnemi);
-            default         -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi);
+            case "TORTUE"   -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi, cible);
+            case "SKELETON" -> new Skeleton(coin[0], coin[1], terrain, cheminEnnemi,cible);
+            case "BOO" -> new Boo(coin[1], coin[0], terrain, cheminEnnemi,cible);
+            case "GOOMBA" -> new Goomba(coin[1], coin[0], terrain, cheminEnnemi,cible);
+            case "BOBOMB" -> new Bobomb(coin[1], coin[0], terrain, cheminEnnemi,cible);
+            case "BOSS" -> new Boss(coin[1], coin[0], terrain, cheminEnnemi,cible);
+            default         -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi,cible);
         };
-
-        if (typeE.equals("SKELETON") || typeE.equals("BOO")) {
-            cible = (coin[0] <= 5) ? new Point2D(14, 9) : new Point2D(14, 12);
-        } else {
-            cible = (coin[0] <= 5) ? new Point2D(13, 9) : new Point2D(13, 12);
-        }
         ennemis.add(modele);
     }
 
@@ -192,14 +190,23 @@ public class Jeu {
     public void poserTour(Tour t, int cout) {
         if (pieces.get() >= cout) {
             pieces.set(pieces.get() - cout);
-            tours.add(t); // → ListChangeListener crée le sprite automatiquement !
+            tours.add(t); // â†’ ListChangeListener crÃ©e le sprite automatiquement !
+            if (t instanceof TourObstacle) {
+                terrain.bloquerCase((int) t.getY(), (int) t.getX());
+                recalculerTousLesChemins();
+            }
         } else {
             System.out.println("Fonds insuffisants !");
         }
     }
+    public void recalculerTousLesChemins() {
+        for (Ennemis e : ennemis) {
+            e.recalculerChemin(terrain);
+        }
+    }
 
     // -----------------------------------------------------------
-    // TEXTE COUNTDOWN → affiché dans le contrôleur
+    // TEXTE COUNTDOWN â†’ affichÃ© dans le contrÃ´leur
     // -----------------------------------------------------------
     public String getCountdownText() {
         if (vagueEnCours) {
@@ -211,13 +218,11 @@ public class Jeu {
     }
 
     // -----------------------------------------------------------
-    // UTILITAIRES PRIVÉS
+    // UTILITAIRES PRIVÃ‰S
     // -----------------------------------------------------------
     private void supprimerEnnemi(int i) {
-        // On supprime de la liste → le ListChangeListener supprime le sprite automatiquement !
+        // On supprime de la liste â†’ le ListChangeListener supprime le sprite automatiquement !
         ennemis.remove(i);
-        chemins.remove(i);
-        indexChemins.remove(i);
     }
 
     // -----------------------------------------------------------
@@ -228,7 +233,6 @@ public class Jeu {
     public Chateau getChateau() { return chateau; }
     public Terrain getTerrain() { return terrain; }
     public boolean estTermine() { return chateau.estDetruit(); }
-
     public IntegerProperty piecesProperty() { return pieces; }
     public IntegerProperty numeroVagueProperty() { return numeroVague; }
     public int getPieces() { return pieces.get(); }

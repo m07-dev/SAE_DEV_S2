@@ -12,11 +12,12 @@ import java.util.List;
 public abstract class Ennemis {
     private List<Point2D> chemin;
     private int indexCible;
-    // DoubleProperty → la vue peut binder sa position dessus
+    private Point2D cible;
+    // DoubleProperty â†’ la vue peut binder sa position dessus
     private DoubleProperty x = new SimpleDoubleProperty();
     private DoubleProperty y = new SimpleDoubleProperty();
 
-    // IntegerProperty → la vue peut binder la barre de vie dessus
+    // IntegerProperty â†’ la vue peut binder la barre de vie dessus
     private IntegerProperty pv = new SimpleIntegerProperty();
     private final int pvMax;
 
@@ -29,15 +30,16 @@ public abstract class Ennemis {
     private int vitesseOriginale = 0;
     private int ticksRalentissement = 0;
 
-    public Ennemis(double x, double y, Terrain terrain, int pv, int vitesse, List<Point2D> chemin) {
-        this.x.set(x);      // on initialise via .set()
-        this.y.set(y);      // car c'est une Property, pas un double simple
+    public Ennemis(double x, double y, Terrain terrain, int pv, int vitesse, List<Point2D> chemin, Point2D cible) {
+        this.x.set(x);
+        this.y.set(y);
         this.pv.set(pv);
         this.terrain = terrain;
         this.vitesse = vitesse;
         this.pvMax = pv;
         this.chemin = chemin;
         this.indexCible = 1;
+        this.cible = cible;
     }
 
     // --- Effets de statut ---
@@ -53,7 +55,7 @@ public abstract class Ennemis {
 
     public void setTicksBrulure(int ticks) {
         if(this.ticksBrulure <= 0){
-        this.ticksBrulure = ticks;
+            this.ticksBrulure = ticks;
         }
     }
 
@@ -68,6 +70,14 @@ public abstract class Ennemis {
                 this.vitesse = this.vitesseOriginale;
                 this.ralenti = false;
             }
+        }
+    }
+    public void recalculerChemin(Terrain terrain) {
+        Point2D posActuelle = new Point2D(Math.round(getX()), Math.round(getY()));
+        List<Point2D> nouveauChemin = terrain.algoBFS(posActuelle, this.cible);
+        if (!nouveauChemin.isEmpty()) {
+            this.chemin = nouveauChemin;
+            this.indexCible = 1;
         }
     }
 
@@ -109,7 +119,7 @@ public abstract class Ennemis {
     public int getRecompense() { return 10; }
     public int getPvMax() { return pvMax; }
 
-    // --- Getters Property → pour les bindings dans la vue ---
+    // --- Getters Property â†’ pour les bindings dans la vue ---
     public DoubleProperty xProperty()  { return x; }
     public DoubleProperty yProperty()  { return y; }
     public IntegerProperty pvProperty() { return pv; }

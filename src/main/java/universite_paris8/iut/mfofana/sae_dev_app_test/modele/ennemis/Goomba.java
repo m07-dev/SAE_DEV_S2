@@ -7,11 +7,11 @@ import java.util.List;
 
 public class Goomba extends Ennemis {
     private int degat;
-    public Goomba(double x, double y, Terrain terrain, int pv, int vitesse, List<Point2D> chemin) {
-        super(x, y, terrain, pv, vitesse, chemin);
+    public Goomba(double x, double y, Terrain terrain, int pv, int vitesse, List<Point2D> chemin,Point2D cible) {
+        super(x, y, terrain, pv, vitesse, chemin, cible);
     }
-    public Goomba(double x, double y, Terrain e, List<Point2D> chemin) {
-        super(x, y, e, 100, 1, chemin);
+    public Goomba(double x, double y, Terrain e, List<Point2D> chemin,Point2D cible) {
+        super(x, y, e, 100, 1, chemin, cible);
         this.degat = 25;
     }
 }
