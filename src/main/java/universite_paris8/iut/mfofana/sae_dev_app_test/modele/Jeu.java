@@ -4,10 +4,10 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Chateau;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
-import universite_paris8.iut.mfofana.sae_dev_app_test.vue.GestionAnimation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 public class Jeu {
 
     // --- Listes observables → la vue écoute ces listes ---
-    private ObservableList<Personnage> ennemis = FXCollections.observableArrayList();
+    private ObservableList<Ennemis> ennemis = FXCollections.observableArrayList();
     private ObservableList<Tour> tours = FXCollections.observableArrayList();
     private ObservableList<List<int[]>> chemins = FXCollections.observableArrayList();
     private ObservableList<Integer> indexChemins = FXCollections.observableArrayList();
@@ -66,8 +66,9 @@ public class Jeu {
         gererVagues();
 
         // 2. Effets de statut sur les ennemis
-        for (Personnage p : ennemis) {
+        for (Ennemis p : ennemis) {
             p.mettreAJourEffets();
+            p.seDeplacer();
         }
 
         // 3. Vérifier les morts
@@ -75,40 +76,18 @@ public class Jeu {
             if (ennemis.get(i).estMort()) {
                 pieces.set(pieces.get() + ennemis.get(i).getRecompense());
                 supprimerEnnemi(i);
-            }
+            } else if (ennemis.get(i).aAtteintLeChateau()) {
+            chateau.subirDegat(10);
+            supprimerEnnemi(i);
+        }
         }
 
-        // 4. Déplacer les ennemis
-        for (int i = 0; i < ennemis.size(); i++) {
-            int index = indexChemins.get(i);
-            List<int[]> ch = chemins.get(i);
-            Personnage ennemi = ennemis.get(i);
-
-            if (index < ch.size() - 1) {
-                int intervalle = Math.max(1, 4 / Math.max(1, ennemi.getVitesse()));
-                if (tickCount % intervalle == 0) {
-                    int nouvelIndex = index + 1;
-                    indexChemins.set(i, nouvelIndex);
-
-                    int ligne   = ch.get(nouvelIndex)[0];
-                    int colonne = ch.get(nouvelIndex)[1];
-
-                    // setX/setY → DoubleProperty → le sprite se déplace automatiquement !
-                    ennemi.setX(colonne);
-                    ennemi.setY(ligne);
-                }
-            } else {
-                // L'ennemi a atteint le château
-                chateau.subirDegat(10);
-                supprimerEnnemi(i);
-                i--;
-            }
-        }
+        /**/
 
         // 5. Tirs des tours
         for (Tour t : tours) {
             t.mettreAJourStatut();
-            Personnage cibleTouche = t.tirer(ennemis, tickCount);
+            Ennemis cibleTouche = t.tirer(ennemis, tickCount);
 
             if (cibleTouche != null ) {
                 evenements.add(new GestionJeu.AlerteTir(t, cibleTouche));
@@ -145,7 +124,7 @@ public class Jeu {
 
             // Bobombs à partir de la vague 3
             if (numeroVague.get() >= 3 && ennemisSpawnCeTick == nbEnnemisVague()) {
-                spawnEnnemi("BOBOMB", BAS_GAUCHE);
+                /*spawnEnnemi("BOBOMB", BAS_GAUCHE);*/
                 ennemisSpawnCeTick++; // évite de spawner en boucle
             }
 
@@ -179,23 +158,32 @@ public class Jeu {
     // SPAWN
     // -----------------------------------------------------------
     public void spawnEnnemi(String typeE, int[] coin) {
-        List<int[]> cheminEnnemi = terrain.extraireChemin(coin[0], coin[1]);
-        if (cheminEnnemi == null || cheminEnnemi.isEmpty()) return;
+        Point2D source = new Point2D(coin[1], coin[0]);
 
-        Personnage modele = switch (typeE) {
-            case "TORTUE" -> new Tortue(coin[0], coin[1], terrain);
-            case "SKELETON" -> new Skeleton(coin[0], coin[1], terrain);
-            case "BOO" -> new Boo(coin[0], coin[1], terrain);
-            case "GOOMBA" -> new Goomba(coin[0], coin[1], terrain);
-            case "BOBOMB" -> new Bobomb(coin[0], coin[1], terrain);
-            case "BOSS" -> new Boss(coin[0], coin[1], terrain);
-            default       -> new Tortue(coin[1], coin[0], terrain);
+        Point2D cible;
+        if (typeE.equals("SKELETON") || typeE.equals("BOO")) {
+            cible = (coin[0] <= 5) ? new Point2D(17, 9) : new Point2D(17, 12);
+        } else {
+            cible = (coin[0] <= 5) ? new Point2D(12, 9) : new Point2D(12, 12);
+        }
+        List<Point2D> cheminEnnemi = terrain.algoBFS(source, cible);
+
+        Ennemis modele = switch (typeE) {
+            case "TORTUE"   -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi);
+            case "SKELETON" -> new Skeleton(coin[1], coin[0], terrain, cheminEnnemi);
+            case "BOO" -> new Boo(coin[1], coin[0], terrain, cheminEnnemi);
+            case "GOOMBA" -> new Goomba(coin[1], coin[0], terrain, cheminEnnemi);
+            case "BOBOMB" -> new Bobomb(coin[1], coin[0], terrain, cheminEnnemi);
+            case "BOSS" -> new Boss(coin[1], coin[0], terrain, cheminEnnemi);
+            default         -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi);
         };
 
-        // On ajoute à la liste → le ListChangeListener crée le sprite automatiquement !
+        if (typeE.equals("SKELETON") || typeE.equals("BOO")) {
+            cible = (coin[0] <= 5) ? new Point2D(14, 9) : new Point2D(14, 12);
+        } else {
+            cible = (coin[0] <= 5) ? new Point2D(13, 9) : new Point2D(13, 12);
+        }
         ennemis.add(modele);
-        chemins.add(cheminEnnemi);
-        indexChemins.add(0);
     }
 
     // -----------------------------------------------------------
@@ -235,7 +223,7 @@ public class Jeu {
     // -----------------------------------------------------------
     // GETTERS
     // -----------------------------------------------------------
-    public ObservableList<Personnage> getEnnemis() { return ennemis; }
+    public ObservableList<Ennemis> getEnnemis() { return ennemis; }
     public ObservableList<Tour> getTours() { return tours; }
     public Chateau getChateau() { return chateau; }
     public Terrain getTerrain() { return terrain; }
@@ -250,9 +238,9 @@ public class Jeu {
 
         public static class AlerteTir {
             public final Tour tour;
-            public final Personnage cible;
+            public final Ennemis cible;
 
-            public AlerteTir(Tour tour, Personnage cible) {
+            public AlerteTir(Tour tour, Ennemis cible) {
                 this.tour = tour;
                 this.cible = cible;
             }

@@ -8,10 +8,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.*;
 
-import java.util.HashMap;
-
 public class EnnemiVue extends VBox {
-    private Personnage p;
+    private Ennemis p;
     private Pane pane;
 
     private static final int TILE = 32;
@@ -19,7 +17,7 @@ public class EnnemiVue extends VBox {
             "/universite_paris8/iut/mfofana/sae_dev_app_test/Personnages/";
 
 
-    public EnnemiVue(Pane pane, Personnage p){
+    public EnnemiVue(Pane pane, Ennemis p){
         super();
         this.pane = pane;
         this.p = p;
@@ -28,7 +26,7 @@ public class EnnemiVue extends VBox {
         pane.getChildren().add(this);
     }
 
-    public void creerSpriteEnnemi(Personnage p) {
+    public void creerSpriteEnnemi(Ennemis p) {
         // Image selon le type d'ennemi
         Image img;
         if (p instanceof Goomba) {

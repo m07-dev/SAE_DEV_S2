@@ -1,14 +1,17 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis;
 
+import javafx.geometry.Point2D;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
 
-public class Goomba extends Personnage{
+import java.util.List;
+
+public class Goomba extends Ennemis {
     private int degat;
-    public Goomba(double x, double y, Terrain terrain, int pv, int vitesse) {
-        super(x, y, terrain, pv, vitesse);
+    public Goomba(double x, double y, Terrain terrain, int pv, int vitesse, List<Point2D> chemin) {
+        super(x, y, terrain, pv, vitesse, chemin);
     }
-    public Goomba(double x, double y, Terrain e) {
-        super(x, y, e, 100, 1);
+    public Goomba(double x, double y, Terrain e, List<Point2D> chemin) {
+        super(x, y, e, 100, 1, chemin);
         this.degat = 25;
     }
 }

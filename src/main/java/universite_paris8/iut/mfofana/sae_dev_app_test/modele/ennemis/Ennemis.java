@@ -4,10 +4,14 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.geometry.Point2D;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
 
-public abstract class Personnage {
+import java.util.List;
 
+public abstract class Ennemis {
+    private List<Point2D> chemin;
+    private int indexCible;
     // DoubleProperty → la vue peut binder sa position dessus
     private DoubleProperty x = new SimpleDoubleProperty();
     private DoubleProperty y = new SimpleDoubleProperty();
@@ -25,13 +29,15 @@ public abstract class Personnage {
     private int vitesseOriginale = 0;
     private int ticksRalentissement = 0;
 
-    public Personnage(double x, double y, Terrain terrain, int pv, int vitesse) {
+    public Ennemis(double x, double y, Terrain terrain, int pv, int vitesse, List<Point2D> chemin) {
         this.x.set(x);      // on initialise via .set()
         this.y.set(y);      // car c'est une Property, pas un double simple
         this.pv.set(pv);
         this.terrain = terrain;
         this.vitesse = vitesse;
         this.pvMax = pv;
+        this.chemin = chemin;
+        this.indexCible = 1;
     }
 
     // --- Effets de statut ---
@@ -63,6 +69,35 @@ public abstract class Personnage {
                 this.ralenti = false;
             }
         }
+    }
+
+    public void seDeplacer(){
+        if (chemin != null && indexCible < chemin.size()) {
+            Point2D cibleActuelle = chemin.get(indexCible);
+            double disX = cibleActuelle.getX() - this.getX();
+            double disY = cibleActuelle.getY() - this.getY();
+
+            if(disX > 0){
+                this.setX(this.getX() + vitesse / 60.0);
+            } else if (disX < 0) {
+                this.setX(this.getX() - vitesse / 60.0);
+            }
+
+            if(disY > 0){
+                this.setY(this.getY() + vitesse / 60.0);
+            } else if (disY < 0) {
+                this.setY(this.getY() - vitesse / 60.0);
+            }
+
+            if (Math.abs(disX) <= vitesse / 60.0 && Math.abs(disY) <= vitesse/ 60.0) {
+                this.setX(cibleActuelle.getX()); // snap exact sur la case
+                this.setY(cibleActuelle.getY());
+                indexCible++;
+            }
+        }
+    }
+    public boolean aAtteintLeChateau() {
+        return chemin != null && indexCible >= chemin.size();
     }
 
 

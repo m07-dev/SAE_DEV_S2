@@ -1,9 +1,7 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ObservableList;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Ennemis;
 
 public abstract class Tour {
 
@@ -83,11 +81,11 @@ public abstract class Tour {
         return false;
     }
 
-    public Personnage choisirCible(ObservableList<Personnage> ennemis) {
-        Personnage ciblePlusProche = null;
+    public Ennemis choisirCible(ObservableList<Ennemis> ennemis) {
+        Ennemis ciblePlusProche = null;
         double distanceMin = Double.MAX_VALUE;
 
-        for (Personnage e : ennemis) {
+        for (Ennemis e : ennemis) {
             double distance = Math.sqrt(
                     Math.pow(e.getX() - this.getX(), 2) +
                             Math.pow(e.getY() - this.getY(), 2)
@@ -102,9 +100,9 @@ public abstract class Tour {
         return ciblePlusProche;
     }
 
-    public Personnage tirer(ObservableList<Personnage> ennemis, int tickCount) {
+    public Ennemis tirer(ObservableList<Ennemis> ennemis, int tickCount) {
         if (!estParalysee() && peutTirer(tickCount) && !ennemis.isEmpty()) {
-            Personnage cible = choisirCible(ennemis);
+            Ennemis cible = choisirCible(ennemis);
             if (cible != null) {
                 cible.subirDegat(this.degat);
                 appliquerEffet(cible, ennemis);
@@ -121,5 +119,5 @@ public abstract class Tour {
         }
     }
 
-    public abstract void appliquerEffet(Personnage cible, ObservableList<Personnage> ennemis);
+    public abstract void appliquerEffet(Ennemis cible, ObservableList<Ennemis> ennemis);
 }

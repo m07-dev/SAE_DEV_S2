@@ -1,10 +1,8 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.List;
+import javafx.geometry.Point2D;
+
+import java.util.*;
 
 public class Terrain {
 
@@ -50,128 +48,85 @@ public class Terrain {
                 {0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0},
                 {0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0}
         };
-        calculerChateau();
+        this.chateauLigne = 9;
+        this.chateauColonne = 13;
+        this.chateauTaille = 4;
     }
 
-    // LE RADAR À CHÂTEAU
-    // On passe le doigt sur chaque case pour trouver où sont les "2"
-    private void calculerChateau() {
-        // On lit la carte de haut en bas, gauche à droite
-        for (int l = 0; l < terrain.length; l++) {
-            for (int c = 0; c < terrain[l].length; c++) {
+    public List<Point2D> algoBFS(Point2D source, Point2D cible) {
+        if (source == null || cible == null) {
+            return new ArrayList<>();
+        }
 
-                // BINGO ! On a touché la toute première case du château.
-                // C'est forcément le point le plus en haut à gauche.
-                if (terrain[l][c] == CHATEAU) {
-                    this.chateauLigne = l;
-                    this.chateauColonne = c;
+        int srcLigne = (int) source.getY();
+        int srcCol = (int) source.getX();
 
-                    // On compte juste combien de cases de château il y a en dessous
-                    int taille = 0;
-                    while (l + taille < terrain.length && terrain[l + taille][c] == CHATEAU) {
-                        taille++;
+        // Vérifier si la case de départ est valide
+        int valeurDepart = getTileTerrain(srcLigne, srcCol);
+        if (valeurDepart != 1 && valeurDepart != 2) {
+            System.out.println("Erreur : La case de départ (" + srcLigne + "," + srcCol + ") n'est pas un chemin !");
+            return new ArrayList<>();
+        }
+
+        ArrayList<Point2D> parcours = new ArrayList<>();
+        Map<Point2D, Point2D> predecesseurs = new HashMap<>();
+        Queue<Point2D> fifo = new LinkedList<>();
+
+        parcours.add(source);
+        fifo.add(source);
+        predecesseurs.put(source, null);
+        boolean cibleTrouvee = false;
+        while (!fifo.isEmpty()) {
+            Point2D actuelVisite = fifo.poll();
+            if (actuelVisite.equals(cible)) {
+                cibleTrouvee = true;
+            }else {
+                for (Point2D voisin : estAdjacent(actuelVisite)) {
+                    if (!parcours.contains(voisin)) {
+                        parcours.add(voisin);
+                        fifo.add(voisin);
+                        predecesseurs.put(voisin, actuelVisite);
                     }
-
-                    this.chateauTaille = taille;
-
-                    return; // Mission accomplie, on coupe tout et on sort de la méthode !
                 }
             }
         }
 
-        // Si on arrive ici, c'est qu'on a scanné toute la carte sans rien trouver
-        this.chateauLigne = 0;
-        this.chateauColonne = 0;
-        this.chateauTaille = 0;
-    }
-
-    // Les 4 directions pour se déplacer (Haut, Bas, Gauche, Droite)
-    private static final int[][] DIRS = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-
-    // LE GPS DES ENNEMIS
-    public List<int[]> extraireChemin(int startL, int startC) {
-        int nbLignes = terrain.length;
-        int nbColonnes = terrain[0].length;
-
-        if (startL < 0 || startL >= nbLignes || startC < 0 || startC >= nbColonnes || terrain[startL][startC] != CHEMIN) {
-            return null;
+        if (!predecesseurs.containsKey(cible)) {
+            System.out.println("⚠Aucun chemin trouvé entre la source et la cible.");
+            return new ArrayList<>();
         }
 
-        // 1. LES DEUX CALQUES DE MÉMOIRE
-        int[][] provenanceLigne = new int[nbLignes][nbColonnes];
-        int[][] provenanceColonne = new int[nbLignes][nbColonnes];
-
-        for (int[] ligne : provenanceLigne) {
-            Arrays.fill(ligne, -2); // -2 = "L'eau n'est pas encore passée par ici"
+        ArrayList<Point2D> chemin = new ArrayList<>();
+        Point2D actuel = cible;
+        while (actuel != null) {
+            chemin.add(actuel);
+            actuel = predecesseurs.get(actuel);
         }
-
-        Deque<int[]> file = new ArrayDeque<>();
-        file.add(new int[]{startL, startC});
-        provenanceLigne[startL][startC] = -1; // Le point de départ n'a pas de provenance
-
-        int[] but = null;
-
-        // 2. L'INONDATION
-        while (!file.isEmpty()) {
-            int[] actuelle = file.poll();
-            int l = actuelle[0];
-            int c = actuelle[1];
-
-            if (estAdjacentChateau(l, c)) {
-                but = actuelle;
-                break;
-            }
-
-            for (int[] d : DIRS) {
-                int nl = l + d[0]; // Nouvelle Ligne
-                int nc = c + d[1]; // Nouvelle Colonne
-
-                // Si c'est un chemin et que l'eau n'y est jamais allée (la provenance est toujours à -2)
-                if (nl >= 0 && nl < nbLignes && nc >= 0 && nc < nbColonnes
-                        && terrain[nl][nc] == CHEMIN && provenanceLigne[nl][nc] == -2) {
-
-                    // ON LAISSE NOTRE MESSAGE SUR LA NOUVELLE CASE :
-                    // "Pour arriver sur cette nouvelle case (nl, nc), je proviens de la case (l, c)"
-                    provenanceLigne[nl][nc] = l;
-                    provenanceColonne[nl][nc] = c;
-
-                    file.add(new int[]{nl, nc});
-                }
-            }
-        }
-
-        if (but == null) return null;
-
-        // 3. LE REMBOBINAGE
-        List<int[]> chemin = new ArrayList<>();
-        int l = but[0];
-        int c = but[1];
-
-        while (l != -1) {
-            chemin.add(0, new int[]{l, c});
-
-            // On regarde d'où on provenait pour reculer
-            int ligneAvant = provenanceLigne[l][c];
-            int colonneAvant = provenanceColonne[l][c];
-
-            l = ligneAvant;
-            c = colonneAvant;
-        }
-
+        Collections.reverse(chemin);
         return chemin;
     }
 
-    // LE CAPTEUR DE PROXIMITÉ
-    // Regarde les 4 cases collées pour voir s'il y a un mur du château (le chiffre 2)
-    private boolean estAdjacentChateau(int l, int c) {
-        for (int[] d : DIRS) {
-            int nl = l + d[0], nc = c + d[1];
-            if (nl >= 0 && nl < terrain.length && nc >= 0 && nc < terrain[0].length
-                    && terrain[nl][nc] == CHATEAU) {
-                return true; // Bip bip, château détecté !
+    public List<Point2D> estAdjacent(Point2D actuel) {
+        List<Point2D> adj = new ArrayList<>();
+        if (actuel == null) {
+            return adj;
+        }
+        // Rappel : Point2D(X, Y) -> X = Colonne, Y = Ligne
+        int col = (int) actuel.getX();
+        int ligne = (int) actuel.getY();
+
+        int[][] directions = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
+        for (int[] dir : directions) {
+            int voisinLigne = ligne + dir[0];
+            int voisinCol = col + dir[1];
+            if (!enDehorsDuTerrain(voisinLigne, voisinCol)) {
+                int valeurCase = terrain[voisinLigne][voisinCol];
+                if (valeurCase == 1 || valeurCase == 2) {
+                    adj.add(new Point2D(voisinCol, voisinLigne));
+                }
             }
         }
-        return false;
+        return adj;
     }
 
     // Les Getters classiques
@@ -182,6 +137,12 @@ public class Terrain {
         if(ligne < 0 || ligne >= terrain.length ||col < 0 || col >= terrain[ligne].length)
         {return -1;}
         return terrain[ligne][col]; }
+    public boolean enDehorsDuTerrain(int ligne, int col) {
+        if (ligne < 0 || ligne >= getNbLignes() || col < 0 || col >= terrain[ligne].length) {
+            return true;
+        }
+        return false;
+    }
     public int getChateauLigne() { return chateauLigne; }
     public int getChateauColonne() { return chateauColonne; }
     public int getChateauTaille() { return chateauTaille; }

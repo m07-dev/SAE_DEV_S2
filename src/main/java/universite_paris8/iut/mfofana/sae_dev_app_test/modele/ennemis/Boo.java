@@ -1,10 +1,13 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis;
 
+import javafx.geometry.Point2D;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
 
-public class Boo extends Personnage {
+import java.util.List;
 
-    public Boo(int x, int y, Terrain terrain) {
-        super(x, y, terrain, 50, 1);
+public class Boo extends Ennemis {
+
+    public Boo(int x, int y, Terrain terrain, List<Point2D> chemin) {
+        super(x, y, terrain, 50, 3, chemin);
     }
 }

@@ -2,17 +2,14 @@ package universite_paris8.iut.mfofana.sae_dev_app_test.controleur;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Jeu;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Ennemis;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.*;
 
@@ -36,7 +33,7 @@ public class Controleur {
     // --- Modèle et Vue ---
     private Jeu jeu;
     private Timeline gameLoop;
-    private HashMap<Personnage, EnnemiVue> affichageEnnemis = new HashMap<>();
+    private HashMap<Ennemis, EnnemiVue> affichageEnnemis = new HashMap<>();
     private HashMap<Tour, TourVue> affichageTour = new HashMap<>();
     // --- Placement de tours ---
     private String tourSelectionnee = null;

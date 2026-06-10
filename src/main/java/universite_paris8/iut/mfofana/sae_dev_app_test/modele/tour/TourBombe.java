@@ -1,6 +1,6 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour;
 import javafx.collections.ObservableList;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Personnage;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Ennemis;
 
 public class TourBombe extends Tour {
     private double vitesseBalle;
@@ -14,7 +14,7 @@ public class TourBombe extends Tour {
     public double getVitesseBalle() { return vitesseBalle; }
 
     @Override
-    public void appliquerEffet(Personnage cible, ObservableList<Personnage> ennemis) {
+    public void appliquerEffet(Ennemis cible, ObservableList<Ennemis> ennemis) {
         // La bombe pourrait faire des dégâts de zone ici plus tard
     }
 }
