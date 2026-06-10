@@ -7,6 +7,8 @@ import java.util.List;
 
 public class Bill extends Ennemis {
     public Bill(double x, double y, Terrain terrain, int pv, int vitesse, List<Point2D> chemin) {
-        super(x, y, terrain, pv, vitesse, chemin);
+        super(x, y, terrain, 1, 10, chemin);
     }
+
+
 }
