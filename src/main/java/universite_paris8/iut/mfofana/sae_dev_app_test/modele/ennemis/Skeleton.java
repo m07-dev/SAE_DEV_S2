@@ -8,12 +8,12 @@ import java.util.List;
 public class Skeleton extends Ennemis {
     private int degat = 25;
 
-    public Skeleton(double x, double y, Terrain e, List<Point2D> chemin) {
-        super(x, y, e, 100, 1, chemin);
+    public Skeleton(double x, double y, Terrain e, List<Point2D> chemin,Point2D cible) {
+        super(x, y, e, 40, 2, chemin,cible);
         this.degat = 25;
     }
 
-    public Skeleton(double x, double y, Terrain terrain, int pv, int vitesse, List<Point2D> chemin) {
-        super(x, y, terrain, pv, vitesse,  chemin);
+    public Skeleton(double x, double y, Terrain terrain, int pv, int vitesse, List<Point2D> chemin,Point2D cible) {
+        super(x, y, terrain, pv, vitesse,  chemin, cible);
     }
 }

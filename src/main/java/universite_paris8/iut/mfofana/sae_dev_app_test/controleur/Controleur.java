@@ -135,7 +135,15 @@ public class Controleur {
             int ligne = (int)(e.getY() / TILE);
             if (col < 0 || col >= jeu.getTerrain().getNbColonnes()
                     || ligne < 0 || ligne >= jeu.getTerrain().getNbLignes()) return;
-            if (jeu.getTerrain().getTileTerrain(ligne,col) != 0) return;
+            int typeCase = jeu.getTerrain().getTileTerrain(ligne, col);
+
+            if (tourSelectionnee.equals("OBSTACLE")) {
+                // L'obstacle se pose sur un chemin
+                if (typeCase != 1) return;
+            } else {
+                // Les autres tours se posent sur l'herbe
+                if (typeCase != 0) return;
+            }
 
             Tour nouvelleTour = null;
             int cout = 0;

@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Terrain {
 
-    // NOTRE PLATEAU DE JEU (la feuille à carreaux)
+    // NOTRE PLATEAU DE JEU (la feuille Ã  carreaux)
     // 0 = herbe (on peut construire)
     // 1 = chemin (les tuyaux pour les ennemis)
     // 2 = chateau (la base au milieu)
@@ -18,10 +18,10 @@ public class Terrain {
 
     public static final int TAILLE_TUILE = 32;
 
-    // La grille contenant tous les numéros
+    // La grille contenant tous les numÃ©ros
     private final int[][] terrain;
 
-    // Les coordonnées de notre château
+    // Les coordonnÃ©es de notre chÃ¢teau
     private int chateauLigne, chateauColonne, chateauTaille;
 
     public Terrain() {
@@ -62,10 +62,10 @@ public class Terrain {
         int srcLigne = (int) source.getY();
         int srcCol = (int) source.getX();
 
-        // Vérifier si la case de départ est valide
+        // VÃ©rifier si la case de dÃ©part est valide
         int valeurDepart = getTileTerrain(srcLigne, srcCol);
         if (valeurDepart != 1 && valeurDepart != 2) {
-            System.out.println("Erreur : La case de départ (" + srcLigne + "," + srcCol + ") n'est pas un chemin !");
+            System.out.println("Erreur : La case de dÃ©part (" + srcLigne + "," + srcCol + ") n'est pas un chemin !");
             return new ArrayList<>();
         }
 
@@ -93,7 +93,9 @@ public class Terrain {
         }
 
         if (!predecesseurs.containsKey(cible)) {
+
             System.out.println("Aucun chemin trouvé entre la source et la cible.");
+
             return new ArrayList<>();
         }
 
@@ -129,7 +131,12 @@ public class Terrain {
         }
         return adj;
     }
-
+    public void bloquerCase(int ligne, int col){
+        terrain[ligne][col] = 0;
+    }
+    public void debloquerCase(int ligne, int col){
+        terrain[ligne][col] = 1;
+    }
     // Les Getters classiques
     public int[][] getTerrain() { return terrain; }
     public int getNbLignes() { return terrain.length; }
