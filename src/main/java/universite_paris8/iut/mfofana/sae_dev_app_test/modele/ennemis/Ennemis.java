@@ -23,6 +23,7 @@ public abstract class Ennemis {
 
     private Terrain terrain;
     private int vitesse;
+    private boolean doitRecalculer = false;
 
     // -- Effets de statut --
     private int ticksBrulure = 0;
@@ -74,7 +75,31 @@ public abstract class Ennemis {
     }
     public void recalculerChemin(Terrain terrain) {
         Point2D posActuelle = new Point2D(Math.round(getX()), Math.round(getY()));
+
+        // Liste de toutes les cibles possibles
+        List<Point2D> ciblesPossibles = List.of(
+                new Point2D(10, 14),
+                new Point2D(10, 15),
+                new Point2D(11, 14),
+                new Point2D(11, 15)
+        );
+
+        // Essayer d'abord la cible actuelle
         List<Point2D> nouveauChemin = terrain.algoBFS(posActuelle, this.cible);
+
+        // Si échec → essayer les autres cibles
+        if (nouveauChemin.isEmpty()) {
+            for (Point2D nouvelleCible : ciblesPossibles) {
+                if (!nouvelleCible.equals(this.cible)) {
+                    nouveauChemin = terrain.algoBFS(posActuelle, nouvelleCible);
+                    if (!nouveauChemin.isEmpty()) {
+                        this.cible = nouvelleCible; // changer de cible
+                        break;
+                    }
+                }
+            }
+        }
+
         if (!nouveauChemin.isEmpty()) {
             this.chemin = nouveauChemin;
             this.indexCible = 1;
@@ -84,6 +109,16 @@ public abstract class Ennemis {
     public void seDeplacer(){
         if (chemin != null && indexCible < chemin.size()) {
             Point2D cibleActuelle = chemin.get(indexCible);
+
+            int typeCase = terrain.getTileTerrain(
+                    (int) cibleActuelle.getY(),
+                    (int) cibleActuelle.getX()
+            );
+            if (typeCase == 0) {
+                recalculerChemin(terrain);
+                return; // attendre le prochain tick
+            }
+
             double disX = cibleActuelle.getX() - this.getX();
             double disY = cibleActuelle.getY() - this.getY();
 
@@ -105,6 +140,9 @@ public abstract class Ennemis {
                 indexCible++;
             }
         }
+    }
+    public void demanderRecalcul() {
+        doitRecalculer = true;
     }
     public boolean aAtteintLeChateau() {
         return chemin != null && indexCible >= chemin.size();

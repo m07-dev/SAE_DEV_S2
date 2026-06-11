@@ -163,23 +163,17 @@ public class Jeu {
     // -----------------------------------------------------------
     public void spawnEnnemi(String typeE, int[] coin) {
         Point2D source = new Point2D(coin[1], coin[0]);
-
-        Point2D cible;
-        if (typeE.equals("SKELETON") || typeE.equals("BOO")) {
-            cible = (coin[0] <= 5) ? new Point2D(17, 9) : new Point2D(17, 12);
-        } else {
-            cible = (coin[0] <= 5) ? new Point2D(12, 9) : new Point2D(12, 12);
-        }
+        Point2D cible = (coin[0] <= 5) ? new Point2D(14, 10) : new Point2D(15, 11);
         List<Point2D> cheminEnnemi = terrain.algoBFS(source, cible);
 
         Ennemis modele = switch (typeE) {
             case "TORTUE"   -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi, cible);
-            case "SKELETON" -> new Skeleton(coin[0], coin[1], terrain, cheminEnnemi,cible);
-            case "BOO" -> new Boo(coin[1], coin[0], terrain, cheminEnnemi,cible);
-            case "GOOMBA" -> new Goomba(coin[1], coin[0], terrain, cheminEnnemi,cible);
-            case "BOBOMB" -> new Bobomb(coin[1], coin[0], terrain, cheminEnnemi,cible);
-            case "BOSS" -> new Boss(coin[1], coin[0], terrain, cheminEnnemi,cible);
-            default         -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi,cible);
+            case "SKELETON" -> new Skeleton(coin[1], coin[0], terrain, cheminEnnemi, cible);
+            case "BOO"      -> new Boo(coin[1], coin[0], terrain, cheminEnnemi, cible);
+            case "GOOMBA"   -> new Goomba(coin[1], coin[0], terrain, cheminEnnemi, cible);
+            case "BOBOMB"   -> new Bobomb(coin[1], coin[0], terrain, cheminEnnemi, cible);
+            case "BOSS"     -> new Boss(coin[1], coin[0], terrain, cheminEnnemi, cible);
+            default         -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi, cible);
         };
         ennemis.add(modele);
     }
