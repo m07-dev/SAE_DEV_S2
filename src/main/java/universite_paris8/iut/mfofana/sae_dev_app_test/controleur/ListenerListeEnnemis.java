@@ -20,7 +20,7 @@ public class ListenerListeEnnemis implements ListChangeListener<Ennemis> {
     public void onChanged(Change<? extends Ennemis> changement) {
         while (changement.next()) {
             if (changement.wasAdded()) {
-                System.out.println("nouvelle ennemi");
+               // System.out.println("nouvelle ennemi");
                 for (Ennemis p : changement.getAddedSubList()) {
                     EnnemiVue e = new EnnemiVue(pane,p);
                     affichageEnnemis.put(p,e);

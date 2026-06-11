@@ -19,6 +19,8 @@ public class TourVue extends VBox {
         this.pane = p;
         this.tour = t;
         creerSpriteTour(t);
+        this.setTranslateX(t.getX() * TILE);
+        this.setTranslateY(t.getY() * TILE);
         pane.getChildren().add(this);
     }
 
@@ -26,24 +28,17 @@ public class TourVue extends VBox {
         Image img;
         if (t instanceof TourBouleDeFeu)       img = charger("Feu.png");
         else if (t instanceof TourBombe)       img = charger("Bombe.png");
-        else if (t instanceof TourBouleDeGlace) img = charger("Glace.png");
+        else if (t instanceof TourBouleDeGlace) img = charger(  "Glace.png");
         else if (t instanceof TourObstacle)     img = charger("Obstacle.png");
         else                                    img = charger("Erreur.png");
-
 
 
         ImageView imageTour = new ImageView(img);
         imageTour.setFitWidth(TILE);
         imageTour.setFitHeight(TILE);
         imageTour.setPreserveRatio(true);
-
-        /*imageTour.xProperty().bind(t.xProperty().multiply(TILE));*/
-        imageTour.setTranslateX(t.getX() * TILE);
-        imageTour.setTranslateY(t.getY() * TILE);
-        /*imageTour.yProperty().bind(t.yProperty().multiply(TILE));*/
-
         this.getChildren().add(imageTour);
-        /*affichageTours.put(t, imageTour);*/
+
     }
 
     public Image charger(String nom) {

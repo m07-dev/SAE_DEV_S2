@@ -26,7 +26,7 @@ public class Jeu {
     private Terrain terrain;
 
     // --- Properties â†’ bindings dans le contrÃ´leur ---
-    private IntegerProperty pieces = new SimpleIntegerProperty(50);
+    private IntegerProperty pieces = new SimpleIntegerProperty(50000);
     private IntegerProperty numeroVague = new SimpleIntegerProperty(0);
 
     // --- Gestion des vagues ---
@@ -113,11 +113,13 @@ public class Jeu {
         // 5. Tirs des tours
         for (Tour t : tours) {
             t.mettreAJourStatut();
-            Ennemis cibleTouche = t.tirer(ennemis, tickCount);
-
-            if (cibleTouche != null ) {
-                evenements.add(new GestionJeu.AlerteTir(t, cibleTouche));
+            if(!(t instanceof TourObstacle)){
+                Ennemis cibleTouche = t.tirer(ennemis, tickCount);
+                if (cibleTouche != null ) {
+                    evenements.add(new GestionJeu.AlerteTir(t, cibleTouche));
+                }
             }
+
         }
         return evenements;
     }
@@ -178,6 +180,16 @@ public class Jeu {
 
     private int nbEnnemisVague() {
         return 2 + numeroVague.get(); // vague 1 = 3, vague 2 = 4...
+    }
+
+    public int getNombreObstacles() {
+        int count = 0;
+        for (Tour t : tours) {
+            if (t instanceof TourObstacle) {
+                count++;
+            }
+        }
+        return count;
     }
 
     // -----------------------------------------------------------

@@ -23,6 +23,8 @@ public class EnnemiVue extends VBox {
         this.p = p;
         creebarredevie();
         creerSpriteEnnemi(p);
+        this.translateXProperty().bind(p.xProperty().multiply(TILE));
+        this.translateYProperty().bind(p.yProperty().multiply(TILE));
         pane.getChildren().add(this);
     }
 
@@ -56,10 +58,10 @@ public class EnnemiVue extends VBox {
         imageEnnemis.setFitHeight(TILE);
         imageEnnemis.setPreserveRatio(true);
 
-        imageEnnemis.xProperty().bind(p.xProperty().multiply(TILE));
-        imageEnnemis.yProperty().bind(p.yProperty().multiply(TILE));
+        //imageEnnemis.layoutXProperty().bind(p.xProperty().multiply(TILE));
+       // imageEnnemis.layoutYProperty().bind(p.yProperty().multiply(TILE));
 
-        int pvMax = p.getPvMax(); // snapshot au moment de l'apparition
+        int pvMax = p.getPvMax();
         this.getChildren().add(imageEnnemis);
 
 
@@ -67,8 +69,8 @@ public class EnnemiVue extends VBox {
         public void creebarredevie(){
         Rectangle barre = new Rectangle(TILE, 4);
         barre.setFill(Color.GREEN);
-        barre.layoutXProperty().bind(p.xProperty().multiply(TILE));
-        barre.layoutYProperty().bind(p.yProperty().multiply(TILE).subtract(6));
+       // barre.layoutXProperty().bind(p.xProperty().multiply(TILE));
+       // barre.layoutYProperty().bind(p.yProperty().multiply(TILE).subtract(6));
 
         p.pvProperty().addListener((obs, ancien, nouveau) -> {
             double ratio = nouveau.doubleValue() / p.getPvMax();

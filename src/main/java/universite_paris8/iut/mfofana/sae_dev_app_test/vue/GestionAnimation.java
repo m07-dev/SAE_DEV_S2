@@ -41,8 +41,7 @@ public class GestionAnimation {
         transition.setToX(arriveeX - departX);
         transition.setToY(arriveeY - departY);
 
-        transition.setOnFinished(ev -> paneAnim.getChildren().remove(bouleFeu));
         transition.play();
-
+        transition.setOnFinished(ev -> paneAnim.getChildren().remove(bouleFeu));
     }
 }
