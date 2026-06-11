@@ -39,6 +39,14 @@ public class EnnemiVue extends VBox {
             img = charger("boo.png");
         } else if (p instanceof Bobomb) {
             img = charger("bobomb.png");
+        } else if (p instanceof Bill) {
+            img = charger("bill.png");
+        } else if (p instanceof Ninji) {
+            img = charger("ninji.png");
+        } else if (p instanceof Browser) {
+            img = charger("browser.png");
+        } else if (p instanceof BrowserJr) {
+            img = charger("browserJr.png");
         } else {
             img = charger("Feu.png");
         }
