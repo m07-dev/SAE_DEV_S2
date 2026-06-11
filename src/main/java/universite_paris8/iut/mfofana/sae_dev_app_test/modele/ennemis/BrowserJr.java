@@ -7,6 +7,6 @@ import java.util.List;
 
 public class BrowserJr extends Ennemis {
     public BrowserJr(double x, double y, Terrain terrain, int pv, int vitesse, List<Point2D> chemin, Point2D cible) {
-        super(x, y, terrain, pv, vitesse, chemin, cible);
+        super(x, y, terrain, 150, 3, chemin, cible);
     }
 }

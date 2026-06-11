@@ -11,7 +11,7 @@ public class Bobomb extends Ennemis {
     private int degat;
 
     public Bobomb(double x, double y, Terrain e, List<Point2D> chemin,Point2D cible) {
-        super(x, y, e, 100, 6, chemin, cible);
+        super(x, y, e, 80, (int)1.5, chemin, cible);
         this.degat = 25;
     }
 

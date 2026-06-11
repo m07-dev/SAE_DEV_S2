@@ -81,7 +81,27 @@ public class Jeu {
                 pieces.set(pieces.get() + ennemis.get(i).getRecompense());
                 supprimerEnnemi(i);
             } else if (ennemis.get(i).aAtteintLeChateau()) {
-                chateau.subirDegat(10);
+                if (ennemis instanceof Goomba){
+                    chateau.subirDegat(5);
+                }
+                if (ennemis instanceof Tortue){
+                    chateau.subirDegat(8);
+                }
+                if (ennemis instanceof Skeleton){
+                    chateau.subirDegat(5);
+                }
+                if (ennemis instanceof Boo){
+                    chateau.subirDegat(5);
+                }
+                if (ennemis instanceof Bobomb){
+                    chateau.subirDegat(20);
+                }
+                if (ennemis instanceof Browser){
+                    chateau.subirDegat(15);
+                }
+                if (ennemis instanceof BrowserJr){
+                    chateau.subirDegat(50);
+                }
                 supprimerEnnemi(i);
             }
         }
