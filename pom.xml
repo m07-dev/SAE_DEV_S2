@@ -62,7 +62,7 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>universite_paris8.iut.mfofana.sae_dev_app_test/universite_paris8.iut.mfofana.sae_dev_app_test.LANCEMENT_JEU</mainClass>
+              <mainClass>universite_paris8.iut.mfofana.sae_dev_app_test/universite_paris8.iut.mfofana.sae_dev_app_test.Application</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>

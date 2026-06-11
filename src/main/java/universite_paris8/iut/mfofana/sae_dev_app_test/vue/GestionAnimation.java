@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-import universite_paris8.iut.mfofana.sae_dev_app_test.LANCEMENT_JEU;
+import universite_paris8.iut.mfofana.sae_dev_app_test.Application;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Ennemis;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
 
@@ -18,7 +18,7 @@ public class GestionAnimation {
     }
 
     public void animationTirBouleFeu(Tour tour, Ennemis cible) {
-        String cheminImage = String.valueOf(LANCEMENT_JEU.class.getResource("/universite_paris8/iut/mfofana/sae_dev_app_test/Personnages/bouleFeu.png"));
+        String cheminImage = String.valueOf(Application.class.getResource("/universite_paris8/iut/mfofana/sae_dev_app_test/Personnages/bouleFeu.png"));
 
         ImageView bouleFeu = new ImageView(new Image(cheminImage));
         double tailleBF = 15;

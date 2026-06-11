@@ -3,7 +3,7 @@ package universite_paris8.iut.mfofana.sae_dev_app_test.controleur;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import universite_paris8.iut.mfofana.sae_dev_app_test.LANCEMENT_JEU;
+import universite_paris8.iut.mfofana.sae_dev_app_test.Application;
 
 import java.io.IOException;
 
@@ -31,7 +31,7 @@ public class NavigationManager {
             return;
         }
         try {
-            FXMLLoader loader = new FXMLLoader(LANCEMENT_JEU.class.getResource(fichierFxml));
+            FXMLLoader loader = new FXMLLoader(Application.class.getResource(fichierFxml));
             Scene scene = new Scene(loader.load(), LARGEUR, HAUTEUR);
             stageCourant.setScene(scene);
             stageCourant.show();
