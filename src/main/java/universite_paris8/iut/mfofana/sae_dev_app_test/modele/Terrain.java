@@ -93,7 +93,9 @@ public class Terrain {
         }
 
         if (!predecesseurs.containsKey(cible)) {
-            System.out.println("Aucun chemin trouvÃ© entre la source et la cible.");
+
+            System.out.println("Aucun chemin trouvé entre la source et la cible.");
+
             return new ArrayList<>();
         }
 

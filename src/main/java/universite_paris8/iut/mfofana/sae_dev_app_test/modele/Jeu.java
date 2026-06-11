@@ -40,15 +40,17 @@ public class Jeu {
     private static final int DELAI_ENTRE_VAGUES = 10 * TICKS_PAR_SECONDE; // 10 secondes
     private static final int DELAI_ENTRE_SPAWNS = (int)(1.5 * TICKS_PAR_SECONDE); // 1.5s entre chaque spawn
 
-    // Points d'entrÃ©e
+
+    // Points d'entrée
     private static final int[] HAUT_GAUCHE = {0, 12};
     private static final int[] HAUT_DROITE = {0, 20};
-    private static final int[] BAS_GAUCHE  = {21, 6};
+    private static final int[] BAS_GAUCHE  = {21, 7};
     private static final int[] BAS_DROIT   = {21, 24};
-    private static final int[] GAUCHE_HAUT  = {4, 0};
-    private static final int[] GAUCHE_BAS  = {13, 0};
-    private static final int[] DROITE_HAUT  = {3, 29};
-    private static final int[] DROITE_BAS   = {16, 29};
+    private static final int[] GAUCHE_HAUT  = {0, 4};
+    private static final int[] GAUCHE_BAS  = {0, 13};
+    private static final int[] DROITE_HAUT  = {29, 3};
+    private static final int[] DROITE_BAS   = {29, 16};
+
 
 
     public Jeu() {
@@ -139,8 +141,9 @@ public class Jeu {
                 // A faire : Adapter les spawn des ennemis selon l'environnement
                 spawnEnnemi("BOO", BAS_DROIT);
                 spawnEnnemi("TORTUE", GAUCHE_HAUT);
-                spawnEnnemi("SKELETON", HAUT_DROITE);
-                spawnEnnemi("GOOMBA", GAUCHE_BAS);
+                spawnEnnemi("SKELETON", GAUCHE_BAS);
+                spawnEnnemi("GOOMBA", BAS_GAUCHE);
+
 
 
                 ennemisSpawnCeTick++;
