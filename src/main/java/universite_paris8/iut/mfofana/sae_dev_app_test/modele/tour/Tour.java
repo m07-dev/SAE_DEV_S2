@@ -99,11 +99,14 @@ public abstract class Tour {
         return ciblePlusProche;
     }
 
-    public Ennemis tirer(ObservableList<Ennemis> ennemis, int tickCount) {
+    public Ennemis tirer(ObservableList<Ennemis> ennemis, int tickCount, ObservableList<Projectile> projectiles) {
+
         if (!estParalysee() && peutTirer(tickCount) && !ennemis.isEmpty()) {
             Ennemis cible = choisirCible(ennemis);
             if (cible != null) {
-                cible.subirDegat(this.degat);
+                //cible.subirDegat(this.degat);
+                Projectile p = new Projectile(degat,cible,this.x,this.y);
+                projectiles.add(p);
                 appliquerEffet(cible, ennemis);
                 System.out.println(cible.getPv());
                 return cible;

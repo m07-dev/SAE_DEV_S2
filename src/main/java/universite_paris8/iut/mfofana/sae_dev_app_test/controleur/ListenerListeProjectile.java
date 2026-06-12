@@ -7,11 +7,11 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.vue.ProjectileVue;
 
 import java.util.HashMap;
 
-public class ListernerListeProjectile implements ListChangeListener<Projectile> {
+public class ListenerListeProjectile implements ListChangeListener<Projectile> {
     private HashMap<Projectile, ProjectileVue> affichageProjectile = new HashMap<>();
     private Pane pane;
 
-    public ListernerListeProjectile(Pane pane, HashMap<Projectile,ProjectileVue > affichageProjectile){
+    public ListenerListeProjectile(Pane pane, HashMap<Projectile,ProjectileVue > affichageProjectile){
         this.pane = pane;
         this.affichageProjectile = affichageProjectile;
     }
@@ -20,8 +20,8 @@ public class ListernerListeProjectile implements ListChangeListener<Projectile> 
         while (changement.next()){
             if(changement.wasAdded()){
                 for (Projectile projectile : changement.getAddedSubList()){
-                    ProjectileVue p = new ProjectileVue(pane,projectile);
-                    affichageProjectile.put(projectile,p);
+                    ProjectileVue pVue = new ProjectileVue(pane,projectile);
+                    affichageProjectile.put(projectile,pVue);
                 }
             }
             if(changement.wasRemoved()){
