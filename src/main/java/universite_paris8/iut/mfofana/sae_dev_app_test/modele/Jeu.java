@@ -26,7 +26,7 @@ public class Jeu {
     private Terrain terrain;
 
     // --- Properties â†’ bindings dans le contrÃ´leur ---
-    private IntegerProperty pieces = new SimpleIntegerProperty(50000);
+    private IntegerProperty pieces = new SimpleIntegerProperty(50);
     private IntegerProperty numeroVague = new SimpleIntegerProperty(0);
 
     // --- Gestion des vagues ---
@@ -38,7 +38,7 @@ public class Jeu {
     // Constantes
     private static final int TICKS_PAR_SECONDE = 60; // 1 tick = 0.1s donc 10 ticks = 1s
     private static final int DELAI_ENTRE_VAGUES = 10 * TICKS_PAR_SECONDE; // 10 secondes
-    private static final int DELAI_ENTRE_SPAWNS = (int)(1.5 * TICKS_PAR_SECONDE); // 1.5s entre chaque spawn
+    private static final int DELAI_ENTRE_SPAWNS = (int)(1.8 * TICKS_PAR_SECONDE); // 1.5s entre chaque spawn
 
     // Points d'entrÃ©e
     private static final int[] HAUT_GAUCHE = {0, 12};
@@ -143,8 +143,6 @@ public class Jeu {
         } else {
             // Vague en cours â†’ spawner les ennemis progressivement
             if (ennemisSpawnCeTick < nbEnnemisVague() && tickCount % DELAI_ENTRE_SPAWNS == 0) {
-                //int[] coin = (ennemisSpawnCeTick % 2 == 0) ? HAUT_GAUCHE1;
-                // A faire : Adapter les spawn des ennemis selon l'environnement
                 spawnEnnemi("BOO", BAS_DROIT);
                 spawnEnnemi("TORTUE", GAUCHE_HAUT);
                 spawnEnnemi("SKELETON", HAUT_DROITE);
@@ -165,6 +163,7 @@ public class Jeu {
                 vagueEnCours = false;
                 ticksAvantProchainVague = DELAI_ENTRE_VAGUES;
                 ennemisSpawnCeTick = 0;
+                chateau.setPv(100);
             }
         }
     }

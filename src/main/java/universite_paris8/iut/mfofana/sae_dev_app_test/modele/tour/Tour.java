@@ -10,7 +10,7 @@ public abstract class Tour {
 
     private int cout, niveau;
     private int degat, portee;
-    private double  cadence;
+    private double cadence;
     private int resistance;
     private int ticksParalysie = 0;
     private int dernierTickTir = 0;
@@ -50,13 +50,15 @@ public abstract class Tour {
     }
     public boolean estDetruite() { return this.resistance == 0; }
 
-    public int vendre() { return cout / 2; }
+    public int vendre() { return cout ; }
 
     public void ameliorer() {
         if (niveau < 3) {
             niveau++;
-            degat += 5;
-            portee += 1;
+            degat += 12;
+            portee += 2;
+            cadence += 3;
+            resistance += 20;
         }
     }
 
@@ -105,9 +107,8 @@ public abstract class Tour {
             Ennemis cible = choisirCible(ennemis);
             if (cible != null) {
                 //cible.subirDegat(this.degat);
-                Projectile p = new Projectile(degat,cible,this.x,this.y);
+                Projectile p = new Projectile(degat,cible,this.x,this.y,this);
                 projectiles.add(p);
-                appliquerEffet(cible, ennemis);
                 System.out.println(cible.getPv());
                 return cible;
             }
