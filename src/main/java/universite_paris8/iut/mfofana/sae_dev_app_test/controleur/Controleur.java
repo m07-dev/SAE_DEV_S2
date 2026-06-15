@@ -165,7 +165,7 @@ public class Controleur {
                     }
                 }
                 jeu.poserTour(nouvelleTour, cout);
-                tourSelectionnee = null; // Réinitialiser la sélection
+                tourSelectionnee = null;
             }
         });
     }

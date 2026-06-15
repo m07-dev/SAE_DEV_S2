@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 public class Chateau {
     private IntegerProperty pv = new SimpleIntegerProperty(100);
     private IntegerProperty pvMax = new SimpleIntegerProperty(100);
+    private int pvEnPlus = 10;
 
 
     public void subirDegat(int degat) {
@@ -19,6 +20,10 @@ public class Chateau {
 
     public int getPv() { return pv.get(); }
     public int getPvMax() { return pvMax.get(); }
+
+    public void setPv(int pv) {
+        this.pv.set(pv + (pvEnPlus++));
+    }
 
     public IntegerProperty pvProperty() { return pv; }
     public IntegerProperty pvMaxProperty() { return pvMax; }

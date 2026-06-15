@@ -30,7 +30,7 @@ public class ProjectileVue extends VBox{
         ImageView iv = new ImageView(charger("bouleFeu.png"));
         iv.setFitWidth(TILE);
         iv.setFitHeight(TILE);
-        this.getChildren().add(iv); // Important !
+        this.getChildren().add(iv);
     }
 
     private Image charger(String nom) {
