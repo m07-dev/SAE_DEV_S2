@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Chateau;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Projectile;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.TourObstacle;
 
@@ -17,16 +18,15 @@ public class Jeu {
 
     // --- Listes observables â†’ la vue Ã©coute ces listes ---
     private ObservableList<Ennemis> ennemis = FXCollections.observableArrayList();
+    private ObservableList<Projectile> projectiles = FXCollections.observableArrayList();
     private ObservableList<Tour> tours = FXCollections.observableArrayList();
-    private ObservableList<List<int[]>> chemins = FXCollections.observableArrayList();
-    private ObservableList<Integer> indexChemins = FXCollections.observableArrayList();
 
     // --- ModÃ¨le ---
     private Chateau chateau;
     private Terrain terrain;
 
     // --- Properties â†’ bindings dans le contrÃ´leur ---
-    private IntegerProperty pieces = new SimpleIntegerProperty(50);
+    private IntegerProperty pieces = new SimpleIntegerProperty(50000);
     private IntegerProperty numeroVague = new SimpleIntegerProperty(0);
 
     // --- Gestion des vagues ---
@@ -60,9 +60,8 @@ public class Jeu {
     // -----------------------------------------------------------
     // TICK â†’ appelÃ© Ã  chaque frame par le contrÃ´leur
     // -----------------------------------------------------------
-    public List<GestionJeu.AlerteTir> tick() {
-        List<GestionJeu.AlerteTir> evenements = new ArrayList<>();
-        if (chateau.estDetruit()) return evenements; // jeu terminÃ© â†’ on ne fait rien
+    public void tick() {
+        if (chateau.estDetruit()){return;}
 
         tickCount++;
 
@@ -108,18 +107,25 @@ public class Jeu {
             }
         }
 
-        /**/
 
-        // 5. Tirs des tours
+
         for (Tour t : tours) {
             t.mettreAJourStatut();
-            Ennemis cibleTouche = t.tirer(ennemis, tickCount);
-
-            if (cibleTouche != null ) {
-                evenements.add(new GestionJeu.AlerteTir(t, cibleTouche));
+            if(!(t instanceof TourObstacle)){
+                Ennemis cibleTouche = t.tirer(ennemis, tickCount, projectiles);
             }
+
         }
-        return evenements;
+        if (!projectiles.isEmpty()){
+            for (int i = projectiles.size() - 1; i >= 0; i--) {
+                Projectile p = projectiles.get(i);
+                p.seDeplacer();
+                if (p.aAtteintCible()) {
+                    projectiles.remove(i);
+                }
+            }
+            projectiles.removeIf(p -> !p.isEstActif());
+        };
     }
 
     // -----------------------------------------------------------
@@ -178,6 +184,16 @@ public class Jeu {
 
     private int nbEnnemisVague() {
         return 2 + numeroVague.get(); // vague 1 = 3, vague 2 = 4...
+    }
+
+    public int getNombreObstacles() {
+        int count = 0;
+        for (Tour t : tours) {
+            if (t instanceof TourObstacle) {
+                count++;
+            }
+        }
+        return count;
     }
 
     // -----------------------------------------------------------
@@ -246,6 +262,7 @@ public class Jeu {
     // -----------------------------------------------------------
     public ObservableList<Ennemis> getEnnemis() { return ennemis; }
     public ObservableList<Tour> getTours() { return tours; }
+    public ObservableList<Projectile> getProjectiles() {return projectiles;}
     public Chateau getChateau() { return chateau; }
     public Terrain getTerrain() { return terrain; }
     public boolean estTermine() { return chateau.estDetruit(); }
@@ -254,16 +271,5 @@ public class Jeu {
     public int getPieces() { return pieces.get(); }
     public int getNumeroVague() { return numeroVague.get(); }
 
-    public class GestionJeu {
 
-        public static class AlerteTir {
-            public final Tour tour;
-            public final Ennemis cible;
-
-            public AlerteTir(Tour tour, Ennemis cible) {
-                this.tour = tour;
-                this.cible = cible;
-            }
-        }
-    }
 }
