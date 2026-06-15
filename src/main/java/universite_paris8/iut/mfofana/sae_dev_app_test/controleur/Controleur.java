@@ -37,6 +37,7 @@ public class Controleur {
     private Timeline gameLoop;
     private HashMap<Ennemis, EnnemiVue> affichageEnnemis = new HashMap<>();
     private HashMap<Tour, TourVue> affichageTour = new HashMap<>();
+    private HashMap<Projectile, ProjectileVue> affichageProjectile = new HashMap<>();
     // --- Placement de tours ---
     private String tourSelectionnee = null;
     private static final int TILE = 32;
@@ -49,6 +50,8 @@ public class Controleur {
         jeu = new Jeu();
         ListenerListeEnnemis listeerennemi = new ListenerListeEnnemis(paneId, affichageEnnemis);
         ListernerListeTour listeTour = new ListernerListeTour(paneId, affichageTour);
+        ListenerListeProjectile listenerProjectile = new ListenerListeProjectile(paneId, affichageProjectile);
+        jeu.getProjectiles().addListener(listenerProjectile);
         jeu.getEnnemis().addListener(listeerennemi);
         jeu.getTours().addListener(listeTour);
         Solde.textProperty().bind(
