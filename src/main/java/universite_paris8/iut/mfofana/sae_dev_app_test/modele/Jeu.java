@@ -13,6 +13,7 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.TourObstacle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Jeu {
 
@@ -40,6 +41,7 @@ public class Jeu {
     private static final int DELAI_ENTRE_VAGUES = 10 * TICKS_PAR_SECONDE; // 10 secondes
     private static final int DELAI_ENTRE_SPAWNS = (int)(1.8 * TICKS_PAR_SECONDE); // 1.5s entre chaque spawn
 
+
     // Points d'entrÃ©e
     private static final int[] HAUT_GAUCHE = {0, 12};
     private static final int[] HAUT_DROITE = {0, 20};
@@ -49,6 +51,12 @@ public class Jeu {
     private static final int[] GAUCHE_BAS  = {13, 0};
     private static final int[] DROITE_HAUT  = {3, 29};
     private static final int[] DROITE_BAS   = {16, 29};
+    private static final Map<String, int[]> COINS_SPAWN = Map.of(
+            "GOOMBA",   GAUCHE_BAS,
+            "TORTUE",   GAUCHE_HAUT,
+            "SKELETON", HAUT_DROITE,
+            "BOO",      BAS_DROIT
+    );
 
 
     public Jeu() {
@@ -154,11 +162,10 @@ public class Jeu {
         } else {
             // Vague en cours â†’ spawner les ennemis progressivement
             if (ennemisSpawnCeTick < nbEnnemisVague() && tickCount % DELAI_ENTRE_SPAWNS == 0) {
-                spawnEnnemi("BOO", BAS_DROIT);
-                spawnEnnemi("TORTUE", GAUCHE_HAUT);
-                spawnEnnemi("SKELETON", HAUT_DROITE);
-                spawnEnnemi("GOOMBA", GAUCHE_BAS);
-
+                List<String> types = getTypesDisponibles();
+                String type = types.get(ennemisSpawnCeTick % types.size());
+                int[] coin = COINS_SPAWN.get(type);
+                spawnEnnemi(type, coin);
 
                 ennemisSpawnCeTick++;
             }
@@ -230,6 +237,15 @@ public class Jeu {
         ennemis.add(modele);
     }
 
+    public List<String> getTypesDisponibles() {
+        List<String> types = new ArrayList<>();
+        types.add("GOOMBA");
+        if (numeroVague.get() >= 2) types.add("TORTUE");
+        if (numeroVague.get() >= 3) types.add("SKELETON");
+        if (numeroVague.get() >= 4) types.add("BOO");
+        return types;
+    }
+
     // -----------------------------------------------------------
     // TOURS
     // -----------------------------------------------------------
@@ -271,6 +287,8 @@ public class Jeu {
         tours.remove(t); // le sprite disparait via le listener
     }
 
+
+
     // -----------------------------------------------------------
     // TEXTE COUNTDOWN â†’ affichÃ© dans le contrÃ´leur
     // -----------------------------------------------------------
@@ -283,17 +301,12 @@ public class Jeu {
         }
     }
 
-    // -----------------------------------------------------------
-    // UTILITAIRES PRIVÃ‰S
-    // -----------------------------------------------------------
     private void supprimerEnnemi(int i) {
         // On supprime de la liste â†’ le ListChangeListener supprime le sprite automatiquement !
         ennemis.remove(i);
     }
 
-    // -----------------------------------------------------------
-    // GETTERS
-    // -----------------------------------------------------------
+
     public ObservableList<Ennemis> getEnnemis() { return ennemis; }
     public ObservableList<Tour> getTours() { return tours; }
     public ObservableList<Projectile> getProjectiles() {return projectiles;}
