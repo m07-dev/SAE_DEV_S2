@@ -9,7 +9,7 @@ public class Skeleton extends Ennemis {
     private int degat = 25;
 
     public Skeleton(double x, double y, Terrain e, List<Point2D> chemin,Point2D cible) {
-        super(x, y, e, 40, 2, chemin,cible);
+        super(x, y, e, 40, 2.0, chemin,cible);
         this.degat = 25;
     }
 

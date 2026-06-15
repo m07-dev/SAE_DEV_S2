@@ -65,22 +65,33 @@ public class Jeu {
 
         tickCount++;
 
-        // 1. GÃ©rer les vagues
+        // 1. Gérer les vagues
         gererVagues();
 
         // 2. Effets de statut sur les ennemis
         for (Ennemis p : ennemis) {
             p.mettreAJourEffets();
+
+            if (p instanceof Bobomb) {
+                ((Bobomb) p).vitesseAugmente();
+                ((Bobomb) p).exploser(tours);
+
+            }
+
             p.seDeplacer();
         }
 
-        // 3. VÃ©rifier les morts
+
+        // 3. Vérifier les morts
         for (int i = ennemis.size() - 1; i >= 0; i--) {
-            if (ennemis.get(i).estMort()) {
+            Ennemis ennemiActuel = ennemis.get(i); // <-- Récupérer l'ennemi spécifique
+
+            if (ennemiActuel.estMort()) {
                 pieces.set(pieces.get() + ennemis.get(i).getRecompense());
                 supprimerEnnemi(i);
+
             } else if (ennemis.get(i).aAtteintLeChateau()) {
-                Ennemis ennemiActuel = ennemis.get(i); // <-- Récupérer l'ennemi spécifique
+
 
                 if (ennemiActuel instanceof Goomba){
                     chateau.subirDegat(5);
@@ -111,7 +122,7 @@ public class Jeu {
 
         for (Tour t : tours) {
             t.mettreAJourStatut();
-            if(!(t instanceof TourObstacle)){
+            if(!(t instanceof TourObstacle) && !t.estParalysee()){
                 Ennemis cibleTouche = t.tirer(ennemis, tickCount, projectiles);
             }
 
@@ -209,6 +220,10 @@ public class Jeu {
             case "BOO"      -> new Boo(coin[1], coin[0], terrain, cheminEnnemi, cible);
             case "GOOMBA"   -> new Goomba(coin[1], coin[0], terrain, cheminEnnemi, cible);
             case "BOBOMB"   -> new Bobomb(coin[1], coin[0], terrain, cheminEnnemi, cible);
+            case "BILL"     -> new Bill(coin[1], coin[0], terrain, cheminEnnemi, cible);
+            case "NINJI"    -> new Ninji(coin[1], coin[0], terrain, cheminEnnemi, cible);
+            case "BROWSERJR"-> new BrowserJr(coin[1], coin[0], terrain, cheminEnnemi, cible);
+            case "BROWSER"  -> new Browser(coin[1], coin[0], terrain, cheminEnnemi, cible);
             case "BOSS"     -> new Boss(coin[1], coin[0], terrain, cheminEnnemi, cible);
             default         -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi, cible);
         };
