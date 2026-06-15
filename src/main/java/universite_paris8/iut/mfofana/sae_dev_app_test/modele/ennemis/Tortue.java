@@ -7,7 +7,7 @@ import java.util.List;
 public class Tortue extends Ennemis {
 
     public Tortue(int x, int y, Terrain terrain, List<Point2D> chemin,Point2D cible) {
-        super(x, y, terrain, 50, 1.0, chemin,cible);
+        super(x, y, terrain, 80, 1.0, chemin,cible);
     }
 
     @Override

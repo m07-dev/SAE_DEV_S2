@@ -8,9 +8,9 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.Application;
 import java.io.IOException;
 
 /**
-  *Lui cest le patron qui va gerer la nav entre les scene
- *Les transition entre le menu la scene et le game over
- * on l'appellle dans lancement jeu, on lui donne la fenetre
+ * Lui cest le patron qui va gerer la nav entre les scene
+ * Les transition entre le menu la scene et le game over
+ * On l'appellle dans lancement jeu, on lui donne la fenetre
  * puis NavigationManager.allerVersMenu() / allerVersJeu() / allerVersGameOver().
  */
 public class NavigationManager {
@@ -44,10 +44,6 @@ public class NavigationManager {
 
     public static void allerVersMenu() {
         chargerScene("Menu.fxml");
-    }
-
-    public static void allerVersPause() {
-        chargerScene("/Users/adamouh/Documents/SAE_DEV_S2/src/main/resources/universite_paris8/iut/mfofana/sae_dev_app_test/Pause.fxml");
     }
 
 
