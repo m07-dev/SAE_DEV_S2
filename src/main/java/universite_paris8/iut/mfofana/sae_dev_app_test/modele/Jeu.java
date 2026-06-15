@@ -251,6 +251,26 @@ public class Jeu {
         }
     }
 
+
+    public boolean ameliorerTour(Tour t, int cout) {
+        if (t != null && t.getNiveau() < 3 && pieces.getValue() >= cout) {
+            pieces.setValue(pieces.getValue() - cout);
+            t.ameliorer();
+            return true;
+        }
+        return false;
+    }
+
+    public void vendreTour(Tour t) {
+        if (t == null) return;
+        pieces.set(pieces.get() + t.vendre()); // remboursement = cout / 2
+        if (t instanceof TourObstacle) {
+            terrain.debloquerCase((int) t.getY(), (int) t.getX());
+            recalculerTousLesChemins();
+        }
+        tours.remove(t); // le sprite disparait via le listener
+    }
+
     // -----------------------------------------------------------
     // TEXTE COUNTDOWN â†’ affichÃ© dans le contrÃ´leur
     // -----------------------------------------------------------

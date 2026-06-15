@@ -10,7 +10,7 @@ public abstract class Tour {
 
     private int cout, niveau;
     private int degat, portee;
-    private double cadence;
+    private double  cadence;
     private int resistance;
     private int ticksParalysie = 0;
     private int dernierTickTir = 0;

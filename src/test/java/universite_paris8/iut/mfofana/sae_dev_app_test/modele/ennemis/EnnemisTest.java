@@ -31,10 +31,8 @@ public class EnnemisTest {
         return new Goomba(x, y, terrain, pv, vitesse, chemin, cible);
     }
 
-    // =========================================================
-    //  Degats et mort
-    // =========================================================
 
+    //  Degats et mort
     @Test
     void degatSimple() {
         Goomba g = goomba(12, 0, 30, 2, List.of(new Point2D(12, 0)));
@@ -93,6 +91,7 @@ public class EnnemisTest {
         for (int i = 0; i < 4; i++) g.mettreAJourEffets();
         assertEquals(90, g.getPv());
 
+        // Même verification qu'au desssus (ligne 79)
         g.mettreAJourEffets();
         assertEquals(90, g.getPv());
     }
@@ -146,9 +145,8 @@ public class EnnemisTest {
     @Test
     @DisplayName("seDeplacer avance progressivement vers la case suivante quand la vitesse est faible")
     void deplacementProgressif() {
-        Goomba g = goomba(12, 0, 30, 30,
-                List.of(new Point2D(12, 0), new Point2D(12, 1)));
-
+        Goomba g = goomba(12, 0, 30, 30, List.of(new Point2D(12, 0), new Point2D(12, 1)));
+        // Vitesse de 30 = avancement 0.5 par ticks
         g.seDeplacer();
 
         assertEquals(0.5, g.getY(), "Avance d'un demi-pas vers (12,1)");
@@ -158,7 +156,7 @@ public class EnnemisTest {
     @Test
     @DisplayName("Quand l'ennemi atteint la derniere case du chemin, aAtteintLeChateau devient vrai")
     void arriveeEnBoutDeChemin() {
-        // vitesse 60 => pas de 1.0 par tick => atteint (12,1) en un seul tick
+        // vitesse 60 => pas de 1.0 par tick
         Goomba g = goomba(12, 0, 30, 60,
                 List.of(new Point2D(12, 0), new Point2D(12, 1)));
 
