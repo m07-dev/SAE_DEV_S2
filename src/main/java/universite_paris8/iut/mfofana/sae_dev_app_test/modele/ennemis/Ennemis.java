@@ -156,6 +156,14 @@ public abstract class Ennemis {
     public double getVitesse() { return vitesse; }
     public int getRecompense() { return 10; }
     public int getPvMax() { return pvMax; }
+    public Terrain getTerrain() { return terrain; }
+    public List<Point2D> getChemin() {
+        return chemin;
+    }
+
+    public int getIndexCible() {
+        return indexCible;
+    }
 
     // --- Getters Property â†’ pour les bindings dans la vue ---
     public DoubleProperty xProperty()  { return x; }
@@ -167,6 +175,9 @@ public abstract class Ennemis {
     public void setY(double valeur) { y.set(valeur); }
     public void setPv(int valeur)   { pv.set(Math.max(0, valeur)); }
     public void setVitesse(double v)   { this.vitesse = v; }
+    public void setIndexCible(int indexCible) {
+        this.indexCible = indexCible;
+    }
 
     // --- Logique ---
     public void subirDegat(int degat) { setPv(pv.get() - degat); }

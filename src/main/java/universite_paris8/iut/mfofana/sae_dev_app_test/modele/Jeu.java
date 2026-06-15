@@ -78,6 +78,12 @@ public class Jeu {
 
             }
 
+            /*if (p instanceof Bill) {
+                ((Bill) p).detruireObstacle(tours);
+            }
+
+             */
+
             p.seDeplacer();
         }
 
@@ -160,6 +166,7 @@ public class Jeu {
                 spawnEnnemi("TORTUE", GAUCHE_HAUT);
                 spawnEnnemi("SKELETON", HAUT_DROITE);
                 spawnEnnemi("GOOMBA", GAUCHE_BAS);
+                spawnEnnemi("BILL",DROITE_BAS);
 
 
                 ennemisSpawnCeTick++;
