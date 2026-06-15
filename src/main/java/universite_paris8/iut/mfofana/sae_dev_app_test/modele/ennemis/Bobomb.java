@@ -9,16 +9,17 @@ import java.util.List;
 
 public class Bobomb extends Ennemis {
     private int degat;
+    private boolean estRapide = false;
 
     public Bobomb(double x, double y, Terrain e, List<Point2D> chemin,Point2D cible) {
-        super(x, y, e, 80, (int)1.5, chemin, cible);
+        super(x, y, e, 80, 2, chemin, cible);
         this.degat = 25;
     }
 
     public void vitesseAugmente() {
-        if (this.getPv() <= 50) {
-            int nouvelleVitesse = (int) (this.getVitesse() * 1.2);
-            this.setVitesse(nouvelleVitesse);
+        if (this.getPv() <= 50 && !this.estRapide) {
+            setVitesse(getVitesse() * 1.7);
+            estRapide = true;
         }
     }
 
@@ -33,9 +34,10 @@ public class Bobomb extends Ennemis {
             double yT = tourActuelle.getY();
 
             int distance = (int)(Math.abs(xB - xT) + Math.abs(yB - yT));
-            if (distance <= 45) {
-                tourActuelle.paralyser(30);
-                tourActuelle.setDegat(tourActuelle.getDegat() - this.degat);
+            if (distance <= 3 && getPv() <= 2) {
+                System.out.println("tour paralysee");
+                tourActuelle.paralyser(180);
+                //tourActuelle.setDegat(tourActuelle.getDegat() - this.degat);
                 aParalyserTour = true;
             }
         }

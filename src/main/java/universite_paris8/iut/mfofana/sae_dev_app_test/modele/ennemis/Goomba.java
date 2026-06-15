@@ -11,7 +11,7 @@ public class Goomba extends Ennemis {
         super(x, y, terrain, pv, vitesse, chemin, cible);
     }
     public Goomba(double x, double y, Terrain e, List<Point2D> chemin,Point2D cible) {
-        super(x, y, e, 30, 2, chemin, cible);
+        super(x, y, e, 30, 2.0, chemin, cible);
         this.degat = 25;
     }
 }
