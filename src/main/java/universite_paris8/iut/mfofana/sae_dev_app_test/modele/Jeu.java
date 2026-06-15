@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Chateau;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Projectile;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.TourObstacle;
 
@@ -17,16 +18,15 @@ public class Jeu {
 
     // --- Listes observables â†’ la vue Ã©coute ces listes ---
     private ObservableList<Ennemis> ennemis = FXCollections.observableArrayList();
+    private ObservableList<Projectile> projectiles = FXCollections.observableArrayList();
     private ObservableList<Tour> tours = FXCollections.observableArrayList();
-    private ObservableList<List<int[]>> chemins = FXCollections.observableArrayList();
-    private ObservableList<Integer> indexChemins = FXCollections.observableArrayList();
 
     // --- ModÃ¨le ---
     private Chateau chateau;
     private Terrain terrain;
 
     // --- Properties â†’ bindings dans le contrÃ´leur ---
-    private IntegerProperty pieces = new SimpleIntegerProperty(50000);
+    private IntegerProperty pieces = new SimpleIntegerProperty(50);
     private IntegerProperty numeroVague = new SimpleIntegerProperty(0);
 
     // --- Gestion des vagues ---
@@ -38,7 +38,7 @@ public class Jeu {
     // Constantes
     private static final int TICKS_PAR_SECONDE = 60; // 1 tick = 0.1s donc 10 ticks = 1s
     private static final int DELAI_ENTRE_VAGUES = 10 * TICKS_PAR_SECONDE; // 10 secondes
-    private static final int DELAI_ENTRE_SPAWNS = (int)(1.5 * TICKS_PAR_SECONDE); // 1.5s entre chaque spawn
+    private static final int DELAI_ENTRE_SPAWNS = (int)(1.8 * TICKS_PAR_SECONDE); // 1.5s entre chaque spawn
 
     // Points d'entrÃ©e
     private static final int[] HAUT_GAUCHE = {0, 12};
@@ -60,28 +60,38 @@ public class Jeu {
     // -----------------------------------------------------------
     // TICK â†’ appelÃ© Ã  chaque frame par le contrÃ´leur
     // -----------------------------------------------------------
-    public List<GestionJeu.AlerteTir> tick() {
-        List<GestionJeu.AlerteTir> evenements = new ArrayList<>();
-        if (chateau.estDetruit()) return evenements; // jeu terminÃ© â†’ on ne fait rien
+    public void tick() {
+        if (chateau.estDetruit()){return;}
 
         tickCount++;
 
-        // 1. GÃ©rer les vagues
+        // 1. Gérer les vagues
         gererVagues();
 
         // 2. Effets de statut sur les ennemis
         for (Ennemis p : ennemis) {
             p.mettreAJourEffets();
+
+            if (p instanceof Bobomb) {
+                ((Bobomb) p).vitesseAugmente();
+                ((Bobomb) p).exploser(tours);
+
+            }
+
             p.seDeplacer();
         }
 
-        // 3. VÃ©rifier les morts
+
+        // 3. Vérifier les morts
         for (int i = ennemis.size() - 1; i >= 0; i--) {
-            if (ennemis.get(i).estMort()) {
+            Ennemis ennemiActuel = ennemis.get(i); // <-- Récupérer l'ennemi spécifique
+
+            if (ennemiActuel.estMort()) {
                 pieces.set(pieces.get() + ennemis.get(i).getRecompense());
                 supprimerEnnemi(i);
+
             } else if (ennemis.get(i).aAtteintLeChateau()) {
-                Ennemis ennemiActuel = ennemis.get(i); // <-- Récupérer l'ennemi spécifique
+
 
                 if (ennemiActuel instanceof Goomba){
                     chateau.subirDegat(5);
@@ -108,20 +118,25 @@ public class Jeu {
             }
         }
 
-        /**/
 
-        // 5. Tirs des tours
+
         for (Tour t : tours) {
             t.mettreAJourStatut();
-            if(!(t instanceof TourObstacle)){
-                Ennemis cibleTouche = t.tirer(ennemis, tickCount);
-                if (cibleTouche != null ) {
-                    evenements.add(new GestionJeu.AlerteTir(t, cibleTouche));
-                }
+            if(!(t instanceof TourObstacle) && !t.estParalysee()){
+                Ennemis cibleTouche = t.tirer(ennemis, tickCount, projectiles);
             }
 
         }
-        return evenements;
+        if (!projectiles.isEmpty()){
+            for (int i = projectiles.size() - 1; i >= 0; i--) {
+                Projectile p = projectiles.get(i);
+                p.seDeplacer();
+                if (p.aAtteintCible()) {
+                    projectiles.remove(i);
+                }
+            }
+            projectiles.removeIf(p -> !p.isEstActif());
+        };
     }
 
     // -----------------------------------------------------------
@@ -139,8 +154,6 @@ public class Jeu {
         } else {
             // Vague en cours â†’ spawner les ennemis progressivement
             if (ennemisSpawnCeTick < nbEnnemisVague() && tickCount % DELAI_ENTRE_SPAWNS == 0) {
-                //int[] coin = (ennemisSpawnCeTick % 2 == 0) ? HAUT_GAUCHE1;
-                // A faire : Adapter les spawn des ennemis selon l'environnement
                 spawnEnnemi("BOO", BAS_DROIT);
                 spawnEnnemi("TORTUE", GAUCHE_HAUT);
                 spawnEnnemi("SKELETON", HAUT_DROITE);
@@ -161,6 +174,7 @@ public class Jeu {
                 vagueEnCours = false;
                 ticksAvantProchainVague = DELAI_ENTRE_VAGUES;
                 ennemisSpawnCeTick = 0;
+                chateau.setPv(100);
             }
         }
     }
@@ -206,6 +220,10 @@ public class Jeu {
             case "BOO"      -> new Boo(coin[1], coin[0], terrain, cheminEnnemi, cible);
             case "GOOMBA"   -> new Goomba(coin[1], coin[0], terrain, cheminEnnemi, cible);
             case "BOBOMB"   -> new Bobomb(coin[1], coin[0], terrain, cheminEnnemi, cible);
+            case "BILL"     -> new Bill(coin[1], coin[0], terrain, cheminEnnemi, cible);
+            case "NINJI"    -> new Ninji(coin[1], coin[0], terrain, cheminEnnemi, cible);
+            case "BROWSERJR"-> new BrowserJr(coin[1], coin[0], terrain, cheminEnnemi, cible);
+            case "BROWSER"  -> new Browser(coin[1], coin[0], terrain, cheminEnnemi, cible);
             case "BOSS"     -> new Boss(coin[1], coin[0], terrain, cheminEnnemi, cible);
             default         -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi, cible);
         };
@@ -258,6 +276,7 @@ public class Jeu {
     // -----------------------------------------------------------
     public ObservableList<Ennemis> getEnnemis() { return ennemis; }
     public ObservableList<Tour> getTours() { return tours; }
+    public ObservableList<Projectile> getProjectiles() {return projectiles;}
     public Chateau getChateau() { return chateau; }
     public Terrain getTerrain() { return terrain; }
     public boolean estTermine() { return chateau.estDetruit(); }
@@ -266,16 +285,5 @@ public class Jeu {
     public int getPieces() { return pieces.get(); }
     public int getNumeroVague() { return numeroVague.get(); }
 
-    public class GestionJeu {
 
-        public static class AlerteTir {
-            public final Tour tour;
-            public final Ennemis cible;
-
-            public AlerteTir(Tour tour, Ennemis cible) {
-                this.tour = tour;
-                this.cible = cible;
-            }
-        }
-    }
 }

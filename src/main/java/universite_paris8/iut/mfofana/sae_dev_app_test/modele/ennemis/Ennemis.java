@@ -22,16 +22,16 @@ public abstract class Ennemis {
     private final int pvMax;
 
     private Terrain terrain;
-    private int vitesse;
+    private double vitesse;
     private boolean doitRecalculer = false;
 
     // -- Effets de statut --
     private int ticksBrulure = 0;
     private boolean ralenti = false;
-    private int vitesseOriginale = 0;
+    private double vitesseOriginale = 0;
     private int ticksRalentissement = 0;
 
-    public Ennemis(double x, double y, Terrain terrain, int pv, int vitesse, List<Point2D> chemin, Point2D cible) {
+    public Ennemis(double x, double y, Terrain terrain, int pv, double vitesse, List<Point2D> chemin, Point2D cible) {
         this.x.set(x);
         this.y.set(y);
         this.pv.set(pv);
@@ -153,7 +153,7 @@ public abstract class Ennemis {
     public double getX() { return x.get(); }
     public double getY() { return y.get(); }
     public int getPv()   { return pv.get(); }
-    public int getVitesse() { return vitesse; }
+    public double getVitesse() { return vitesse; }
     public int getRecompense() { return 10; }
     public int getPvMax() { return pvMax; }
 
@@ -166,7 +166,7 @@ public abstract class Ennemis {
     public void setX(double valeur) { x.set(valeur); }
     public void setY(double valeur) { y.set(valeur); }
     public void setPv(int valeur)   { pv.set(Math.max(0, valeur)); }
-    public void setVitesse(int v)   { this.vitesse = v; }
+    public void setVitesse(double v)   { this.vitesse = v; }
 
     // --- Logique ---
     public void subirDegat(int degat) { setPv(pv.get() - degat); }

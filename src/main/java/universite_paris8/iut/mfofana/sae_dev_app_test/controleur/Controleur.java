@@ -14,7 +14,6 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.*;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class Controleur {
 
@@ -35,6 +34,7 @@ public class Controleur {
     private Timeline gameLoop;
     private HashMap<Ennemis, EnnemiVue> affichageEnnemis = new HashMap<>();
     private HashMap<Tour, TourVue> affichageTour = new HashMap<>();
+    private HashMap<Projectile, ProjectileVue> affichageProjectile = new HashMap<>();
     // --- Placement de tours ---
     private String tourSelectionnee = null;
     private static final int TILE = 32;
@@ -46,8 +46,10 @@ public class Controleur {
         jeu = new Jeu();
         ListenerListeEnnemis listeerennemi = new ListenerListeEnnemis(paneId, affichageEnnemis);
         ListernerListeTour listeTour = new ListernerListeTour(paneId, affichageTour);
+        ListenerListeProjectile listeProjectile = new ListenerListeProjectile(paneId, affichageProjectile);
         jeu.getEnnemis().addListener(listeerennemi);
         jeu.getTours().addListener(listeTour);
+        jeu.getProjectiles().addListener(listeProjectile);
         Solde.textProperty().bind(
                 jeu.piecesProperty().asString("Solde : %d$"));
         labelPvChateau.textProperty().bind(
@@ -60,16 +62,11 @@ public class Controleur {
         // 6. Placement de tours
         placerTourTerrain();
 
-        GestionAnimation gestionAnimation = new GestionAnimation(paneId);
 
         // 5. Game loop → juste jeu.tick() !
-         gameLoop = new Timeline(
+        gameLoop = new Timeline(
                 new KeyFrame(Duration.seconds(0.017), ev -> {
-                    List<Jeu.GestionJeu.AlerteTir> evenements = jeu.tick();
-                    for (Jeu.GestionJeu.AlerteTir e : evenements) {
-                        gestionAnimation.animationTirBouleFeu(e.tour, e.cible);
-                    }
-                    // Afficher le countdown entre vagues
+                    jeu.tick();
                     labelCountdown.setText(jeu.getCountdownText());
                     // Game Over
                     if (jeu.estTermine()) {
@@ -98,7 +95,7 @@ public class Controleur {
     public void clicPause() {
         System.out.println("DEBUG : clicPause déclenché !");
         gameLoop.pause();
-      //  NavigationManager.allerVersPause();
+        //  NavigationManager.allerVersPause();
     }
 
     // --- Boutons tours ---
@@ -168,7 +165,7 @@ public class Controleur {
                     }
                 }
                 jeu.poserTour(nouvelleTour, cout);
-                tourSelectionnee = null; // Réinitialiser la sélection
+                tourSelectionnee = null;
             }
         });
     }

@@ -16,5 +16,6 @@ public class TourBombe extends Tour {
     @Override
     public void appliquerEffet(Ennemis cible, ObservableList<Ennemis> ennemis) {
         // La bombe pourrait faire des dégâts de zone ici plus tard
+
     }
 }
