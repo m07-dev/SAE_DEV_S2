@@ -175,7 +175,6 @@ public class Jeu {
                 spawnEnnemi("TORTUE", GAUCHE_HAUT);
                 spawnEnnemi("SKELETON", HAUT_DROITE);
                 spawnEnnemi("GOOMBA", GAUCHE_BAS);
-                spawnEnnemi("BILL", DROITE_BAS);
                 ennemisSpawnCeTick++;
             }
 
@@ -239,7 +238,7 @@ public class Jeu {
         Point2D cible = (coin[0] <= 5) ? new Point2D(14, 10) : new Point2D(15, 11);
         List<Point2D> cheminEnnemi;
 
-        if (typeE.equals("BILL")) {
+        if (typeE.equals("BILL") || typeE.equals("NINJI")) {
             // On lui passe une copie pour éviter que les modifications d'index n'altèrent la référence
             cheminEnnemi = new ArrayList<>(this.cheminParfaitDroiteBas);
         } else {
