@@ -1,65 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.TilePane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="600.0" maxWidth="760.0" prefHeight="600.0" prefWidth="760.0"
-    style="-fx-background-color: #2d1b0e;"
-    xmlns="http://javafx.com/javafx/8.0.40"
-    xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="universite_paris8.iut.mfofana.sae_dev_app_test.controleur.Controleur">
+<BorderPane maxHeight="600.0" maxWidth="760.0" prefHeight="600.0" prefWidth="760.0" style="-fx-background-color: #2d1b0e;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.mfofana.sae_dev_app_test.controleur.Controleur">
 
     <!-- ===== BARRE DU HAUT ===== -->
     <top>
-        <HBox alignment="CENTER_LEFT" prefHeight="52.0" spacing="10"
-              style="-fx-background-color: #1a0a00; -fx-padding: 4 12 4 8; -fx-border-color: #6b3a10; -fx-border-width: 0 0 2 0;"
-              BorderPane.alignment="CENTER">
+        <HBox alignment="CENTER_LEFT" prefHeight="52.0" spacing="10" style="-fx-background-color: #1a0a00; -fx-padding: 4 12 4 8; -fx-border-color: #6b3a10; -fx-border-width: 0 0 2 0;" BorderPane.alignment="CENTER">
 
             <!-- Logo -->
             <ImageView fitHeight="44.0" fitWidth="94.0" pickOnBounds="true" preserveRatio="true">
                 <image><Image url="@Personnages/clipart48187.png" /></image>
             </ImageView>
 
-            <Separator orientation="VERTICAL" prefHeight="36.0"
-                       style="-fx-background-color: #5a2d00;" />
+            <Separator orientation="VERTICAL" prefHeight="36.0" style="-fx-background-color: #5a2d00;" />
 
             <!-- Image Vague + numéro -->
             <HBox alignment="CENTER" spacing="5">
                 <ImageView fitHeight="28.0" fitWidth="72.0" pickOnBounds="true" preserveRatio="true">
                     <image><Image url="@Personnages/VAGUE-28-05-2026.png" /></image>
                 </ImageView>
-                <Label fx:id="labelVague" text="Vague : 0" textFill="#5dade2"
-                       style="-fx-font-weight: bold; -fx-font-size: 14;" />
+                <Label fx:id="labelVague" style="-fx-font-weight: bold; -fx-font-size: 14;" text="Vague : 0" textFill="#5dade2" />
             </HBox>
 
             <!-- Spacer -->
             <Region HBox.hgrow="ALWAYS" />
 
             <!-- Compte à rebours -->
-            <Label fx:id="labelCountdown" text="" textFill="#f39c12"
-                   style="-fx-font-weight: bold; -fx-font-size: 13;
-                          -fx-background-color: #1c1c1c; -fx-padding: 4 10 4 10;
-                          -fx-background-radius: 8;" />
+            <Label fx:id="labelCountdown" style="-fx-font-weight: bold; -fx-font-size: 13;                           -fx-background-color: #1c1c1c; -fx-padding: 4 10 4 10;                           -fx-background-radius: 8;" text="" textFill="#f39c12" />
 
             <!-- Solde -->
-            <HBox alignment="CENTER" spacing="5"
-                  style="-fx-background-color: #1c1c1c; -fx-padding: 4 10 4 8; -fx-background-radius: 8;">
+            <HBox alignment="CENTER" spacing="5" style="-fx-background-color: #1c1c1c; -fx-padding: 4 10 4 8; -fx-background-radius: 8;">
                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                     <image><Image url="@Personnages/Piece.png" /></image>
                 </ImageView>
-                <Label fx:id="Solde" text="Solde : 100$" textFill="#f4d03f"
-                       style="-fx-font-weight: bold; -fx-font-size: 18;" />
+                <Label fx:id="Solde" style="-fx-font-weight: bold; -fx-font-size: 18;" text="Solde : 100$" textFill="#f4d03f" />
             </HBox>
 
         </HBox>
@@ -76,34 +53,23 @@
 
     <!-- ===== PANNEAU DROIT ===== -->
     <right>
-        <VBox prefWidth="190.0" spacing="8"
-              style="-fx-background-color: #0d0d0d; -fx-padding: 12 10 12 10;
-                     -fx-border-color: #6b3a10; -fx-border-width: 0 0 0 2;"
-              BorderPane.alignment="CENTER">
+        <VBox prefWidth="190.0" spacing="8" style="-fx-background-color: #0d0d0d; -fx-padding: 12 10 12 10;                      -fx-border-color: #6b3a10; -fx-border-width: 0 0 0 2;" BorderPane.alignment="CENTER">
 
             <!-- PV Château -->
-            <HBox alignment="CENTER_LEFT" spacing="8"
-                  style="-fx-background-color: #2a0000; -fx-padding: 7 10 7 10;
-                         -fx-background-radius: 8; -fx-border-color: #8b0000;
-                         -fx-border-radius: 8; -fx-border-width: 1;">
+            <HBox alignment="CENTER_LEFT" spacing="8" style="-fx-background-color: #2a0000; -fx-padding: 7 10 7 10;                          -fx-background-radius: 8; -fx-border-color: #8b0000;                          -fx-border-radius: 8; -fx-border-width: 1;">
                 <ImageView fitHeight="26.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                     <image><Image url="@Personnages/Coeur.png" /></image>
                 </ImageView>
-                <Label fx:id="labelPvChateau" text="Château : 100 PV" textFill="#ff5555"
-                       style="-fx-font-weight: bold; -fx-font-size: 13;" />
+                <Label fx:id="labelPvChateau" style="-fx-font-weight: bold; -fx-font-size: 13;" text="Château : 100 PV" textFill="#ff5555" />
             </HBox>
 
             <Separator style="-fx-background-color: #2a2a2a;" />
 
             <!-- Titre section tours -->
-            <Label text="— TOURS —" textFill="#888888" maxWidth="Infinity"
-                   style="-fx-font-size: 10; -fx-alignment: center; -fx-font-weight: bold;" />
+            <Label maxWidth="Infinity" style="-fx-font-size: 10; -fx-alignment: center; -fx-font-weight: bold;" text="— TOURS —" textFill="#888888" />
 
             <!-- Tour Feu -->
-            <Button onAction="#clicBoutonTourFeu" maxWidth="Infinity" prefHeight="60.0"
-                    style="-fx-background-color: #7b1010; -fx-background-radius: 10;
-                           -fx-border-color: #e74c3c; -fx-border-radius: 10;
-                           -fx-border-width: 1.5; -fx-cursor: hand;">
+            <Button maxWidth="Infinity" onAction="#clicBoutonTourFeu" prefHeight="60.0" style="-fx-background-color: #7b1010; -fx-background-radius: 10;                            -fx-border-color: #e74c3c; -fx-border-radius: 10;                            -fx-border-width: 1.5; -fx-cursor: hand;">
                 <graphic>
                     <ImageView fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
                         <image><Image url="@Personnages/Plante_feu.png" /></image>
@@ -112,10 +78,7 @@
             </Button>
 
             <!-- Tour Bombe -->
-            <Button onAction="#clicBoutonTourBombe" maxWidth="Infinity" prefHeight="60.0"
-                    style="-fx-background-color: #5a5000; -fx-background-radius: 10;
-                           -fx-border-color: #f1c40f; -fx-border-radius: 10;
-                           -fx-border-width: 1.5; -fx-cursor: hand;">
+            <Button maxWidth="Infinity" onAction="#clicBoutonTourBombe" prefHeight="60.0" style="-fx-background-color: #5a5000; -fx-background-radius: 10;                            -fx-border-color: #f1c40f; -fx-border-radius: 10;                            -fx-border-width: 1.5; -fx-cursor: hand;">
                 <graphic>
                     <ImageView fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
                         <image><Image url="@Personnages/Plante_Bombe.png" /></image>
@@ -124,10 +87,7 @@
             </Button>
 
             <!-- Tour Glace -->
-            <Button onAction="#clicBoutonTourGlace" maxWidth="Infinity" prefHeight="60.0"
-                    style="-fx-background-color: #0d2a40; -fx-background-radius: 10;
-                           -fx-border-color: #3498db; -fx-border-radius: 10;
-                           -fx-border-width: 1.5; -fx-cursor: hand;">
+            <Button maxWidth="Infinity" onAction="#clicBoutonTourGlace" prefHeight="60.0" style="-fx-background-color: #0d2a40; -fx-background-radius: 10;                            -fx-border-color: #3498db; -fx-border-radius: 10;                            -fx-border-width: 1.5; -fx-cursor: hand;">
                 <graphic>
                     <ImageView fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
                         <image><Image url="@Personnages/Plante_Glace.png" /></image>
@@ -136,10 +96,7 @@
             </Button>
 
             <!-- Tour Obstacle -->
-            <Button onAction="#clicBoutonTourObstacle" maxWidth="Infinity" prefHeight="60.0"
-                    style="-fx-background-color: #0d2a0d; -fx-background-radius: 10;
-                           -fx-border-color: #27ae60; -fx-border-radius: 10;
-                           -fx-border-width: 1.5; -fx-cursor: hand;">
+            <Button fx:id="boutonObstacle" maxWidth="Infinity" onAction="#clicBoutonTourObstacle" prefHeight="60.0" style="-fx-background-color: #0d2a0d; -fx-background-radius: 10 ;                            -fx-border-color: #27ae60; -fx-border-radius: 10;                            -fx-border-width: 1.5; -fx-cursor: hand;">
                 <graphic>
                     <ImageView fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
                         <image><Image url="@Personnages/Obstacle.png" /></image>
@@ -150,52 +107,35 @@
             <Separator style="-fx-background-color: #2a2a2a;" />
 
             <!-- Bouton Lancer Vague -->
-            <Button fx:id="boutonVague" onAction="#clicLancerVague"
-                    maxWidth="Infinity" prefHeight="72.0"
-                    style="-fx-background-color: transparent; -fx-padding: 0; -fx-border-color: transparent; -fx-cursor: hand;">
+            <Button fx:id="boutonVague" maxWidth="Infinity" onAction="#clicLancerVague" prefHeight="72.0" style="-fx-background-color: transparent; -fx-padding: 0; -fx-border-color: transparent; -fx-cursor: hand;">
                 <graphic>
-                    <ImageView fitWidth="170.0" fitHeight="68.0" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fitHeight="68.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
                         <image><Image url="@Personnages/LancerVague.png" /></image>
                     </ImageView>
                 </graphic>
             </Button>
             <HBox>
-                <Button fx:id="boutonPause" onAction="#clicPause"
-                    text="Pause"
-                    maxWidth="Infinity" prefHeight="72.0"
-                        prefWidth="90"
-                    style="-fx-background-color: #F2A21C;
-                    -fx-border-color: black;
-                    -fx-border-width: 4;
-                    -fx-background-radius: 0;
-                    -fx-border-radius: 0;
-                    -fx-text-fill: white;
-                    -fx-font-family: 'Arial Black';
-                    -fx-font-size: 11;
-                    -fx-font-weight: bold;
-                    -fx-effect: dropshadow(one-pass-box, black, 0, 1, 2, 2);
-                    -fx-cursor: hand;">
+                <Button fx:id="boutonPause" maxWidth="Infinity" onAction="#clicPause" prefHeight="72.0" prefWidth="90" style="-fx-background-color: #F2A21C;                     -fx-border-color: black;                     -fx-border-width: 4;                     -fx-background-radius: 0;                     -fx-border-radius: 0;                     -fx-text-fill: white;                     -fx-font-family: 'Arial Black';                     -fx-font-size: 11;                     -fx-font-weight: bold;                     -fx-effect: dropshadow(one-pass-box, black, 0, 1, 2, 2);                     -fx-cursor: hand;" text="Pause">
                 </Button>
-                <Button fx:id="boutonContinuer" onAction="#clicContinuer"
-                        text="Continuer"
-                        maxWidth="Infinity" prefHeight="72.0"
-                        prefWidth="90"
-                        style="-fx-background-color: #F2A21C;
-                    -fx-border-color: black;
-                    -fx-border-width: 4;
-                    -fx-background-radius: 0;
-                    -fx-border-radius: 0;
-                    -fx-text-fill: white;
-                    -fx-font-family: 'Arial Black';
-                    -fx-font-size: 11;
-                    -fx-font-weight: bold;
-                    -fx-effect: dropshadow(one-pass-box, black, 0, 1, 2, 2);
-                    -fx-cursor: hand;">
+                <Button fx:id="boutonContinuer" maxWidth="Infinity" onAction="#clicContinuer" prefHeight="72.0" prefWidth="90" style="-fx-background-color: #F2A21C;                     -fx-border-color: black;                     -fx-border-width: 4;                     -fx-background-radius: 0;                     -fx-border-radius: 0;                     -fx-text-fill: white;                     -fx-font-family: 'Arial Black';                     -fx-font-size: 11;                     -fx-font-weight: bold;                     -fx-effect: dropshadow(one-pass-box, black, 0, 1, 2, 2);                     -fx-cursor: hand;" text="Continuer">
                 </Button>
 
             </HBox>
+         <VBox alignment="CENTER" fx:id="panneauTour" managed="false" prefHeight="200.0" prefWidth="100.0" spacing="6" style="-fx-background-color: #1a1a1a; -fx-padding: 8;              -fx-border-color: #f39c12; -fx-border-radius: 6; -fx-border-width: 1;" visible="false">
+            <children>
+                <ImageView fx:id="imageTourSelectionnee" fitHeight="48" fitWidth="48" pickOnBounds="true" preserveRatio="true" />
+                <Label fx:id="labelNiveau" text="Niveau : 1" textFill="#ffffff" />
+                <Label fx:id="labelDegat" text="Dégâts : 0" textFill="#e74c3c" />
+                <Label fx:id="labelPortee" text="Portée : 0" textFill="#3498db" />
+                <Label fx:id="labelCadence" text="Cadence : 0" textFill="#f39c12" />
+                <Label fx:id="labelResistance" text="Résistance : 0" textFill="#27ae60" />
 
+                <Button fx:id="boutonAmeliorer" maxWidth="Infinity" onAction="#clicAmeliorer" style="-fx-background-color: #1a5276; -fx-text-fill: white;                    -fx-border-color: #2980b9; -fx-border-width: 1;                    -fx-background-radius: 6; -fx-border-radius: 6; -fx-cursor: hand;" text="Améliorer (20$)" />
 
+                <Button fx:id="boutonVendre" maxWidth="Infinity" onAction="#clicVendre" style="-fx-background-color: #7b241c; -fx-text-fill: white;                    -fx-border-color: #e74c3c; -fx-border-width: 1;                    -fx-background-radius: 6; -fx-border-radius: 6; -fx-cursor: hand;" text="Vendre" />
+
+                <Button maxWidth="Infinity" onAction="#clicFermerPanneau" style="-fx-background-color: #2a2a2a; -fx-text-fill: #888;                    -fx-background-radius: 6; -fx-cursor: hand;" text="✕ Fermer" />
+            </children></VBox>
         </VBox>
     </right>
 
