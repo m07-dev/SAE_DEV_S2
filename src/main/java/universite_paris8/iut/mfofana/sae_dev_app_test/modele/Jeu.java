@@ -164,7 +164,6 @@ public class Jeu {
                 spawnEnnemi("TORTUE", GAUCHE_HAUT);
                 spawnEnnemi("SKELETON", HAUT_DROITE);
                 spawnEnnemi("GOOMBA", GAUCHE_BAS);
-                spawnEnnemi("BILL",DROITE_BAS);
 
 
                 ennemisSpawnCeTick++;
