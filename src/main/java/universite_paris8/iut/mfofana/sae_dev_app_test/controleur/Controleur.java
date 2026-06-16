@@ -34,6 +34,7 @@ public class Controleur {
     @FXML private Label labelVague;
     @FXML private Label labelCountdown;
     @FXML private VBox zoneInfoTour;
+    @FXML private Label labelMessage;
 
 
     // --- Composants UI ---
@@ -118,25 +119,25 @@ public class Controleur {
     @FXML
     public void clicBoutonTourFeu() {
         if (jeu.getPieces() >= 15) tourSelectionnee = "FEU";
-        else System.out.println("Fonds insuffisants !");
+        else afficherMessage("Fonds insuffisants !");
     }
 
     @FXML
     public void clicBoutonTourBombe() {
         if (jeu.getPieces() >= 50) tourSelectionnee = "BOMBE";
-        else System.out.println("Fonds insuffisants !");
+        else afficherMessage("Fonds insuffisants !");
     }
 
     @FXML
     public void clicBoutonTourGlace() {
         if (jeu.getPieces() >= 15) tourSelectionnee = "GLACE";
-        else System.out.println("Fonds insuffisants !");
+        else afficherMessage("Fonds insuffisants !");
     }
 
     @FXML
     public void clicBoutonTourObstacle() {
         if (jeu.getPieces() >= 15) tourSelectionnee = "OBSTACLE";
-        else System.out.println("Fonds insuffisants !");
+        else afficherMessage("Fonds insuffisants !");
     }
     @FXML
     public void afficherPanneauTour(Tour t) {
@@ -232,6 +233,16 @@ public class Controleur {
                 tourSelectionnee = null;
             }
         });
+    }
+
+    private void afficherMessage(String msg) {
+        labelMessage.setText(msg);
+        labelMessage.setVisible(true);
+        labelMessage.toFront();
+        javafx.animation.PauseTransition pause =
+                new javafx.animation.PauseTransition(Duration.seconds(1.5));
+        pause.setOnFinished(e -> labelMessage.setVisible(false));
+        pause.play();
     }
 
 
