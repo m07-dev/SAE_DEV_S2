@@ -50,11 +50,13 @@ public class Jeu {
     private static final int[] DROITE_HAUT  = {3, 29};
     private static final int[] DROITE_BAS   = {16, 29};
 
+    private List<Point2D> cheminParfaitDroiteBas;
 
     public Jeu() {
         this.chateau = new Chateau();
         this.terrain = new Terrain();
         this.ticksAvantProchainVague = DELAI_ENTRE_VAGUES;
+        initialiserCheminsDeReference();
     }
 
     // -----------------------------------------------------------
@@ -173,6 +175,7 @@ public class Jeu {
                 spawnEnnemi("TORTUE", GAUCHE_HAUT);
                 spawnEnnemi("SKELETON", HAUT_DROITE);
                 spawnEnnemi("GOOMBA", GAUCHE_BAS);
+                spawnEnnemi("BILL", DROITE_BAS);
                 ennemisSpawnCeTick++;
             }
 
@@ -190,6 +193,15 @@ public class Jeu {
                 chateau.setPv(100);
             }
         }
+    }
+
+    public void initialiserCheminsDeReference() {
+        // On calcule le chemin DIRECT au tout début du jeu, quand il n'y a AUCUN obstacle
+        Point2D sourceBill = new Point2D(DROITE_BAS[1], DROITE_BAS[0]);
+        Point2D cibleBill = (DROITE_BAS[0] <= 5) ? new Point2D(14, 10) : new Point2D(15, 11);
+
+        // Ce chemin sera pur et suivra parfaitement la route d'origine !
+        this.cheminParfaitDroiteBas = terrain.algoBFS(sourceBill, cibleBill);
     }
 
     public void lancerVague() {
@@ -225,7 +237,15 @@ public class Jeu {
     public void spawnEnnemi(String typeE, int[] coin) {
         Point2D source = new Point2D(coin[1], coin[0]);
         Point2D cible = (coin[0] <= 5) ? new Point2D(14, 10) : new Point2D(15, 11);
-        List<Point2D> cheminEnnemi = terrain.algoBFS(source, cible);
+        List<Point2D> cheminEnnemi;
+
+        if (typeE.equals("BILL")) {
+            // On lui passe une copie pour éviter que les modifications d'index n'altèrent la référence
+            cheminEnnemi = new ArrayList<>(this.cheminParfaitDroiteBas);
+        } else {
+            // Les autres ennemis calculent leur chemin normalement (et contournent si besoin)
+            cheminEnnemi = terrain.algoBFS(source, cible);
+        }
 
         Ennemis modele = switch (typeE) {
             case "TORTUE"   -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi, cible);

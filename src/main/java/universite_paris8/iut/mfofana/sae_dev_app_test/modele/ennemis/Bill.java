@@ -42,7 +42,7 @@ public class Bill extends Ennemis {
         // Bloque toute tentative de recalcul externe
     }
 
-    @Override
+   /* @Override
     public void seDeplacer() {
         System.out.println("Bill bouge seulllle - Index actuel: " + getIndexCible());
 
@@ -92,6 +92,38 @@ public class Bill extends Ennemis {
         }
     }
 
+    */
+
+    @Override
+    public void seDeplacer() {
+        if (this.chemin == null || this.indexCible >= this.chemin.size()) return;
+
+        Point2D cibleActuelle = this.chemin.get(this.indexCible);
+
+        int typeCase = this.terrain.getTileTerrain((int)cibleActuelle.getY(), (int)cibleActuelle.getX());
+
+        // Si Bill (qui suit le chemin parfait) tape dans un obstacle (0) posé entre-temps
+        if (typeCase == 0) {
+            System.out.println("💥 Bill pulvérise l'obstacle !");
+            this.terrain.setTileTerrain((int)cibleActuelle.getY(), (int)cibleActuelle.getX(), 1); // La case redevient de la route
+        }
+
+        // Déplacement fluide classique...
+        double disX = cibleActuelle.getX() - this.getX();
+        double disY = cibleActuelle.getY() - this.getY();
+        double pas = this.getVitesse() / 60.0;
+
+        if (disX > 0) this.setX(this.getX() + pas);
+        else if (disX < 0) this.setX(this.getX() - pas);
+        if (disY > 0) this.setY(this.getY() + pas);
+        else if (disY < 0) this.setY(this.getY() - pas);
+
+        if (Math.abs(disX) <= pas && Math.abs(disY) <= pas) {
+            this.setX(cibleActuelle.getX());
+            this.setY(cibleActuelle.getY());
+            this.indexCible++;
+        }
+    }
     public String getNom() {
         return "Bill";
     }
