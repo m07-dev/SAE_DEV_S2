@@ -74,36 +74,75 @@
             <!-- Tour Feu -->
             <Button maxWidth="Infinity" onAction="#clicBoutonTourFeu" prefHeight="60.0" style="-fx-background-color: #7b1010; -fx-background-radius: 10;                            -fx-border-color: #e74c3c; -fx-border-radius: 10;                            -fx-border-width: 1.5; -fx-cursor: hand;">
                 <graphic>
-                    <ImageView fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
-                        <image><Image url="@Personnages/Plante_feu.png" /></image>
-                    </ImageView>
+                    <HBox alignment="CENTER" spacing="8">
+                        <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@Personnages/Plante_feu.png" /></image>
+                        </ImageView>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@Personnages/Piece.png" /></image>
+                        </ImageView>
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 15;" text="15" textFill="#f4d03f" />
+                    </HBox>
                 </graphic>
             </Button>
 
             <!-- Tour Bombe -->
             <Button maxWidth="Infinity" onAction="#clicBoutonTourBombe" prefHeight="60.0" style="-fx-background-color: #5a5000; -fx-background-radius: 10;                            -fx-border-color: #f1c40f; -fx-border-radius: 10;                            -fx-border-width: 1.5; -fx-cursor: hand;">
                 <graphic>
-                    <ImageView fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
-                        <image><Image url="@Personnages/Plante_Bombe.png" /></image>
-                    </ImageView>
+                    <HBox alignment="CENTER" spacing="8">
+                        <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@Personnages/Plante_Bombe.png" /></image>
+                        </ImageView>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@Personnages/Piece.png" /></image>
+                        </ImageView>
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 15;" text="50" textFill="#f4d03f" />
+                    </HBox>
                 </graphic>
             </Button>
 
             <!-- Tour Glace -->
             <Button maxWidth="Infinity" onAction="#clicBoutonTourGlace" prefHeight="60.0" style="-fx-background-color: #0d2a40; -fx-background-radius: 10;                            -fx-border-color: #3498db; -fx-border-radius: 10;                            -fx-border-width: 1.5; -fx-cursor: hand;">
                 <graphic>
-                    <ImageView fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
-                        <image><Image url="@Personnages/Plante_Glace.png" /></image>
-                    </ImageView>
+                    <HBox alignment="CENTER" spacing="8">
+                        <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@Personnages/Plante_Glace.png" /></image>
+                        </ImageView>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@Personnages/Piece.png" /></image>
+                        </ImageView>
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 15;" text="15" textFill="#f4d03f" />
+                    </HBox>
                 </graphic>
             </Button>
 
             <!-- Tour Obstacle -->
             <Button fx:id="boutonObstacle" maxWidth="Infinity" onAction="#clicBoutonTourObstacle" prefHeight="60.0" style="-fx-background-color: #0d2a0d; -fx-background-radius: 10 ;                            -fx-border-color: #27ae60; -fx-border-radius: 10;                            -fx-border-width: 1.5; -fx-cursor: hand;">
                 <graphic>
-                    <ImageView fitHeight="52.0" fitWidth="52.0" pickOnBounds="true" preserveRatio="true">
-                        <image><Image url="@Personnages/Obstacle.png" /></image>
-                    </ImageView>
+                    <HBox alignment="CENTER" spacing="8">
+                        <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@Personnages/Obstacle.png" /></image>
+                        </ImageView>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@Personnages/Piece.png" /></image>
+                        </ImageView>
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 15;" text="15" textFill="#f4d03f" />
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <!-- Catégorie PIÈGE  -->
+            <Button maxWidth="Infinity" onAction="#clicBoutonPiegeWhomp" prefHeight="60.0" style="-fx-background-color: #0d1a2a; -fx-background-radius: 10 ;                            -fx-border-color: #3498db; -fx-border-radius: 10;                            -fx-border-width: 1.5; -fx-cursor: hand;">
+                <graphic>
+                    <HBox alignment="CENTER" spacing="8">
+                        <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@Personnages/Whomp.png" /></image>
+                        </ImageView>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <image><Image url="@Personnages/Piece.png" /></image>
+                        </ImageView>
+                        <Label style="-fx-font-weight: bold; -fx-font-size: 15;" text="30" textFill="#f4d03f" />
+                    </HBox>
                 </graphic>
             </Button>
 

@@ -14,6 +14,7 @@ import javafx.util.Duration;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Jeu;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Ennemis;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.*;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.piege.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.*;
 
 import java.util.HashMap;
@@ -47,6 +48,7 @@ public class Controleur {
     private HashMap<Ennemis, EnnemiVue> affichageEnnemis = new HashMap<>();
     private HashMap<Tour, TourVue> affichageTour = new HashMap<>();
     private HashMap<Projectile, ProjectileVue> affichageProjectile = new HashMap<>();
+    private HashMap<Piege, PiegeVue> affichagePiege = new HashMap<>();
     // --- Placement de tours ---
     private String tourSelectionnee = null;
     private static final int TILE = 32;
@@ -63,6 +65,8 @@ public class Controleur {
         jeu.getProjectiles().addListener(listenerProjectile);
         jeu.getEnnemis().addListener(listeerennemi);
         jeu.getTours().addListener(listeTour);
+        ListenerListePiege listePiege = new ListenerListePiege(paneId, affichagePiege);
+        jeu.getPieges().addListener(listePiege);
         Solde.textProperty().bind(
                 jeu.piecesProperty().asString("Solde : %d$"));
         labelPvChateau.textProperty().bind(
@@ -139,6 +143,13 @@ public class Controleur {
         if (jeu.getPieces() >= 15) tourSelectionnee = "OBSTACLE";
         else afficherMessage("Fonds insuffisants !");
     }
+    // --- Bouton catégorie PIÈGE ---
+    @FXML
+    public void clicBoutonPiegeWhomp() {
+        if (jeu.getPieces() >= 30) tourSelectionnee = "WHOMP";
+        else afficherMessage("Fonds insuffisants !");
+    }
+
     @FXML
     public void afficherPanneauTour(Tour t) {
         tourCliquee = t;
@@ -205,6 +216,8 @@ public class Controleur {
 
             int typeCase = jeu.getTerrain().getTileTerrain(ligne, col);
 
+
+
             if (tourSelectionnee.equals("OBSTACLE")) {
                 if (typeCase != 1) return; // Obstacle sur chemin
             } else {
@@ -231,6 +244,13 @@ public class Controleur {
                 }
                 jeu.poserTour(nouvelleTour, cout);
                 tourSelectionnee = null;
+            }
+
+            // --- PIÈGES (catégorie séparée des tours) ---
+            // Posé sur l'herbe, comme les tours. Le piège tombe, agit, puis disparaît.
+            if (tourSelectionnee.equals("WHOMP")) {
+                    jeu.poserPiege(new Whomp(col, ligne), 30);
+                    tourSelectionnee = null;
             }
         });
     }

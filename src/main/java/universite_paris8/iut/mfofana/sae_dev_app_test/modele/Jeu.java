@@ -10,6 +10,7 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Chateau;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Projectile;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.TourObstacle;
+import universite_paris8.iut.mfofana.sae_dev_app_test.modele.piege.Piege;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Jeu {
     private ObservableList<Ennemis> ennemis = FXCollections.observableArrayList();
     private ObservableList<Projectile> projectiles = FXCollections.observableArrayList();
     private ObservableList<Tour> tours = FXCollections.observableArrayList();
+    private ObservableList<Piege> pieges = FXCollections.observableArrayList();
 
     // --- ModÃ¨le ---
     private Chateau chateau;
@@ -145,6 +147,17 @@ public class Jeu {
             }
 
         }
+
+        // 4. Pièges : chaque piège agit puis se retire de la liste s'il a servi.
+        //    Le retrait déclenche le listener qui efface automatiquement le sprite.
+        for (int i = pieges.size() - 1; i >= 0; i--) {
+            Piege pg = pieges.get(i);
+            pg.declencher(ennemis);
+            if (pg.estUtilise()) {
+                pieges.remove(i);
+            }
+        }
+
         if (!projectiles.isEmpty()) {
             for (int i = projectiles.size() - 1; i >= 0; i--) {
                 Projectile p = projectiles.get(i);
@@ -300,6 +313,16 @@ public class Jeu {
             System.out.println("Fonds insuffisants !");
         }
     }
+    // Pose un piège (catégorie indépendante des tours).
+    public void poserPiege(Piege pg, int cout) {
+        if (pieces.get() >= cout) {
+            pieces.set(pieces.get() - cout);
+            pieges.add(pg); // → ListenerListePiege crée le sprite automatiquement
+        } else {
+            System.out.println("Fonds insuffisants !");
+        }
+    }
+
     public void recalculerTousLesChemins() {
         for (Ennemis e : ennemis) {
             e.recalculerChemin(terrain);
@@ -352,6 +375,7 @@ public class Jeu {
 
     public ObservableList<Ennemis> getEnnemis() { return ennemis; }
     public ObservableList<Tour> getTours() { return tours; }
+    public ObservableList<Piege> getPieges() { return pieges; }
     public ObservableList<Projectile> getProjectiles() {return projectiles;}
     public Chateau getChateau() { return chateau; }
     public Terrain getTerrain() { return terrain; }

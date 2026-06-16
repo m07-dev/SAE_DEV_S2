@@ -30,6 +30,7 @@ public abstract class Ennemis {
     private boolean ralenti = false;
     private double vitesseOriginale = 0;
     private int ticksRalentissement = 0;
+    private int ticksGel = 0;
 
     public Ennemis(double x, double y, Terrain terrain, int pv, double vitesse, List<Point2D> chemin, Point2D cible) {
         this.x.set(x);
@@ -60,6 +61,17 @@ public abstract class Ennemis {
         }
     }
 
+    // Gèle l'ennemi pendant 'duree' ticks (utilisé par le piège Whomp).
+    public void setGele(int duree) {
+        if (duree > this.ticksGel) {
+            this.ticksGel = duree;
+        }
+    }
+
+    public boolean estGele() {
+        return this.ticksGel > 0;
+    }
+
     public void mettreAJourEffets() {
         if (ticksBrulure > 0) {
             subirDegat(2);
@@ -71,6 +83,9 @@ public abstract class Ennemis {
                 this.vitesse = this.vitesseOriginale;
                 this.ralenti = false;
             }
+        }
+        if (ticksGel > 0) {
+            ticksGel--; // le gel s'épuise tick après tick
         }
     }
     public void recalculerChemin(Terrain terrain) {
@@ -109,6 +124,9 @@ public abstract class Ennemis {
     }
 
     public void seDeplacer(){
+        if (ticksGel > 0) {
+            return; // gelé par un piège Whomp : l'ennemi ne bouge pas
+        }
         if (chemin != null && indexCible < chemin.size()) {
             Point2D cibleActuelle = chemin.get(indexCible);
 
