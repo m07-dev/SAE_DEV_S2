@@ -18,7 +18,7 @@ public class Bill extends Ennemis {
 
     @Override
     public void recalculerChemin(Terrain terrain) {
-        // Bloque toute tentative de recalcul externe
+        // Vide pour éviter de recalculer le chemin
     }
 
 
@@ -30,12 +30,12 @@ public class Bill extends Ennemis {
 
         int typeCase = this.terrain.getTileTerrain((int)cibleActuelle.getY(), (int)cibleActuelle.getX());
 
-        // Si Bill (qui suit le chemin parfait) tape dans un obstacle (0) posé entre-temps
+        // Changle la tile de l'obstacle pour le faire disparaître
         if (typeCase == 0) {
             this.terrain.setTileTerrain((int)cibleActuelle.getY(), (int)cibleActuelle.getX(), 1); // La case redevient de la route
         }
 
-        // Déplacement fluide classique...
+        // Déplacement dans la map
         double disX = cibleActuelle.getX() - this.getX();
         double disY = cibleActuelle.getY() - this.getY();
         double pas = this.getVitesse() / 60.0;

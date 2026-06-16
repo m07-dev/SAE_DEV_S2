@@ -264,10 +264,10 @@ public class Jeu {
         List<Point2D> cheminEnnemi;
 
         if (typeE.equals("BILL") || typeE.equals("NINJI")) {
-            // On lui passe une copie pour éviter que les modifications d'index n'altèrent la référence
+           // Chemin sans obstacles
             cheminEnnemi = new ArrayList<>(this.cheminParfaitDroiteBas);
         } else {
-            // Les autres ennemis calculent leur chemin normalement (et contournent si besoin)
+            // Chemin normal avec ajouts obstacles
             cheminEnnemi = terrain.algoBFS(source, cible);
         }
 

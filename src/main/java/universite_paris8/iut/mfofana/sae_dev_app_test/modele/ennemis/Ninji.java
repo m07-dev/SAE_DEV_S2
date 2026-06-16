@@ -16,10 +16,8 @@ public class Ninji extends Ennemis {
 
         Point2D cibleActuelle = this.chemin.get(this.indexCible);
 
-        int typeCase = this.terrain.getTileTerrain((int)cibleActuelle.getY(), (int)cibleActuelle.getX());
 
-
-        // Déplacement fluide classique...
+        // Déplacement dans la map
         double disX = cibleActuelle.getX() - this.getX();
         double disY = cibleActuelle.getY() - this.getY();
         double pas = this.getVitesse() / 60.0;
