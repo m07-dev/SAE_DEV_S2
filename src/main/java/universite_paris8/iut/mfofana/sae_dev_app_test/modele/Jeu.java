@@ -79,6 +79,7 @@ public class Jeu {
             if (p instanceof Bobomb) {
                 ((Bobomb) p).vitesseAugmente();
                 ((Bobomb) p).exploser(tours);
+
             }
 
             p.seDeplacer();
@@ -154,7 +155,6 @@ public class Jeu {
             }
             projectiles.removeIf(p -> !p.isEstActif());
         }
-
     }
 
     // -----------------------------------------------------------
