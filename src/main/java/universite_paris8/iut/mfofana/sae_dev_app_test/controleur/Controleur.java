@@ -49,7 +49,6 @@ public class Controleur {
     // --- Placement de tours ---
     private String tourSelectionnee = null;
     private static final int TILE = 32;
-    private static final int COUT_AMELIORATION = 20;
 
     @FXML
     public void initialize() {
