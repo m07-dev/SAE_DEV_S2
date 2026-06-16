@@ -1,80 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<!--
-    Game Over style Mario : fond noir comme l'écran de Game Over original,
-    "GAME OVER" en gros blanc avec ombre, boutons style brique.
-    Tout en inline, pas de CSS externe.
--->
-<StackPane prefHeight="760.0" prefWidth="1150.0"
-           style="-fx-background-color: black;"
-           xmlns="http://javafx.com/javafx/8.0.40"
-           xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="universite_paris8.iut.mfofana.sae_dev_app_test.controleur.GameOverControleur">
+
+   <Pane  prefHeight="760.0" prefWidth="1150.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="universite_paris8.iut.mfofana.sae_dev_app_test.controleur.GameOverControleur" >
 
     <VBox alignment="CENTER" spacing="25" style="-fx-padding: 40;">
 
         <!-- "GAME OVER" -->
-        <Label text="GAME OVER" textFill="white"
-               style="-fx-font-family: 'Arial Black'; -fx-font-size: 100; -fx-font-weight: bold;
-                      -fx-effect: dropshadow(one-pass-box, #E52521, 0, 1, 6, 6);" />
+        <Label style="-fx-font-family: 'Arial Black'; -fx-font-size: 100; -fx-font-weight: bold;
+                               -fx-effect: dropshadow(one-pass-box, #E52521, 0, 1, 6, 6);"
+               text="GAME OVER" textFill="white" />
 
-        <Label text="Le château a été détruit..." textFill="#FFD700"
-               style="-fx-font-family: 'Arial Black'; -fx-font-size: 22;
-                      -fx-effect: dropshadow(one-pass-box, black, 0, 1, 3, 3);" />
+        <Label style="-fx-font-family: 'Arial Black'; -fx-font-size: 22;
+                              -fx-effect: dropshadow(one-pass-box, black, 0, 1, 3, 3);" text="Le château a été détruit..."
+               textFill="#FFD700" />
 
         <Region prefHeight="50" />
 
         <!-- Bouton REJOUER  -->
-        <Button text="REJOUER" onAction="#clicRejouer"
-                prefWidth="320" prefHeight="70"
-                style="-fx-background-color: #00A800;
-                       -fx-border-color: white;
-                       -fx-border-width: 4;
-                       -fx-background-radius: 0;
-                       -fx-border-radius: 0;
-                       -fx-text-fill: white;
-                       -fx-font-family: 'Arial Black';
-                       -fx-font-size: 28;
-                       -fx-font-weight: bold;
-                       -fx-effect: dropshadow(one-pass-box, black, 0, 1, 2, 2);
-                       -fx-cursor: hand;" />
+        <Button onAction="#clicRejouer" prefHeight="70" prefWidth="320" style="-fx-background-color: #00A800;
+                -fx-border-color: white;
+                  -fx-border-width: 4;
+                 -fx-background-radius: 0;
+                 -fx-border-radius: 0;
+                 -fx-text-fill: white;
+                 -fx-font-family: 'Arial Black';
+                 -fx-font-size: 28;
+                 -fx-font-weight: bold;
+                 -fx-effect: dropshadow(one-pass-box, black, 0, 1, 2, 2);
+                 -fx-cursor: hand;" text="REJOUER" />
 
         <!-- Bouton MENU  -->
-        <Button text="MENU" onAction="#clicMenu"
-                prefWidth="320" prefHeight="70"
-                style="-fx-background-color: #F2A21C;
-                       -fx-border-color: white;
-                       -fx-border-width: 4;
-                       -fx-background-radius: 0;
-                       -fx-border-radius: 0;
-                       -fx-text-fill: white;
-                       -fx-font-family: 'Arial Black';
-                       -fx-font-size: 28;
-                       -fx-font-weight: bold;
-                       -fx-effect: dropshadow(one-pass-box, black, 0, 1, 2, 2);
-                       -fx-cursor: hand;" />
+        <Button onAction="#clicMenu" prefHeight="70" prefWidth="320" style="-fx-background-color: #F2A21C;
+                      -fx-border-color: white;
+                      -fx-border-width: 4;
+                      -fx-background-radius: 0;
+                      -fx-border-radius: 0;
+                      -fx-text-fill: white;
+                      -fx-font-family: 'Arial Black';
+                      -fx-font-size: 28;
+                      -fx-font-weight: bold;
+                      -fx-effect: dropshadow(one-pass-box, black, 0, 1, 2, 2);
+                      -fx-cursor: hand;" text="MENU" />
 
         <!-- Bouton QUITTER -->
-        <Button text="QUITTER" onAction="#clicQuitter"
-                prefWidth="320" prefHeight="70"
-                style="-fx-background-color: #E52521;
-                       -fx-border-color: white;
-                       -fx-border-width: 4;
-                       -fx-background-radius: 0;
-                       -fx-border-radius: 0;
-                       -fx-text-fill: white;
-                       -fx-font-family: 'Arial Black';
-                       -fx-font-size: 28;
-                       -fx-font-weight: bold;
-                       -fx-effect: dropshadow(one-pass-box, black, 0, 1, 2, 2);
-                       -fx-cursor: hand;" />
+        <Button onAction="#clicQuitter" prefHeight="70" prefWidth="320" style="-fx-background-color: #E52521;
+                    -fx-border-color: white;
+                    -fx-border-width: 4;
+                    -fx-background-radius: 0;
+                    -fx-border-radius: 0;
+                    -fx-text-fill: white;
+                    -fx-font-family: 'Arial Black';
+                    -fx-font-size: 28;
+                    -fx-font-weight: bold;
+                    -fx-effect: dropshadow(one-pass-box, black, 0, 1, 2, 2);
+                    -fx-cursor: hand;" text="QUITTER" />
 
     </VBox>
-
-</StackPane>
+    </Pane>

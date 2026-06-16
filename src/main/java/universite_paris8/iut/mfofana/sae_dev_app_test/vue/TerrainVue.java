@@ -28,7 +28,7 @@ public class TerrainVue {
         final int Lignes = terrain.getNbLignes();
         final int Colonnes = terrain.getNbColonnes();
 
-        // 1. Configuration pure de la grille
+
         pane.getChildren().clear();
         pane.setPrefColumns(Colonnes);
         pane.setPrefRows(Lignes);

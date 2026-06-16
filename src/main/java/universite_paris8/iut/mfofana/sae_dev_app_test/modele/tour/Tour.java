@@ -10,7 +10,7 @@ public abstract class Tour {
 
     private int cout, niveau;
     private int degat, portee;
-    private double cadence;
+    private double  cadence;
     private int resistance;
     private int ticksParalysie = 0;
     private int dernierTickTir = 0;
@@ -102,11 +102,9 @@ public abstract class Tour {
     }
 
     public Ennemis tirer(ObservableList<Ennemis> ennemis, int tickCount, ObservableList<Projectile> projectiles) {
-
         if (!estParalysee() && peutTirer(tickCount) && !ennemis.isEmpty()) {
             Ennemis cible = choisirCible(ennemis);
             if (cible != null) {
-                //cible.subirDegat(this.degat);
                 Projectile p = new Projectile(degat,cible,this.x,this.y,this);
                 projectiles.add(p);
                 System.out.println(cible.getPv());

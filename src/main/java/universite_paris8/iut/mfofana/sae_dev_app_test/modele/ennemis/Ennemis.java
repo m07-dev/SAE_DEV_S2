@@ -10,8 +10,8 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Terrain;
 import java.util.List;
 
 public abstract class Ennemis {
-    private List<Point2D> chemin;
-    private int indexCible;
+    protected List<Point2D> chemin;
+    protected int indexCible;
     private Point2D cible;
     // DoubleProperty â†’ la vue peut binder sa position dessus
     private DoubleProperty x = new SimpleDoubleProperty();
@@ -21,7 +21,7 @@ public abstract class Ennemis {
     private IntegerProperty pv = new SimpleIntegerProperty();
     private final int pvMax;
 
-    private Terrain terrain;
+    protected Terrain terrain;
     private double vitesse;
     private boolean doitRecalculer = false;
 
@@ -87,14 +87,16 @@ public abstract class Ennemis {
         // Essayer d'abord la cible actuelle
         List<Point2D> nouveauChemin = terrain.algoBFS(posActuelle, this.cible);
 
-        // Si échec → essayer les autres cibles
-        if (nouveauChemin.isEmpty()) {
-            for (Point2D nouvelleCible : ciblesPossibles) {
-                if (!nouvelleCible.equals(this.cible)) {
-                    nouveauChemin = terrain.algoBFS(posActuelle, nouvelleCible);
-                    if (!nouveauChemin.isEmpty()) {
-                        this.cible = nouvelleCible; // changer de cible
-                        break;
+        if(this instanceof Bill) {
+            // Si échec → essayer les autres cibles
+            if (nouveauChemin.isEmpty()) {
+                for (Point2D nouvelleCible : ciblesPossibles) {
+                    if (!nouvelleCible.equals(this.cible)) {
+                        nouveauChemin = terrain.algoBFS(posActuelle, nouvelleCible);
+                        if (!nouveauChemin.isEmpty()) {
+                            this.cible = nouvelleCible; // changer de cible
+                            break;
+                        }
                     }
                 }
             }

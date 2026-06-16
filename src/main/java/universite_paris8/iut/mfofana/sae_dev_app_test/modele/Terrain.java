@@ -151,6 +151,12 @@ public class Terrain {
         }
         return false;
     }
+
+    public void setTileTerrain(int ligne, int col, int nouvelleValeur) {
+        if (!enDehorsDuTerrain(ligne, col)) {
+            this.terrain[ligne][col] = nouvelleValeur;
+        }
+    }
     public int getChateauLigne() { return chateauLigne; }
     public int getChateauColonne() { return chateauColonne; }
     public int getChateauTaille() { return chateauTaille; }

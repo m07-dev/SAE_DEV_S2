@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.Jeu;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Ennemis;
@@ -14,6 +15,7 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.*;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Controleur {
 
@@ -23,6 +25,7 @@ public class Controleur {
     @FXML private Label labelPvChateau;
     @FXML private Label labelVague;
     @FXML private Label labelCountdown;
+    @FXML private VBox zoneInfoTour;
 
 
     // --- Composants UI ---
@@ -38,6 +41,7 @@ public class Controleur {
     // --- Placement de tours ---
     private String tourSelectionnee = null;
     private static final int TILE = 32;
+    private static final int COUT_AMELIORATION = 20;
 
     @FXML
     public void initialize() {
@@ -46,10 +50,10 @@ public class Controleur {
         jeu = new Jeu();
         ListenerListeEnnemis listeerennemi = new ListenerListeEnnemis(paneId, affichageEnnemis);
         ListernerListeTour listeTour = new ListernerListeTour(paneId, affichageTour);
-        ListenerListeProjectile listeProjectile = new ListenerListeProjectile(paneId, affichageProjectile);
+        ListenerListeProjectile listenerProjectile = new ListenerListeProjectile(paneId, affichageProjectile);
+        jeu.getProjectiles().addListener(listenerProjectile);
         jeu.getEnnemis().addListener(listeerennemi);
         jeu.getTours().addListener(listeTour);
-        jeu.getProjectiles().addListener(listeProjectile);
         Solde.textProperty().bind(
                 jeu.piecesProperty().asString("Solde : %d$"));
         labelPvChateau.textProperty().bind(
@@ -81,6 +85,8 @@ public class Controleur {
 
     }
 
+
+    //Fonction FXML
     @FXML
     public void clicContinuer(){
         gameLoop.play();
@@ -95,7 +101,6 @@ public class Controleur {
     public void clicPause() {
         System.out.println("DEBUG : clicPause déclenché !");
         gameLoop.pause();
-        //  NavigationManager.allerVersPause();
     }
 
     // --- Boutons tours ---
@@ -122,6 +127,19 @@ public class Controleur {
         if (jeu.getPieces() >= 15) tourSelectionnee = "OBSTACLE";
         else System.out.println("Fonds insuffisants !");
     }
+
+    @FXML
+    public void clicAmeliorer() {
+
+    }
+
+    @FXML
+    public void clicVendre(){
+
+    }
+
+
+
 
 
 
