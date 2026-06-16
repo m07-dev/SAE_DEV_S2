@@ -69,16 +69,24 @@ public class Jeu {
         gererVagues();
 
         // 2. Effets de statut sur les ennemis
-        for (Ennemis p : ennemis) {
+        for (int i = ennemis.size() - 1; i >= 0; i--) {
+            Ennemis p = ennemis.get(i);
             p.mettreAJourEffets();
 
             if (p instanceof Bobomb) {
                 ((Bobomb) p).vitesseAugmente();
                 ((Bobomb) p).exploser(tours);
-
             }
 
             p.seDeplacer();
+        }
+
+        for (int i = tours.size() - 1; i >= 0; i--) {
+            Tour t = tours.get(i);
+
+            if (t instanceof TourObstacle && terrain.getTileTerrain((int) t.getY(), (int) t.getX()) == 1) {
+                tours.remove(i); // Déclenche le listener pour effacer l'image
+            }
         }
 
 
@@ -108,6 +116,12 @@ public class Jeu {
                 else if (ennemiActuel instanceof Bobomb){
                     chateau.subirDegat(20);
                 }
+                else if (ennemiActuel instanceof Bill){
+                    chateau.subirDegat(25);
+                }
+                else if (ennemiActuel instanceof Ninji){
+                    chateau.subirDegat(15);
+                }
                 else if (ennemiActuel instanceof Browser){
                     chateau.subirDegat(15);
                 }
@@ -127,7 +141,7 @@ public class Jeu {
             }
 
         }
-        if (!projectiles.isEmpty()){
+        if (!projectiles.isEmpty()) {
             for (int i = projectiles.size() - 1; i >= 0; i--) {
                 Projectile p = projectiles.get(i);
                 p.seDeplacer();
@@ -136,7 +150,8 @@ public class Jeu {
                 }
             }
             projectiles.removeIf(p -> !p.isEstActif());
-        };
+        }
+
     }
 
     // -----------------------------------------------------------
