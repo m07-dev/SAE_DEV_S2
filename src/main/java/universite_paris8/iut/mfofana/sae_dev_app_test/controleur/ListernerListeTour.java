@@ -6,26 +6,26 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
 import universite_paris8.iut.mfofana.sae_dev_app_test.vue.TourVue;
 
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 public class ListernerListeTour implements ListChangeListener<Tour> {
     private HashMap<Tour, TourVue> affichageTour = new HashMap<>();
     private Pane pane;
+    private Consumer<Tour> onClicTour; // ← ajouter
 
-    public ListernerListeTour(Pane pane, HashMap affichageTour){
-        this.pane  = pane;
+    public ListernerListeTour(Pane pane, HashMap affichageTour, Consumer<Tour> onClicTour) {
+        this.pane = pane;
         this.affichageTour = affichageTour;
+        this.onClicTour = onClicTour; // ← ajouter
     }
 
     @Override
     public void onChanged(Change<? extends Tour> changement) {
         while (changement.next()) {
-
             if (changement.wasAdded()) {
-                System.out.println("tour ajouté");
                 for (Tour t : changement.getAddedSubList()) {
-                    /*creerSpriteTour(t);*/
-                    TourVue tv = new TourVue(pane, t);
-                    affichageTour.put(t,tv);
+                    TourVue tv = new TourVue(pane, t,   onClicTour); // ← passer le callback
+                    affichageTour.put(t, tv);
                 }
             }
 

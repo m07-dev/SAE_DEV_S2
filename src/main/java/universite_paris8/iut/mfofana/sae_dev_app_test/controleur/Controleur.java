@@ -2,9 +2,11 @@ package universite_paris8.iut.mfofana.sae_dev_app_test.controleur;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
@@ -20,6 +22,12 @@ import java.util.List;
 public class Controleur {
 
     public Button boutonVague;
+    public Button boutonObstacle;
+    @FXML private VBox panneauTour;
+    @FXML private ImageView imageTourSelectionnee;
+    @FXML private Label labelNiveau, labelDegat, labelPortee, labelCadence, labelResistance;
+    @FXML private Button boutonAmeliorer, boutonVendre;
+    private Tour tourCliquee = null;
     // --- Labels UI ---
     @FXML private Label Solde;
     @FXML private Label labelPvChateau;
@@ -49,7 +57,7 @@ public class Controleur {
         // 1. Créer le modèle
         jeu = new Jeu();
         ListenerListeEnnemis listeerennemi = new ListenerListeEnnemis(paneId, affichageEnnemis);
-        ListernerListeTour listeTour = new ListernerListeTour(paneId, affichageTour);
+        ListernerListeTour listeTour = new ListernerListeTour(paneId, affichageTour,t -> afficherPanneauTour(t));
         ListenerListeProjectile listenerProjectile = new ListenerListeProjectile(paneId, affichageProjectile);
         jeu.getProjectiles().addListener(listenerProjectile);
         jeu.getEnnemis().addListener(listeerennemi);
@@ -72,6 +80,9 @@ public class Controleur {
                 new KeyFrame(Duration.seconds(0.017), ev -> {
                     jeu.tick();
                     labelCountdown.setText(jeu.getCountdownText());
+                    int vague = jeu.getNumeroVague();
+                    boolean obstacleInterdit = (vague % 4 == 0 || vague % 4 == 1);
+                    boutonObstacle.setDisable(obstacleInterdit);
                     // Game Over
                     if (jeu.estTermine()) {
                         gameLoop.stop();
@@ -127,15 +138,50 @@ public class Controleur {
         if (jeu.getPieces() >= 15) tourSelectionnee = "OBSTACLE";
         else System.out.println("Fonds insuffisants !");
     }
-
     @FXML
-    public void clicAmeliorer() {
+    public void afficherPanneauTour(Tour t) {
+        tourCliquee = t;
+        labelNiveau.setText("Niveau : " + t.getNiveau());
+        labelDegat.setText("Dégâts : " + t.getDegat());
+        labelPortee.setText("Portée : " + t.getPortee());
+        labelCadence.setText("Cadence : " + t.getCadence());
+        labelResistance.setText("Résistance : " + t.getResistance());
 
+        TourVue tv = affichageTour.get(t);
+        if (tv != null) imageTourSelectionnee.setImage(tv.getImage());
+        
+        int coutProchain = t.getNiveau() * 25;
+        boutonAmeliorer.setText("Améliorer (" + coutProchain + "$)");
+        boutonAmeliorer.setDisable(t.getNiveau() >= 3);
+        panneauTour.setVisible(true);
+        panneauTour.setManaged(true);
     }
 
     @FXML
-    public void clicVendre(){
-
+    public void clicAmeliorer() {
+        if (tourCliquee == null) return;
+        if (jeu.getNumeroVague() < 4) {
+            System.out.println("Amélioration disponible à partir de la vague 4 !");
+            return;
+        }
+        int cout = tourCliquee.getNiveau() * 25;
+        boolean succes = jeu.ameliorerTour(tourCliquee, cout);
+        if (succes) {
+            afficherPanneauTour(tourCliquee);
+        }
+    }
+    @FXML
+    public void clicFermerPanneau() {
+        tourCliquee = null;
+        panneauTour.setVisible(false);
+        panneauTour.setManaged(false);
+    }
+    @FXML
+    public void clicVendre() {
+        if (tourCliquee == null) return;
+        jeu.vendreTour(tourCliquee);
+        tourCliquee = null;
+        clicFermerPanneau();
     }
 
 

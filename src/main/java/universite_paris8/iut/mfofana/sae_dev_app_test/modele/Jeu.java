@@ -13,6 +13,7 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.TourObstacle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Jeu {
 
@@ -159,7 +160,7 @@ public class Jeu {
     // -----------------------------------------------------------
     // GESTION DES VAGUES
     // -----------------------------------------------------------
-    private void gererVagues() {
+    public void gererVagues() {
         if (!vagueEnCours) {
             // On est entre deux vagues â†’ dÃ©compte
             ticksAvantProchainVague--;
@@ -170,11 +171,15 @@ public class Jeu {
             }
         } else {
             // Vague en cours â†’ spawner les ennemis progressivement
+            if(numeroVague.get() %4 == 0 || numeroVague.get() % 4 == 1){
+                supprimerTousLesObstacles();
+            }
             if (ennemisSpawnCeTick < nbEnnemisVague() && tickCount % DELAI_ENTRE_SPAWNS == 0) {
-                spawnEnnemi("BOO", BAS_DROIT);
-                spawnEnnemi("TORTUE", GAUCHE_HAUT);
-                spawnEnnemi("SKELETON", HAUT_DROITE);
-                spawnEnnemi("GOOMBA", GAUCHE_BAS);
+                List<String> types = getTypesDisponibles();
+                String type = types.get(ennemisSpawnCeTick % types.size());
+                int[] coin = COINS_SPAWN.get(type);
+                spawnEnnemi(type, coin);
+
                 ennemisSpawnCeTick++;
             }
 
@@ -207,6 +212,10 @@ public class Jeu {
         numeroVague.set(numeroVague.get() + 1);
         vagueEnCours = true;
         ennemisSpawnCeTick = 0;
+
+        if (numeroVague.get() % 4 == 0 || numeroVague.get() % 4 == 1) {
+            supprimerTousLesObstacles();
+        }
     }
 
 
@@ -230,9 +239,25 @@ public class Jeu {
         return count;
     }
 
-    // -----------------------------------------------------------
-    // SPAWN
-    // -----------------------------------------------------------
+    public static final Map<String, int[]> COINS_SPAWN = Map.of(
+            "GOOMBA",   GAUCHE_BAS,
+            "TORTUE",   GAUCHE_HAUT,
+            "SKELETON", HAUT_DROITE,
+            "BOO",      BAS_DROIT,
+            "BILL", DROITE_BAS
+    );
+
+    public List<String> getTypesDisponibles() {
+        List<String> types = new ArrayList<>();
+        types.add("GOOMBA");
+        if (numeroVague.get() >= 2) types.add("TORTUE");
+        if (numeroVague.get() >= 3) types.add("SKELETON");
+        if (numeroVague.get() >= 4) types.add("BOO");
+        if (numeroVague.get() >= 4) types.add("BILL");
+        return types;
+    }
+
+
     public void spawnEnnemi(String typeE, int[] coin) {
         Point2D source = new Point2D(coin[1], coin[0]);
         Point2D cible = (coin[0] <= 5) ? new Point2D(14, 10) : new Point2D(15, 11);
@@ -262,9 +287,7 @@ public class Jeu {
         ennemis.add(modele);
     }
 
-    // -----------------------------------------------------------
-    // TOURS
-    // -----------------------------------------------------------
+
     public void poserTour(Tour t, int cout) {
         if (pieces.get() >= cout) {
             pieces.set(pieces.get() - cout);
@@ -283,9 +306,7 @@ public class Jeu {
         }
     }
 
-    // -----------------------------------------------------------
-    // TEXTE COUNTDOWN â†’ affichÃ© dans le contrÃ´leur
-    // -----------------------------------------------------------
+
     public String getCountdownText() {
         if (vagueEnCours) {
             return "Vague en cours !";
@@ -295,17 +316,40 @@ public class Jeu {
         }
     }
 
-    // -----------------------------------------------------------
-    // UTILITAIRES PRIVÃ‰S
-    // -----------------------------------------------------------
-    private void supprimerEnnemi(int i) {
+
+    public void supprimerEnnemi(int i) {
         // On supprime de la liste â†’ le ListChangeListener supprime le sprite automatiquement !
         ennemis.remove(i);
     }
+    public void supprimerTousLesObstacles(){
+        for (int i = tours.size() - 1 ; i>=0; i--){
+            Tour t = tours.get(i);
+            if(t instanceof TourObstacle){
+                terrain.setTileTerrain((int)t.getX(),(int)t.getY(),1);
+                tours.remove(t);
+            }
+        }
+    }
 
-    // -----------------------------------------------------------
-    // GETTERS
-    // -----------------------------------------------------------
+    public boolean ameliorerTour(Tour t, int cout) {
+        if (t != null && t.getNiveau() < 3 && pieces.getValue() >= cout) {
+            pieces.setValue(pieces.getValue() - cout);
+            t.ameliorer();
+            return true;
+        }
+        return false;
+    }
+
+    public void vendreTour(Tour t) {
+        if (t == null) return;
+        pieces.set(pieces.get() + t.vendre()); // remboursement = cout / 2
+        if (t instanceof TourObstacle) {
+            terrain.debloquerCase((int) t.getY(), (int) t.getX());
+            recalculerTousLesChemins();
+        }
+        tours.remove(t); // le sprite disparait via le listener
+    }
+
     public ObservableList<Ennemis> getEnnemis() { return ennemis; }
     public ObservableList<Tour> getTours() { return tours; }
     public ObservableList<Projectile> getProjectiles() {return projectiles;}

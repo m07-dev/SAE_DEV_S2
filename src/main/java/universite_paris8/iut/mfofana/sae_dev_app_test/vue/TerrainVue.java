@@ -38,7 +38,7 @@ public class TerrainVue {
         // 2. Chargement du matériel (une seule fois)
         Image solVert      = charger("tuile_herbe.png");
         Image solBleu      = charger("tuile_glace.png");
-        Image solBeige     = charger("tuile_test.png");
+        Image solBeige     = charger("tuile_sable.png");
         Image solBleuFonce = charger("tuile_violet.png");
         Image imageTuyau   = charger("Obstacle.png");
 

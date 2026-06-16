@@ -56,9 +56,9 @@ public abstract class Tour {
         if (niveau < 3) {
             niveau++;
             degat += 12;
-            portee += 2;
-            cadence += 3;
-            resistance += 20;
+            portee += 1;
+            cadence += 0.5;
+            resistance += 15    ;
         }
     }
 
