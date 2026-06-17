@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Ninji extends Ennemis {
     public Ninji(double x, double y, Terrain terrain, List<Point2D> chemin,Point2D cible) {
-        super(x, y, terrain, 5, 8.0, chemin, cible);
+        super(x, y, terrain, 5, 4.0, chemin, cible);
     }
 
     @Override
