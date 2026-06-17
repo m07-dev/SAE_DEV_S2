@@ -7,7 +7,7 @@
 
 public class BrowserJr extends Ennemis {
     public BrowserJr(double x, double y, Terrain terrain, List<Point2D> chemin, Point2D cible) {
-        super(x, y, terrain, 150, 3.0, chemin, cible);
+        super(x, y, terrain, 1200, 3.0, chemin, cible);
     }
 
     @Override

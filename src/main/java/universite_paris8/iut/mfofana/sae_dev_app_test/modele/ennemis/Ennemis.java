@@ -19,7 +19,7 @@ public abstract class Ennemis {
 
     // IntegerProperty â†’ la vue peut binder la barre de vie dessus
     private IntegerProperty pv = new SimpleIntegerProperty();
-    private final int pvMax;
+    private int pvMax;
 
     protected Terrain terrain;
     private double vitesse;
@@ -196,6 +196,9 @@ public abstract class Ennemis {
     public void setX(double valeur) { x.set(valeur); }
     public void setY(double valeur) { y.set(valeur); }
     public void setPv(int valeur)   { pv.set(Math.max(0, valeur)); }
+    public void setPvMax(int pvMax) {
+        this.pvMax = pvMax;
+    }
     public void setVitesse(double v)   { this.vitesse = v; }
     public void setIndexCible(int indexCible) {
         this.indexCible = indexCible;

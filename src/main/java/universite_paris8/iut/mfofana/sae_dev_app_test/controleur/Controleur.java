@@ -92,6 +92,10 @@ public class Controleur {
                         gameLoop.stop();
                         NavigationManager.allerVersGameOver();
                     }
+                    if (jeu.estGagnee()) {
+                        gameLoop.stop();
+                        NavigationManager.allerVersVictoire(); // ta page victoire
+                    }
                 })
         );
         gameLoop.setCycleCount(Timeline.INDEFINITE);

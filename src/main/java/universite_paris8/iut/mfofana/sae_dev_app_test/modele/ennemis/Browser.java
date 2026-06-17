@@ -7,7 +7,6 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
 import java.util.List;
 
 public class Browser extends Ennemis {
-    private static final double PORTEE_DEST = 2.5;
     private int comptToursDetruites = 0;
     private List<Tour> toursJeu;
 
@@ -68,7 +67,7 @@ public class Browser extends Ennemis {
                 }
             }
         }
-    }
+  
 
     private double calculerDistance(double bx, double by, double tx, double ty) {
         return Math.sqrt(Math.pow(tx - bx, 2) + Math.pow(ty - tx, 2));
