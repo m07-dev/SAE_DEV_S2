@@ -1,5 +1,6 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.vue;
 
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -10,7 +11,6 @@ import universite_paris8.iut.mfofana.sae_dev_app_test.modele.piege.Whomp;
 /**
  * Sprite d'un piege. Sur le meme modele que TourVue / ProjectileVue :
  * la vue ne fait qu'afficher le piege a sa position, elle ne contient
- * aucune logique de jeu.
  */
 public class PiegeVue extends VBox {
 
@@ -20,6 +20,7 @@ public class PiegeVue extends VBox {
 
     public PiegeVue(Pane pane, Piege piege) {
         super();
+        this.setAlignment(Pos.CENTER);
         creerSprite(piege);
         this.setTranslateX(piege.getX() * TILE);
         this.setTranslateY(piege.getY() * TILE);
@@ -40,8 +41,6 @@ public class PiegeVue extends VBox {
 
     // Charge l'image ; si Whomp.png n'existe pas encore, retombe sur Skull.png.
     private Image charger(String nom) {
-        var flux = getClass().getResourceAsStream(BASE + nom);
-        if (flux == null) flux = getClass().getResourceAsStream(BASE + "Whomp.png");
-        return new Image(flux);
+        return new Image(getClass().getResourceAsStream(BASE + nom));
     }
 }

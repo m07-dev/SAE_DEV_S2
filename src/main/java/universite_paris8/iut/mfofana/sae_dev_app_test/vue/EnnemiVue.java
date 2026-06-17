@@ -1,5 +1,6 @@
 package universite_paris8.iut.mfofana.sae_dev_app_test.vue;
 
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -19,6 +20,7 @@ public class EnnemiVue extends VBox {
 
     public EnnemiVue(Pane pane, Ennemis p){
         super();
+        this.setAlignment(Pos.CENTER); // centre la barre de vie et le sprite horizontalement
         this.pane = pane;
         this.p = p;
         creebarredevie();
@@ -69,6 +71,8 @@ public class EnnemiVue extends VBox {
         public void creebarredevie(){
         Rectangle barre = new Rectangle(TILE, 4);
         barre.setFill(Color.GREEN);
+        barre.setWidth(26);
+
        // barre.layoutXProperty().bind(p.xProperty().multiply(TILE));
        // barre.layoutYProperty().bind(p.yProperty().multiply(TILE).subtract(6));
 
