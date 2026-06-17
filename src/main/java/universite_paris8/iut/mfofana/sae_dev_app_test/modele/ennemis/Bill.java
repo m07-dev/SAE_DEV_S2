@@ -51,8 +51,10 @@ public class Bill extends Ennemis {
             this.indexCible++;
         }
     }
-    public String getNom() {
-        return "Bill";
+
+    @Override
+    public String nomImage() {
+        return "bill.png";
     }
 
 

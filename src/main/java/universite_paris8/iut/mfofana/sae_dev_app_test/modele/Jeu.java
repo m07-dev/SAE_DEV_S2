@@ -281,7 +281,6 @@ public class Jeu {
             case "NINJI"    -> new Ninji(coin[1], coin[0], terrain, cheminEnnemi, cible);
             case "BROWSERJR"-> new BrowserJr(coin[1], coin[0], terrain, cheminEnnemi, cible);
             case "BROWSER"  -> new Browser(coin[1], coin[0], terrain, cheminEnnemi, cible);
-            case "BOSS"     -> new Boss(coin[1], coin[0], terrain, cheminEnnemi, cible);
             default         -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi, cible);
         };
         ennemis.add(modele);

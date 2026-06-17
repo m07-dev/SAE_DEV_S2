@@ -105,7 +105,16 @@ public abstract class Tour {
         if (!estParalysee() && peutTirer(tickCount) && !ennemis.isEmpty()) {
             Ennemis cible = choisirCible(ennemis);
             if (cible != null) {
-                Projectile p = new Projectile(degat,cible,this.x,this.y,this);
+                Projectile p;
+                if (this.nomTour().equals("Feu")){
+                     p = new BouleFeu(degat,cible,this.x,this.y,this);
+                } else if (this.nomTour().equals("Glace")) {
+                     p = new BouleGlace(degat,cible,this.x,this.y,this);
+                } else if (this.nomTour().equals("Bombe")) {
+                     p = new Bombe(degat,cible,this.x,this.y,this);
+                } else {
+                     p = new BouleFeu(degat,cible,this.x,this.y,this);
+                }
                 projectiles.add(p);
                 System.out.println(cible.getPv());
                 return cible;
@@ -121,4 +130,7 @@ public abstract class Tour {
     }
 
     public abstract void appliquerEffet(Ennemis cible, ObservableList<Ennemis> ennemis);
+
+    public abstract String nomTour();
+
 }

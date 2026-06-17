@@ -14,6 +14,11 @@ public class TourBouleDeGlace extends Tour {
     }
 
     @Override
+    public String nomTour() {
+        return "Glace";
+    }
+
+    @Override
     public void appliquerEffet(Ennemis cible, ObservableList<Ennemis> ennemis) {
         cible.setRalenti(120);
     }

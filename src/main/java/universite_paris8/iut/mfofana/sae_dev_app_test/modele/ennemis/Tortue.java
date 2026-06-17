@@ -13,6 +13,10 @@ public class Tortue extends Ennemis {
     @Override
     public int getRecompense() { return 5; }
 
+    @Override
+    public String nomImage() {
+        return "tortue.png";
+    }
 
 }
 

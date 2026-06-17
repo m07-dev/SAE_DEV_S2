@@ -33,4 +33,9 @@ public class Ninji extends Ennemis {
             this.indexCible++;
         }
     }
+
+    @Override
+    public String nomImage() {
+        return "ninji.png";
+    }
 }
