@@ -25,7 +25,7 @@ public class TourBombe extends Tour {
 
     @Override
     public void appliquerEffet(Ennemis cible, List<Ennemis> ennemis) {
-        double rayonExplosion = 1.5 + (getNiveau() * 0.5); // 2 tuiles autour de la cible
+        double rayonExplosion = 2.5 + (getNiveau() * 0.5);
         for (Ennemis e : ennemis) {
             double distance = Math.sqrt(
                     Math.pow(e.getX() - cible.getX(), 2) +
