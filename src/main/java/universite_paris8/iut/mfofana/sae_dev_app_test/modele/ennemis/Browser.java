@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Browser extends Ennemis {
     public Browser(double x, double y, Terrain terrain, List<Point2D> chemin, Point2D cible) {
-        super(x, y, terrain, 500, 1.0, chemin, cible);
+        super(x, y, terrain, 3000, 1.0, chemin, cible);
     }
 
     public void detruireTour() {

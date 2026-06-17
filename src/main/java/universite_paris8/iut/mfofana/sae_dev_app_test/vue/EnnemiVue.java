@@ -50,13 +50,14 @@ public class EnnemiVue extends VBox {
         public void creebarredevie(){
         Rectangle barre = new Rectangle(TILE, 4);
         barre.setFill(Color.GREEN);
-        barre.setWidth(26);
+        //barre.setWidth(26);
 
        // barre.layoutXProperty().bind(p.xProperty().multiply(TILE));
        // barre.layoutYProperty().bind(p.yProperty().multiply(TILE).subtract(6));
 
         p.pvProperty().addListener((obs, ancien, nouveau) -> {
-            double ratio = nouveau.doubleValue() / p.getPvMax();
+            double ratio = Math.min(1.0, nouveau.doubleValue() / p.getPvMax());
+            // Math.min(1.0, ...) empêche de dépasser 100%
             barre.setWidth(TILE * ratio);
             if (ratio > 0.5)       barre.setFill(Color.GREEN);
             else if (ratio > 0.25) barre.setFill(Color.ORANGE);

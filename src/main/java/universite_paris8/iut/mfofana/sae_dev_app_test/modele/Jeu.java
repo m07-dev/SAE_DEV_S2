@@ -37,11 +37,11 @@ public class Jeu {
     private int ticksAvantProchainVague = 0; // compte Ã  rebours en ticks
     private boolean vagueEnCours = false;
     private int ennemisSpawnCeTick = 0;      // index de l'ennemi en cours de spawn
-
+    private boolean partieGagnee = false;
     // Constantes
     private static final int TICKS_PAR_SECONDE = 60; // 1 tick = 0.1s donc 10 ticks = 1s
     private static final int DELAI_ENTRE_VAGUES = 10 * TICKS_PAR_SECONDE; // 10 secondes
-    //private static final int DELAI_ENTRE_SPAWNS = (int)(1.8 * TICKS_PAR_SECONDE); // 1.5s entre chaque spawn
+
 
     // Points d'entrÃ©e
     private static final int[] HAUT_GAUCHE = {0, 12};
@@ -102,6 +102,9 @@ public class Jeu {
 
             if (ennemiActuel.estMort()) {
                 pieces.set(pieces.get() + ennemis.get(i).getRecompense());
+                if (ennemiActuel instanceof Browser && numeroVague.get() >= 14) {
+                    partieGagnee = true;
+                }
                 supprimerEnnemi(i);
 
             } else if (ennemis.get(i).aAtteintLeChateau()) {
@@ -129,7 +132,7 @@ public class Jeu {
                     chateau.subirDegat(15);
                 }
                 else if (ennemiActuel instanceof BrowserJr) {
-                    System.out.println("browser a touché");
+
                     chateau.subirDegat(70);
                 }
                 else if (ennemiActuel instanceof Browser) {
@@ -336,9 +339,9 @@ public class Jeu {
             multiplicateurPV = 2.0;
             multiplicateurVitesse = 1.6;
         }
-
-        modele.setPv((int)(modele.getPv() * multiplicateurPV));
-        modele.setVitesse((int)(modele.getVitesse() * multiplicateurVitesse));
+        int nouveauxPV = (int)(modele.getPv() * multiplicateurPV);
+        modele.setPvMax(nouveauxPV); // ← mettre à jour pvMax aussi !
+        modele.setPv(nouveauxPV);
     }
 
 
@@ -388,7 +391,7 @@ public class Jeu {
         for (int i = tours.size() - 1 ; i>=0; i--){
             Tour t = tours.get(i);
             if(t instanceof TourObstacle){
-                terrain.setTileTerrain((int)t.getX(),(int)t.getY(),1);
+                terrain.setTileTerrain((int)t.getY(), (int)t.getX(), 1);;
                 tours.remove(t);
             }
         }
@@ -424,6 +427,7 @@ public class Jeu {
     public IntegerProperty numeroVagueProperty() { return numeroVague; }
     public int getPieces() { return pieces.get(); }
     public int getNumeroVague() { return numeroVague.get(); }
+    public boolean estGagnee() { return partieGagnee; }
 
 
 }

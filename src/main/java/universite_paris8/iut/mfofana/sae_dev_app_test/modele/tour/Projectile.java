@@ -44,7 +44,6 @@ public abstract class Projectile {
         if(distance > 0){
             this.x.set(this.x.get() + (dx * vitesse));
             this.y.set(this.y.get() + (dy * vitesse));
-            System.out.println("Projectile en mouvement : " + this.x.get() + ", " + this.y.get());
         }
         if (aAtteintCible()){
             if(estActif){

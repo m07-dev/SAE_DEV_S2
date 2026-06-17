@@ -56,6 +56,10 @@ public class NavigationManager {
         chargerScene("GameOver.fxml");
     }
 
+    public static void allerVersVictoire() {
+        chargerScene("Victoire.fxml");
+    }
+
 
     public static void quitter() {
         if (stageCourant != null) {
