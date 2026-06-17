@@ -10,6 +10,10 @@ public class Browser extends Ennemis {
         super(x, y, terrain, 500, 1.0, chemin, cible);
     }
 
+    public void detruireTour() {
+        
+    }
+
     @Override
     public String nomImage() {
         return "browser";
