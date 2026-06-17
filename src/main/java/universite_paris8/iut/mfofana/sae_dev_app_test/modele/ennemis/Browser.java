@@ -10,6 +10,7 @@ public class Browser extends Ennemis {
     private int comptToursDetruites = 0;
     private List<Tour> toursJeu;
 
+
     public Browser(double x, double y, Terrain terrain, List<Point2D> chemin, Point2D cible ) {
         super(x, y, terrain, 500, 1.0, chemin, cible);
         this.terrain = terrain;
