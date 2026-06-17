@@ -54,6 +54,10 @@ public class Jeu {
     private static final int[] DROITE_BAS   = {16, 29};
 
     private List<Point2D> cheminParfaitDroiteBas;
+    private List<Point2D> cheminParfaitDroiteHaut;
+    private List<Point2D> cheminParfaitGaucheBas;
+    private List<Point2D> cheminParfaitHautGauche;
+
 
     public Jeu() {
         this.chateau = new Chateau();
@@ -218,12 +222,20 @@ public class Jeu {
     }
 
     public void initialiserCheminsDeReference() {
-        // On calcule le chemin DIRECT au tout début du jeu, quand il n'y a AUCUN obstacle
-        Point2D sourceBill = new Point2D(DROITE_BAS[1], DROITE_BAS[0]);
-        Point2D cibleBill = (DROITE_BAS[0] <= 5) ? new Point2D(14, 10) : new Point2D(15, 11);
+        Point2D sourceDB = new Point2D(DROITE_BAS[1], DROITE_BAS[0]);
+        Point2D cibleDB = (DROITE_BAS[0] <= 5) ? new Point2D(14, 10) : new Point2D(15, 11);
+        this.cheminParfaitDroiteBas = terrain.algoBFS(sourceDB, cibleDB);
 
-        // Ce chemin sera pur et suivra parfaitement la route d'origine !
-        this.cheminParfaitDroiteBas = terrain.algoBFS(sourceBill, cibleBill);
+        // 2. Chemin pour le coin DROITE_HAUT (utilisé par Ninji)
+        Point2D sourceDH = new Point2D(DROITE_HAUT[1], DROITE_HAUT[0]);
+        Point2D cibleDH = (DROITE_HAUT[0] <= 5) ? new Point2D(14, 10) : new Point2D(15, 11);
+        this.cheminParfaitDroiteHaut = terrain.algoBFS(sourceDH, cibleDH);
+
+        // 3. Chemin pour le coin GAUCHE_BAS (utilisé par Bowser)
+        Point2D sourceGB = new Point2D(GAUCHE_BAS[1], GAUCHE_BAS[0]);
+        Point2D cibleGB = (GAUCHE_BAS[0] <= 5) ? new Point2D(14, 10) : new Point2D(15, 11);
+        this.cheminParfaitGaucheBas = terrain.algoBFS(sourceGB, cibleGB);
+
     }
 
     public void lancerVague() {
@@ -273,7 +285,8 @@ public class Jeu {
             "SKELETON", HAUT_DROITE,
             "BOO",      BAS_DROIT,
             "BILL",     DROITE_BAS,
-            "BOBOMB",   BAS_GAUCHE
+            "BOBOMB",   BAS_GAUCHE,
+            "NINJI",    DROITE_HAUT
     );
 
     public List<String> getTypesDisponibles() {
@@ -281,9 +294,10 @@ public class Jeu {
         types.add("GOOMBA");
         if (numeroVague.get() >= 2) types.add("TORTUE");
         if (numeroVague.get() >= 3) types.add("SKELETON");
-        if (numeroVague.get() >= 3) types.add("BOBOMB");
-        if (numeroVague.get() >= 4) types.add("BOO");
-        if (numeroVague.get() >= 4) types.add("BILL");
+        if (numeroVague.get() >= 3) types.add("BOO");
+        if (numeroVague.get() >= 4) types.add("BOBOMB");
+        if (numeroVague.get() >= 4) types.add("NINJI");
+        if (numeroVague.get() >= 6) types.add("BILL");
         return types;
     }
 
@@ -307,9 +321,13 @@ public class Jeu {
         Point2D cible = (coin[0] <= 5) ? new Point2D(14, 10) : new Point2D(15, 11);
         List<Point2D> cheminEnnemi;
 
-        if (typeE.equals("BILL") || typeE.equals("NINJI")) {
-           // Chemin sans obstacles
+        if (typeE.equals("BILL")){
+           // Chemin sans obstacles pour Bill
             cheminEnnemi = new ArrayList<>(this.cheminParfaitDroiteBas);
+        } else if (typeE.equals("NINJI")) {
+            cheminEnnemi = new ArrayList<>(this.cheminParfaitDroiteHaut);
+        } else if (typeE.equals("Browser")) {
+            cheminEnnemi = new ArrayList<>(this.cheminParfaitGaucheBas);
         } else {
             // Chemin normal avec ajouts obstacles
             cheminEnnemi = terrain.algoBFS(source, cible);
