@@ -6,18 +6,26 @@ import java.util.List;
 
 public class TourBombe extends Tour {
     private double vitesseBalle;
+    private double rayonExplosion = 2.0;
 
     public TourBombe(double x, double y, double vitesseBalle){
         // Coût: 50, Dégâts: 25, Portée: 2, Cadence: 1, Résistance: 100
         super(x, y, 50, 30, 2, 1, 100);
         this.vitesseBalle = vitesseBalle;
+
+    }
+
+    @Override
+    public void ameliorer() {
+        super.ameliorer();
+        rayonExplosion += 1.5;
     }
 
     public double getVitesseBalle() { return vitesseBalle; }
 
     @Override
     public void appliquerEffet(Ennemis cible, List<Ennemis> ennemis) {
-        double rayonExplosion = 2.0; // 2 tuiles autour de la cible
+        double rayonExplosion = 1.5 + (getNiveau() * 0.5); // 2 tuiles autour de la cible
         for (Ennemis e : ennemis) {
             double distance = Math.sqrt(
                     Math.pow(e.getX() - cible.getX(), 2) +

@@ -61,8 +61,10 @@ public abstract class Tour {
             portee += 1;
             cadence += 0.7;
             resistance += 15    ;
+
         }
     }
+
 
     public boolean estParalysee() {
         return ticksParalysie > 0;
