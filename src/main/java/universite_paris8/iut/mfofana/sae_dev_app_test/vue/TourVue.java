@@ -32,13 +32,8 @@ public class TourVue extends VBox {
     }
 
     public void creerSpriteTour(Tour t) {
-        Image img;
-        if (t instanceof TourBouleDeFeu)       img = charger("Feu.png");
-        else if (t instanceof TourBombe)       img = charger("Bombe.png");
-        else if (t instanceof TourBouleDeGlace) img = charger(  "Glace.png");
-        else if (t instanceof TourObstacle)     img = charger("Obstacle.png");
-        else                                    img = charger("Erreur.png");
-
+        // Choisit les tours grace a la fonction
+        Image img = charger(t.nomTour() + ".png");
 
         ImageView imageTour = new ImageView(img);
         imageTour.setFitWidth(TILE);

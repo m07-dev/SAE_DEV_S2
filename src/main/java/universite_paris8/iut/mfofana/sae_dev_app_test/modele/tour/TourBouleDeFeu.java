@@ -19,4 +19,9 @@ public class TourBouleDeFeu extends Tour {
     public void appliquerEffet(Ennemis cible, List<Ennemis> ennemis) {
         cible.setTicksBrulure(5);
     }
+
+    @Override
+    public String nomTour() {
+        return "Feu";
+    }
 }

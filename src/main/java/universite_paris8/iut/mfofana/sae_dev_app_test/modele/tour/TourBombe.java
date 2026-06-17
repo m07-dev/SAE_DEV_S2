@@ -36,4 +36,9 @@ public class TourBombe extends Tour {
             }
         }
     }
+
+    @Override
+    public String nomTour() {
+        return "Bombe";
+    }
 }
