@@ -62,18 +62,17 @@ public class Browser extends Ennemis {
                 toursJeu.remove(i);
                 comptToursDetruites++;
 
-                if(comptToursDetruites >= 3) {
+                if (comptToursDetruites >= 3) {
                     break;
                 }
             }
         }
+    }
   
 
     private double calculerDistance(double bx, double by, double tx, double ty) {
         return Math.sqrt(Math.pow(tx - bx, 2) + Math.pow(ty - tx, 2));
     }
-
-
 
     @Override
     public String nomImage() {
