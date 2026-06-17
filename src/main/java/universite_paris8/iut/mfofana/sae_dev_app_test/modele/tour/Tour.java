@@ -111,13 +111,13 @@ public abstract class Tour {
             if (cible != null) {
                 Projectile p;
                 if (this.nomTour().equals("Feu")){
-                     p = new BouleFeu(degat,cible,this.x,this.y,this);
+                     p = new BouleFeu(degat,cible,this.x,this.y,this,ennemis);
                 } else if (this.nomTour().equals("Glace")) {
-                     p = new BouleGlace(degat,cible,this.x,this.y,this);
+                     p = new BouleGlace(degat,cible,this.x,this.y,this, ennemis);
                 } else if (this.nomTour().equals("Bombe")) {
-                     p = new Bombe(degat,cible,this.x,this.y,this);
+                     p = new Bombe(degat,cible,this.x,this.y,this,ennemis);
                 } else {
-                     p = new BouleFeu(degat,cible,this.x,this.y,this);
+                     p = new BouleFeu(degat,cible,this.x,this.y,this,ennemis);
                 }
                 projectiles.add(p);
                 System.out.println(cible.getPv());
