@@ -150,8 +150,6 @@ public abstract class Ennemis {
         return chemin != null && indexCible >= chemin.size();
     }
 
-    public abstract String nomImage();
-
 
     // --- Getters valeurs simples ---
     public double getX() { return x.get(); }

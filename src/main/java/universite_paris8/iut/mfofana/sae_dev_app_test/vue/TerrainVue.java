@@ -37,9 +37,9 @@ public class TerrainVue {
 
         // 2. Chargement du matériel (une seule fois)
         Image solVert      = charger("tuile_herbe.png");
-        Image solBleu      = charger("tuile_glace.png");
-        Image solBeige     = charger("tuile_sable.png");
-        Image solBleuFonce = charger("tuile_violet.png");
+        Image solBleu      = charger("sol_bleu.png");
+        Image solBeige     = charger("sol_beige.png");
+        Image solBleuFonce = charger("sol_bleu_fonce.png");
         Image imageTuyau   = charger("Obstacle.png");
 
         // 3. Construction de la carte, case par case

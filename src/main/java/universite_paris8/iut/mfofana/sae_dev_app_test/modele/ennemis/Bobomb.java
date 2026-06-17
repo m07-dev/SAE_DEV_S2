@@ -48,10 +48,5 @@ public class Bobomb extends Ennemis {
     }
 
     @Override
-    public String nomImage() {
-        return "bobomb.png";
-    }
-
-    @Override
     public int getRecompense() { return 10; }
 }

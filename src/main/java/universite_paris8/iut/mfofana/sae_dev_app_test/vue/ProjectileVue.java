@@ -5,8 +5,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Projectile;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.Tour;
-import universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour.TourBouleDeFeu;
 
 public class ProjectileVue extends VBox{
     private Projectile projectile;
@@ -23,21 +21,17 @@ public class ProjectileVue extends VBox{
         this.projectile = projectile;
         this.translateXProperty().bind(projectile.getXProperty().multiply(TILE));
         this.translateYProperty().bind(projectile.getYProperty().multiply(TILE));
-        creerSpriteProjectile(projectile);
+        creerSpriteProjectile();
         p.getChildren().add(this);
     }
 
 
-    public void creerSpriteProjectile(Projectile p){
-        // Choisit le projectile grace a la fonction
-        Image img = charger(p.nomProjectile());
-
-        ImageView iv = new ImageView(img);
+    public void creerSpriteProjectile(){
+        ImageView iv = new ImageView(charger("bouleFeu.png"));
         iv.setFitWidth(TILE);
         iv.setFitHeight(TILE);
         this.getChildren().add(iv);
     }
-
 
     private Image charger(String nom) {
         return new Image(getClass().getResourceAsStream(BASE + nom));

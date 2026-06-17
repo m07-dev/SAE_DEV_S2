@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Ennemis;
 
 
-public abstract class Projectile {
+public class Projectile {
     private Ennemis cible;
     private Tour tour;
     private int degat;
@@ -75,6 +75,4 @@ public abstract class Projectile {
     public boolean isEstActif() {
         return estActif;
     }
-
-    public abstract String nomProjectile();
 }

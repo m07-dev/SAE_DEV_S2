@@ -14,9 +14,4 @@ public class Goomba extends Ennemis {
         super(x, y, e, 30, 2.0, chemin, cible);
         this.degat = 25;
     }
-
-    @Override
-    public String nomImage() {
-        return "goomba.png";
-    }
 }

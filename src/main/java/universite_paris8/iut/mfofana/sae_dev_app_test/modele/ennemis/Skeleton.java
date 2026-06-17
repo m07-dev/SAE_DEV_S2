@@ -16,9 +16,4 @@ public class Skeleton extends Ennemis {
     public Skeleton(double x, double y, Terrain terrain, int pv, int vitesse, List<Point2D> chemin,Point2D cible) {
         super(x, y, terrain, pv, vitesse,  chemin, cible);
     }
-
-    @Override
-    public String nomImage() {
-        return "skeleton.png";
-    }
 }

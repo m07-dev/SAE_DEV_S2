@@ -10,9 +10,4 @@ public class Boo extends Ennemis {
     public Boo(int x, int y, Terrain terrain, List<Point2D> chemin,Point2D cible) {
         super(x, y, terrain, 50, 3.0, chemin,cible);
     }
-
-    @Override
-    public String nomImage() {
-        return "boo.png";
-    }
 }

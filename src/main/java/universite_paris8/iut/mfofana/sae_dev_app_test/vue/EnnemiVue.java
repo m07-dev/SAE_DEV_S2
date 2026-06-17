@@ -30,7 +30,28 @@ public class EnnemiVue extends VBox {
 
     public void creerSpriteEnnemi(Ennemis p) {
         // Image selon le type d'ennemi
-        Image img = charger(p.nomImage());
+        Image img;
+        if (p instanceof Goomba) {
+            img = charger("goomba.png");
+        } else if (p instanceof Tortue) {
+            img = charger("tortue.png");
+        } else if (p instanceof Skeleton) {
+            img = charger("skeleton.png");
+        } else if (p instanceof Boo) {
+            img = charger("boo.png");
+        } else if (p instanceof Bobomb) {
+            img = charger("bobomb.png");
+        } else if (p instanceof Bill) {
+            img = charger("bill.png");
+        } else if (p instanceof Ninji) {
+            img = charger("ninji.png");
+        } else if (p instanceof Browser) {
+            img = charger("browser.png");
+        } else if (p instanceof BrowserJr) {
+            img = charger("browserJr.png");
+        } else {
+            img = charger("Feu.png");
+        }
 
         ImageView imageEnnemis = new ImageView(img);
         imageEnnemis.setFitWidth(TILE);
