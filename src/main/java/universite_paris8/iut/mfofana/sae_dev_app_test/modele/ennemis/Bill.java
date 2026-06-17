@@ -54,7 +54,7 @@ public class Bill extends Ennemis {
 
     @Override
     public String nomImage() {
-        return "bill.png";
+        return "bill";
     }
 
 

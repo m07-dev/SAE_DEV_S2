@@ -12,6 +12,6 @@ public class BrowserJr extends Ennemis {
 
     @Override
     public String nomImage() {
-        return "browserjr.png";
+        return "browserjr";
     }
 }

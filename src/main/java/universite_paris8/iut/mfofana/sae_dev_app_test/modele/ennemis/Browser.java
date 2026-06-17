@@ -12,6 +12,6 @@ public class Browser extends Ennemis {
 
     @Override
     public String nomImage() {
-        return "browser.png";
+        return "browser";
     }
 }

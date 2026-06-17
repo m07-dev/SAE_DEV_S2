@@ -19,6 +19,6 @@ public class Skeleton extends Ennemis {
 
     @Override
     public String nomImage() {
-        return "skeleton.png";
+        return "skeleton";
     }
 }

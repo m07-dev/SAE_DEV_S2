@@ -50,7 +50,7 @@ public class Bobomb extends Ennemis {
 
     @Override
     public String nomImage() {
-        return "bobomb.png";
+        return "bobomb";
     }
 
     @Override

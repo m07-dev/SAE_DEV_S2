@@ -32,7 +32,7 @@ public class EnnemiVue extends VBox {
 
     public void creerSpriteEnnemi(Ennemis p) {
         // Image selon le type d'ennemi
-        Image img = charger(p.nomImage());
+        Image img = charger(p.nomImage() + ".png");
 
         ImageView imageEnnemis = new ImageView(img);
         imageEnnemis.setFitWidth(TILE);

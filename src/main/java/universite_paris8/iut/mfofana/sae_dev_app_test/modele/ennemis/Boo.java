@@ -13,6 +13,6 @@ public class Boo extends Ennemis {
 
     @Override
     public String nomImage() {
-        return "boo.png";
+        return "boo";
     }
 }

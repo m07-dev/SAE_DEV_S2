@@ -15,7 +15,7 @@ public class Tortue extends Ennemis {
 
     @Override
     public String nomImage() {
-        return "tortue.png";
+        return "tortue";
     }
 
 }

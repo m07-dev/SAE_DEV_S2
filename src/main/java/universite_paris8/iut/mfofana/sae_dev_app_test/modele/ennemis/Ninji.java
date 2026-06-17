@@ -36,6 +36,6 @@ public class Ninji extends Ennemis {
 
     @Override
     public String nomImage() {
-        return "ninji.png";
+        return "ninji";
     }
 }

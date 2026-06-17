@@ -17,6 +17,6 @@ public class Goomba extends Ennemis {
 
     @Override
     public String nomImage() {
-        return "goomba.png";
+        return "goomba";
     }
 }
