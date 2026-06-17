@@ -29,4 +29,9 @@ public class TourObstacle extends Tour {
     public void appliquerEffet(Ennemis cible, ObservableList<Ennemis> ennemis) {
         // Logique spécifique à l'obstacle (ex: repousser l'ennemi, l'étourdir)
     }
+
+    @Override
+    public String nomTour() {
+        return "Obstacle";
+    }
 }

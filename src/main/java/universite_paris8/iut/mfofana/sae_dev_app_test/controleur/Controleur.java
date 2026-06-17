@@ -22,7 +22,7 @@ import java.util.List;
 public class Controleur {
 
     public Button boutonVague;
-    public Button boutonObstacle;
+    @FXML public Button boutonObstacle;
     @FXML private VBox panneauTour;
     @FXML private ImageView imageTourSelectionnee;
     @FXML private Label labelNiveau, labelDegat, labelPortee, labelCadence, labelResistance;
@@ -49,7 +49,6 @@ public class Controleur {
     // --- Placement de tours ---
     private String tourSelectionnee = null;
     private static final int TILE = 32;
-    private static final int COUT_AMELIORATION = 20;
 
     @FXML
     public void initialize() {

@@ -18,4 +18,9 @@ public class TourBombe extends Tour {
         // La bombe pourrait faire des dégâts de zone ici plus tard
 
     }
+
+    @Override
+    public String nomTour() {
+        return "Bombe";
+    }
 }

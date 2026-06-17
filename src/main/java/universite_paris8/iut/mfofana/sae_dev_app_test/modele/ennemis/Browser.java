@@ -9,4 +9,9 @@ public class Browser extends Ennemis {
     public Browser(double x, double y, Terrain terrain, List<Point2D> chemin, Point2D cible) {
         super(x, y, terrain, 500, 1.0, chemin, cible);
     }
+
+    @Override
+    public String nomImage() {
+        return "browser.png";
+    }
 }

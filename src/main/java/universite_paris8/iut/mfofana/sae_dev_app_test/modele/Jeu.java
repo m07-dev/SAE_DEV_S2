@@ -263,11 +263,11 @@ public class Jeu {
         Point2D cible = (coin[0] <= 5) ? new Point2D(14, 10) : new Point2D(15, 11);
         List<Point2D> cheminEnnemi;
 
-        if (typeE.equals("BILL")) {
-            // On lui passe une copie pour éviter que les modifications d'index n'altèrent la référence
+        if (typeE.equals("BILL") || typeE.equals("NINJI")) {
+           // Chemin sans obstacles
             cheminEnnemi = new ArrayList<>(this.cheminParfaitDroiteBas);
         } else {
-            // Les autres ennemis calculent leur chemin normalement (et contournent si besoin)
+            // Chemin normal avec ajouts obstacles
             cheminEnnemi = terrain.algoBFS(source, cible);
         }
 
@@ -281,7 +281,6 @@ public class Jeu {
             case "NINJI"    -> new Ninji(coin[1], coin[0], terrain, cheminEnnemi, cible);
             case "BROWSERJR"-> new BrowserJr(coin[1], coin[0], terrain, cheminEnnemi, cible);
             case "BROWSER"  -> new Browser(coin[1], coin[0], terrain, cheminEnnemi, cible);
-            case "BOSS"     -> new Boss(coin[1], coin[0], terrain, cheminEnnemi, cible);
             default         -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi, cible);
         };
         ennemis.add(modele);

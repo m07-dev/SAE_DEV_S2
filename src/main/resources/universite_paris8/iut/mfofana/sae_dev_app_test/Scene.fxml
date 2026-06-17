@@ -136,7 +136,7 @@
             </Button>
 
             <!-- Tour Obstacle -->
-            <Button onAction="#clicBoutonTourObstacle" maxWidth="Infinity" prefHeight="60.0"
+            <Button fx:id="boutonObstacle" onAction="#clicBoutonTourObstacle" maxWidth="Infinity" prefHeight="60.0"
                     style="-fx-background-color: #0d2a0d; -fx-background-radius: 10;
                            -fx-border-color: #27ae60; -fx-border-radius: 10;
                            -fx-border-width: 1.5; -fx-cursor: hand;">
