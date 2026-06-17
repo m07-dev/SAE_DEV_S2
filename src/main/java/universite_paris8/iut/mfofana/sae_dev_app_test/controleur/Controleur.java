@@ -187,8 +187,6 @@ public class Controleur {
 
 
 
-
-
     // --- Placement de tours ---
     public void placerTourTerrain() {
         panneTerrain.setOnMouseClicked(e -> {
