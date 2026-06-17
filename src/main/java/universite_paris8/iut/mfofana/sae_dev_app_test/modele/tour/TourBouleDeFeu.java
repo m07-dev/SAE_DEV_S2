@@ -2,6 +2,8 @@ package universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour;
 import javafx.collections.ObservableList;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Ennemis;
 
+import java.util.List;
+
 public class TourBouleDeFeu extends Tour {
     private double vitesseBalle;
     private int effetBrulure;
@@ -14,7 +16,7 @@ public class TourBouleDeFeu extends Tour {
     }
 
     @Override
-    public void appliquerEffet(Ennemis cible, ObservableList<Ennemis> ennemis) {
+    public void appliquerEffet(Ennemis cible, List<Ennemis> ennemis) {
         cible.setTicksBrulure(5);
     }
 }

@@ -4,6 +4,8 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Ennemis;
 
+import java.util.List;
+
 
 public class Projectile {
     private Ennemis cible;
@@ -11,15 +13,17 @@ public class Projectile {
     private int degat;
     private DoubleProperty x,y;
     private double vitesse = 5.2 / 60.0;
-     private boolean estActif= true;
+    private boolean estActif= true;
+    private List<Ennemis> ennemis;
 
 
-    public Projectile(int degat, Ennemis cible, double x, double y, Tour tour){
+    public Projectile(int degat, Ennemis cible, double x, double y, Tour tour,List<Ennemis> ennemis){
         this.degat = degat;
         this.cible = cible;
         this.x = new SimpleDoubleProperty(x);
         this.y = new SimpleDoubleProperty(y);
         this.tour = tour;
+        this.ennemis = ennemis;
     }
 
     public void seDeplacer(){
@@ -45,7 +49,7 @@ public class Projectile {
         if (aAtteintCible()){
             if(estActif){
                 cible.subirDegat(degat);
-                tour.appliquerEffet(cible,null);
+                tour.appliquerEffet(cible,ennemis   );
                 estActif = false;
             }
         }

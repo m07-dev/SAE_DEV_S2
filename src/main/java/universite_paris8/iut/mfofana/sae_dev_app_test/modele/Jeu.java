@@ -41,7 +41,7 @@ public class Jeu {
     // Constantes
     private static final int TICKS_PAR_SECONDE = 60; // 1 tick = 0.1s donc 10 ticks = 1s
     private static final int DELAI_ENTRE_VAGUES = 10 * TICKS_PAR_SECONDE; // 10 secondes
-    private static final int DELAI_ENTRE_SPAWNS = (int)(1.8 * TICKS_PAR_SECONDE); // 1.5s entre chaque spawn
+    //private static final int DELAI_ENTRE_SPAWNS = (int)(1.8 * TICKS_PAR_SECONDE); // 1.5s entre chaque spawn
 
     // Points d'entrÃ©e
     private static final int[] HAUT_GAUCHE = {0, 12};
@@ -128,11 +128,13 @@ public class Jeu {
                 else if (ennemiActuel instanceof Ninji){
                     chateau.subirDegat(15);
                 }
-                else if (ennemiActuel instanceof Browser){
-                    chateau.subirDegat(15);
+                else if (ennemiActuel instanceof BrowserJr) {
+                    System.out.println("browser a touché");
+                    chateau.subirDegat(70);
                 }
-                else if (ennemiActuel instanceof BrowserJr){
-                    chateau.subirDegat(50);
+                else if (ennemiActuel instanceof Browser) {
+
+                    chateau.subirDegat(100);
                 }
                 supprimerEnnemi(i);
             }
@@ -183,17 +185,17 @@ public class Jeu {
                 lancerVague();
             }
         } else {
-            // Vague en cours â†’ spawner les ennemis progressivement
-            if(numeroVague.get() %4 == 0 || numeroVague.get() % 4 == 1){
-                supprimerTousLesObstacles();
-            }
-            if (ennemisSpawnCeTick < nbEnnemisVague() && tickCount % DELAI_ENTRE_SPAWNS == 0) {
-                List<String> types = getTypesDisponibles();
-                String type = types.get(ennemisSpawnCeTick % types.size());
-                int[] coin = COINS_SPAWN.get(type);
-                spawnEnnemi(type, coin);
+            if (ennemisSpawnCeTick < nbEnnemisVague() && tickCount % getDelaiSpawn() == 0) {
 
-                ennemisSpawnCeTick++;
+                int nbParGroupe = getNbEnnemisParGroupe();
+
+                for (int i = 0; i < nbParGroupe && ennemisSpawnCeTick < nbEnnemisVague(); i++) {
+                    List<String> types = getTypesDisponibles();
+                    String type = types.get(ennemisSpawnCeTick % types.size());
+                    int[] coin = COINS_SPAWN.get(type);
+                    spawnEnnemi(type, coin);
+                    ennemisSpawnCeTick++;
+                }
             }
 
             // Bobombs Ã  partir de la vague 3
@@ -229,6 +231,16 @@ public class Jeu {
         if (numeroVague.get() % 4 == 0 || numeroVague.get() % 4 == 1) {
             supprimerTousLesObstacles();
         }
+
+        if (numeroVague.get() == 12) {
+            System.out.println("Vague 12 → BrowserJr spawn !");
+            spawnEnnemi("BROWSERJR", BAS_DROIT);
+        }
+        if (numeroVague.get() == 14) spawnEnnemi("BROWSER", GAUCHE_BAS);
+        if (numeroVague.get() == 15) {
+            spawnEnnemi("BROWSERJR", BAS_DROIT);
+            spawnEnnemi("BROWSER", GAUCHE_BAS);
+        }
     }
 
 
@@ -238,8 +250,8 @@ public class Jeu {
         }
     }
 
-    private int nbEnnemisVague() {
-        return 2 + numeroVague.get(); // vague 1 = 3, vague 2 = 4...
+    public int nbEnnemisVague() {
+        return (int)(3 * Math.pow(1.4, numeroVague.get() - 1));
     }
 
     public int getNombreObstacles() {
@@ -257,7 +269,8 @@ public class Jeu {
             "TORTUE",   GAUCHE_HAUT,
             "SKELETON", HAUT_DROITE,
             "BOO",      BAS_DROIT,
-            "BILL", DROITE_BAS
+            "BILL",     DROITE_BAS,
+            "BOBOMB",   BAS_GAUCHE
     );
 
     public List<String> getTypesDisponibles() {
@@ -265,13 +278,28 @@ public class Jeu {
         types.add("GOOMBA");
         if (numeroVague.get() >= 2) types.add("TORTUE");
         if (numeroVague.get() >= 3) types.add("SKELETON");
+        if (numeroVague.get() >= 3) types.add("BOBOMB");
         if (numeroVague.get() >= 4) types.add("BOO");
         if (numeroVague.get() >= 4) types.add("BILL");
         return types;
     }
 
+    public int getNbEnnemisParGroupe() {
+        if (numeroVague.get() <= 3) return 1;
+        if (numeroVague.get() <= 6) return 2;
+        if (numeroVague.get() <= 10) return 3;
+        return 4;
+    }
+
+    public int getDelaiSpawn() {
+        if (numeroVague.get() <= 3) return (int)(1.5 * TICKS_PAR_SECONDE);
+        if (numeroVague.get() <= 7) return (int)(1.3 * TICKS_PAR_SECONDE);
+        return (int)(0.9 * TICKS_PAR_SECONDE);
+    }
 
     public void spawnEnnemi(String typeE, int[] coin) {
+        double multiplicateurPV = 1.0;
+        double multiplicateurVitesse = 1.0;
         Point2D source = new Point2D(coin[1], coin[0]);
         Point2D cible = (coin[0] <= 5) ? new Point2D(14, 10) : new Point2D(15, 11);
         List<Point2D> cheminEnnemi;
@@ -298,6 +326,20 @@ public class Jeu {
             default         -> new Tortue(coin[1], coin[0], terrain, cheminEnnemi, cible);
         };
         ennemis.add(modele);
+
+        if (numeroVague.get() >= 4 && numeroVague.get() <= 7) {
+            multiplicateurPV = 1.25;
+            multiplicateurVitesse = 1.2;
+        } else if (numeroVague.get() >= 8 && numeroVague.get() <= 11) {
+            multiplicateurPV = 1.50;
+            multiplicateurVitesse = 1.4;
+        } else if (numeroVague.get() >= 12) {
+            multiplicateurPV = 2.0;
+            multiplicateurVitesse = 1.6;
+        }
+
+        modele.setPv((int)(modele.getPv() * multiplicateurPV));
+        modele.setVitesse((int)(modele.getVitesse() * multiplicateurVitesse));
     }
 
 
@@ -341,7 +383,6 @@ public class Jeu {
 
 
     public void supprimerEnnemi(int i) {
-        // On supprime de la liste â†’ le ListChangeListener supprime le sprite automatiquement !
         ennemis.remove(i);
     }
     public void supprimerTousLesObstacles(){

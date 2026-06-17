@@ -17,9 +17,10 @@ public class Bobomb extends Ennemis {
     }
 
     public void vitesseAugmente() {
-        if (this.getPv() <= 50 && !this.estRapide) {
-            setVitesse(getVitesse() * 1.7);
+        if (this.getPv() <= this.getPvMax() / 2 && !this.estRapide) {
+            setVitesse((int)(getVitesse() * 1.7));
             estRapide = true;
+            System.out.println("Bob-omb accélère ! Vitesse : " + getVitesse());
         }
     }
 
@@ -34,7 +35,7 @@ public class Bobomb extends Ennemis {
             double yT = tourActuelle.getY();
 
             int distance = (int)(Math.abs(xB - xT) + Math.abs(yB - yT));
-            if (distance <= 3 && getPv() <= 2) {
+            if (distance <= 3 && estMort()) {
                 System.out.println("tour paralysee");
                 tourActuelle.paralyser(180);
                 //tourActuelle.setDegat(tourActuelle.getDegat() - this.degat);

@@ -23,7 +23,7 @@ import java.util.List;
 public class Controleur {
 
     public Button boutonVague;
-    public Button boutonObstacle;
+    @FXML public Button boutonObstacle;
     @FXML private VBox panneauTour;
     @FXML private ImageView imageTourSelectionnee;
     @FXML private Label labelNiveau, labelDegat, labelPortee, labelCadence, labelResistance;
@@ -52,7 +52,6 @@ public class Controleur {
     // --- Placement de tours ---
     private String tourSelectionnee = null;
     private static final int TILE = 32;
-    private static final int COUT_AMELIORATION = 20;
 
     @FXML
     public void initialize() {
@@ -218,7 +217,7 @@ public class Controleur {
 
 
 
-            if (tourSelectionnee.equals("OBSTACLE")) {
+            if ("OBSTACLE".equals(tourSelectionnee)) {
                 if (typeCase != 1) return; // Obstacle sur chemin
             } else {
                 if (typeCase != 0) return; // Tours sur herbe
@@ -248,7 +247,7 @@ public class Controleur {
 
             // --- PIÈGES (catégorie séparée des tours) ---
             // Posé sur l'herbe, comme les tours. Le piège tombe, agit, puis disparaît.
-            if (tourSelectionnee.equals("WHOMP")) {
+            if ("WHOMP".equals(tourSelectionnee) ){
                     jeu.poserPiege(new Whomp(col, ligne), 30);
                     tourSelectionnee = null;
             }

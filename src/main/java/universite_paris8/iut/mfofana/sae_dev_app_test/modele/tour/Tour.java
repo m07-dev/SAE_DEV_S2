@@ -3,6 +3,8 @@ package universite_paris8.iut.mfofana.sae_dev_app_test.modele.tour;
 import javafx.collections.ObservableList;
 import universite_paris8.iut.mfofana.sae_dev_app_test.modele.ennemis.Ennemis;
 
+import java.util.List;
+
 public abstract class Tour {
 
     private double x;
@@ -57,7 +59,7 @@ public abstract class Tour {
             niveau++;
             degat += 12;
             portee += 1;
-            cadence += 0.5;
+            cadence += 0.7;
             resistance += 15    ;
         }
     }
@@ -105,7 +107,7 @@ public abstract class Tour {
         if (!estParalysee() && peutTirer(tickCount) && !ennemis.isEmpty()) {
             Ennemis cible = choisirCible(ennemis);
             if (cible != null) {
-                Projectile p = new Projectile(degat,cible,this.x,this.y,this);
+                Projectile p = new Projectile(degat,cible,this.x,this.y,this,ennemis);
                 projectiles.add(p);
                 System.out.println(cible.getPv());
                 return cible;
@@ -120,5 +122,5 @@ public abstract class Tour {
         }
     }
 
-    public abstract void appliquerEffet(Ennemis cible, ObservableList<Ennemis> ennemis);
+    public abstract void appliquerEffet(Ennemis cible, List<Ennemis> ennemis);
 }

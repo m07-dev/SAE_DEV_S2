@@ -12,7 +12,7 @@ public class Bill extends Ennemis {
     private int degatObstacle;
 
     public Bill(double x, double y, Terrain terrain, List<Point2D> chemin, Point2D cible) {
-        super(x, y, terrain, 20, 5.0, chemin, cible);
+        super(x, y, terrain, 10, 4.5, chemin, cible);
         degatObstacle = 100;
     }
 
