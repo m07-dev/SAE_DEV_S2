@@ -90,7 +90,7 @@
                 <ImageView fitHeight="26.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                     <image><Image url="@Personnages/Coeur.png" /></image>
                 </ImageView>
-                <Label fx:id="labelPvChateau" text="Château : 100 PV" textFill="#ff5555"
+                <Label fx:id="labelPvChateau" text="100 PV" textFill="#ff5555"
                        style="-fx-font-weight: bold; -fx-font-size: 13;" />
             </HBox>
 
