@@ -11,10 +11,11 @@ public class Browser extends Ennemis {
     private List<Tour> toursJeu;
 
 
-    public Browser(double x, double y, Terrain terrain, List<Point2D> chemin, Point2D cible ) {
-        super(x, y, terrain, 500, 1.0, chemin, cible);
+    public Browser(double x, double y, Terrain terrain, List<Point2D> chemin, Point2D cible, List<Tour> tours) {
+        super(x, y, terrain, 3000, 1.0, chemin, cible);
         this.terrain = terrain;
         this.indexCible = 1;
+        this.toursJeu = tours;
 
     }
 
@@ -48,12 +49,12 @@ public class Browser extends Ennemis {
         }
 
         if (comptToursDetruites < 3) {
-            detruireToursAutour();
+                detruireToursAutour();
         }
     }
 
     private void detruireToursAutour() {
-
+        if (toursJeu == null) return;
         for (int i = toursJeu.size() - 1; i >= 0; i--) {
             Tour t = toursJeu.get(i);
 
@@ -72,7 +73,9 @@ public class Browser extends Ennemis {
   
 
     private double calculerDistance(double bx, double by, double tx, double ty) {
-        return Math.sqrt(Math.pow(tx - bx, 2) + Math.pow(ty - tx, 2));
+        double dx = tx - bx;
+        double dy = ty - by;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     @Override
